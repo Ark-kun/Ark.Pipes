@@ -23,8 +23,6 @@ namespace Test.XNAWindowsGame
             RotationSpeed = 2 * Math.PI * 1.0 / 4; // 1/10; = 1/3s // 1/60 = 1/20s
         }
 
-        #region IGameElement Members
-
         public void Update(GameTime gameTime)
         {
             //angle += (RotationSpeed * gameTime.ElapsedRealTime.TotalSeconds) % 2 * Math.PI;
@@ -51,17 +49,6 @@ namespace Test.XNAWindowsGame
             }
 
         }
-
-        #endregion
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            
-        }
-
-        #endregion
 
         public Vector2 Position { get; set; }
 

@@ -84,6 +84,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bullets\BulletFactory.cs" />
+    <Compile Include="Bullets\StraitLineBullet.cs" />
+    <Compile Include="Interfaces.cs" />
     <Compile Include="SpriteTypes\CoolSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="IGameElement.cs" />
@@ -91,6 +94,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
+    <Compile Include="SpriteTypes\StaticSprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

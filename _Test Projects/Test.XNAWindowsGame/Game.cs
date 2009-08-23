@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
+using Test.XNAWindowsGame.Bullets;
 
 namespace Test.XNAWindowsGame
 {
@@ -24,9 +25,10 @@ namespace Test.XNAWindowsGame
 
         SpriteFont someFont;
         int frameCount = 0;
-
         Vector2 fpsPosition;
         Color fpsColor = Color.BlanchedAlmond;
+
+        SimpleStraitBulletFactory bulletFactory;
 
         List<IGameElement> gameElements = new List<IGameElement>();
 
@@ -35,7 +37,7 @@ namespace Test.XNAWindowsGame
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
-            graphics.PreferredBackBufferHeight = BackBufferHeight;            
+            graphics.PreferredBackBufferHeight = BackBufferHeight;
         }
 
         protected override void LoadContent()
@@ -51,11 +53,15 @@ namespace Test.XNAWindowsGame
             //sprite = new RotatingSprite() { Sprite = spriteTexture1 };
             sprite = new CoolSprite() { Sprite1 = spriteTexture1, Sprite2 = spriteTexture2 };
             gameElements.Add(sprite);
+
+            //Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
+            Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
+            bulletFactory = new SimpleStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
         }
 
         protected override void Initialize()
         {
-            fpsPosition = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);                     
+            fpsPosition = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
             base.Initialize();
         }
@@ -65,12 +71,24 @@ namespace Test.XNAWindowsGame
         {
         }
 
+        double lastBulletTime;
         protected override void Update(GameTime gameTime)
         {
             HandleInput();
             GetInput();
 
-            foreach (var ge in gameElements) {
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastBulletTime > 100)
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    gameElements.Add(bulletFactory.GenerateBullet());
+                }
+                lastBulletTime = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+           
+
+            foreach (var ge in gameElements)
+            {
                 ge.Update(gameTime);
             }
 
@@ -87,7 +105,7 @@ namespace Test.XNAWindowsGame
 
         //RotatingSprite sprite;
         CoolSprite sprite;
-        
+
 
         private void GetInput()
         {
@@ -97,9 +115,10 @@ namespace Test.XNAWindowsGame
             Vector2 spritePosition = sprite.Position;
             var mouseState = Mouse.GetState();
 
-            if(mouseState.LeftButton == ButtonState.Pressed){
-                spritePosition = new Vector2() { X = mouseState.X, Y = mouseState.Y };                
-            }            
+            if (mouseState.LeftButton == ButtonState.Pressed)
+            {
+                spritePosition = new Vector2() { X = mouseState.X, Y = mouseState.Y };
+            }
 
 
             // If any digital horizontal movement input is found, override the analog movement.

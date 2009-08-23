@@ -1,16 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 
 namespace Test.XNAWindowsGame
 {
@@ -23,8 +13,6 @@ namespace Test.XNAWindowsGame
             RotationSpeed = 2 * Math.PI * 1.0 / 2; // 1/10; = 1/3s // 1/60 = 1/20s
         }
 
-        #region IGameElement Members
-
         public void Update(GameTime gameTime)
         {
             //angle += (RotationSpeed * gameTime.ElapsedRealTime.TotalSeconds) % 2 * Math.PI;
@@ -33,9 +21,7 @@ namespace Test.XNAWindowsGame
             //angle += (RotationSpeed * Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI) * gameTime.ElapsedGameTime.TotalSeconds) % 2 * Math.PI;
         }
 
-     
-
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
+public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             if (Sprite1 != null)
             {
@@ -50,16 +36,6 @@ namespace Test.XNAWindowsGame
 
         }
 
-        #endregion
-
-        #region IDisposable Members
-
-        public void Dispose()
-        {
-            
-        }
-
-        #endregion
 
         public Vector2 Position { get; set; }
 
