@@ -84,11 +84,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpriteTypes\CoolSprite.cs" />
+    <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="IGameElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="RotatingSprite.cs" />
+    <Compile Include="SpriteTypes\DynamicSprite.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

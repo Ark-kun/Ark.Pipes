@@ -43,8 +43,13 @@ namespace Test.XNAWindowsGame
             spriteBatch = new SpriteBatch(GraphicsDevice);
             someFont = Content.Load<SpriteFont>("Some Font");
 
-            spriteTexture = Content.Load<Texture2D>("6861023");
-            sprite = new DynamicSprite() { Sprite = spriteTexture };
+            //spriteTexture = Content.Load<Texture2D>("6861023");
+            //Texture2D spriteTexture1 = null;
+            //Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle5");
+            Texture2D spriteTexture1 = Content.Load<Texture2D>("Circle2");
+            Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle3");
+            //sprite = new RotatingSprite() { Sprite = spriteTexture1 };
+            sprite = new CoolSprite() { Sprite1 = spriteTexture1, Sprite2 = spriteTexture2 };
             gameElements.Add(sprite);
         }
 
@@ -80,8 +85,9 @@ namespace Test.XNAWindowsGame
         }
 
 
-        DynamicSprite sprite;
-        Texture2D spriteTexture;
+        //RotatingSprite sprite;
+        CoolSprite sprite;
+        
 
         private void GetInput()
         {
@@ -100,22 +106,22 @@ namespace Test.XNAWindowsGame
             if (keyboardState.IsKeyDown(Keys.Left) ||
                 keyboardState.IsKeyDown(Keys.A))
             {
-                spritePosition.X -= 5.0f;
+                spritePosition.X -= 10.0f;
             }
-            else if (keyboardState.IsKeyDown(Keys.Right) ||
+            if (keyboardState.IsKeyDown(Keys.Right) ||
                      keyboardState.IsKeyDown(Keys.D))
             {
-                spritePosition.X += 5.0f;
+                spritePosition.X += 10.0f;
             }
             if (keyboardState.IsKeyDown(Keys.Up) ||
                 keyboardState.IsKeyDown(Keys.W))
             {
-                spritePosition.Y -= 5.0f;
+                spritePosition.Y -= 10.0f;
             }
-            else if (keyboardState.IsKeyDown(Keys.Down) ||
+            if (keyboardState.IsKeyDown(Keys.Down) ||
                      keyboardState.IsKeyDown(Keys.S))
             {
-                spritePosition.Y += 5.0f;
+                spritePosition.Y += 10.0f;
             }
             sprite.Position = spritePosition;
         }
@@ -129,8 +135,8 @@ namespace Test.XNAWindowsGame
 
             spriteBatch.Begin();
             //spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
-            //spriteBatch.DrawString(someFont, FPS.ToString(), fpsPosition, fpsColor);
-            spriteBatch.DrawString(someFont, gameTime.TotalGameTime.TotalSeconds.ToString(), fpsPosition, fpsColor);
+            spriteBatch.DrawString(someFont, FPS.ToString(), fpsPosition, fpsColor);
+            //spriteBatch.DrawString(someFont, gameTime.TotalGameTime.TotalSeconds.ToString(), fpsPosition, fpsColor);
 
             foreach (var ge in gameElements)
             {
