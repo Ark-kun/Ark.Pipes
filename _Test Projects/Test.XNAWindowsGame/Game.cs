@@ -28,7 +28,8 @@ namespace Test.XNAWindowsGame
         Vector2 fpsPosition;
         Color fpsColor = Color.BlanchedAlmond;
 
-        SimpleStraitBulletFactory bulletFactory;
+        //SimpleRandomStraitBulletFactory bulletFactory;
+        HomingBulletFactory bulletFactory;
 
         List<IGameElement> gameElements = new List<IGameElement>();
 
@@ -56,7 +57,8 @@ namespace Test.XNAWindowsGame
 
             //Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
-            bulletFactory = new SimpleStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            //bulletFactory = new SimpleRandomStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            bulletFactory = new HomingBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
         }
 
         protected override void Initialize()
@@ -115,11 +117,11 @@ namespace Test.XNAWindowsGame
             Vector2 spritePosition = sprite.Position;
             var mouseState = Mouse.GetState();
 
-            if (mouseState.LeftButton == ButtonState.Pressed)
-            {
+            //if (mouseState.LeftButton == ButtonState.Pressed)
+            //{
                 spritePosition = new Vector2() { X = mouseState.X, Y = mouseState.Y };
-            }
-
+            //}
+            bulletFactory.Target = new Vector2() { X = mouseState.X, Y = mouseState.Y };
 
             // If any digital horizontal movement input is found, override the analog movement.
             if (keyboardState.IsKeyDown(Keys.Left) ||

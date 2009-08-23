@@ -8,21 +8,19 @@ namespace Test.XNAWindowsGame.Bullets
     {
         TBullet _bullet;
         Vector2 _origin;
-        Vector2 _direction;
-        float _speed;
+        Vector2 _velocity;
         double _millisecondsPassed;
 
-        public StraitLineBullet(TBullet bullet, Vector2 origin, Vector2 direction, float speed)
+        public StraitLineBullet(TBullet bullet, Vector2 origin, Vector2 velocity)
         {
             _bullet = bullet;
             _origin = origin;
-            _direction = direction;
-            _speed = speed;
+            _velocity = velocity;
 
             var rotatableBullet = _bullet as IHasChangeableAngle;
             if (rotatableBullet != null)
             {
-                rotatableBullet.Angle = (float)(Math.Sign(_direction.Y) * Math.Acos(_direction.X / _direction.Length()));
+                rotatableBullet.Angle = (float)(Math.Sign(_velocity.Y) * Math.Acos(_velocity.X / _velocity.Length()));
             }
         }
 
@@ -30,8 +28,7 @@ namespace Test.XNAWindowsGame.Bullets
         {
             _bullet = bullet;
             _origin = origin;
-            _direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-            _speed = speed;
+            _velocity = new Vector2((float)(speed * Math.Cos(angle)), (float)(speed * Math.Sin(angle)));
 
             var rotatableBullet = _bullet as IHasChangeableAngle;
             if (rotatableBullet != null)
@@ -48,7 +45,7 @@ namespace Test.XNAWindowsGame.Bullets
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
-            _bullet.Position = _origin + _direction * (float)(_speed * _millisecondsPassed);
+            _bullet.Position = _origin + _velocity * (float)(_millisecondsPassed);
 
             _bullet.Draw(gameTime, spriteBatch);
         }

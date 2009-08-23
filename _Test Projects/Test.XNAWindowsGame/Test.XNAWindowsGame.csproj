@@ -84,10 +84,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bullets\BulletFactory.cs" />
+    <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
+    <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="SpriteTypes\CoolSprite.cs" />
+    <Compile Include="SpriteTypes\Sprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="IGameElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

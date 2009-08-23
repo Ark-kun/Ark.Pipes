@@ -14,9 +14,5 @@ using Microsoft.Xna.Framework.Storage;
 
 namespace Test.XNAWindowsGame
 {
-    public interface IGameElement
-    {
-        void Update(GameTime gameTime);
-        void Draw(GameTime gameTime, SpriteBatch spriteBatch);
-    }
+
 }
