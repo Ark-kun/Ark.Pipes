@@ -1,21 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Test.XNAWindowsGame.SpriteTypes;
 
 namespace Test.XNAWindowsGame.Bullets
 {
-    class SimpleStraitBulletFactory
+    class SimpleRandomStraitBulletFactory
     {
         Texture2D _bulletSprite;
         Vector2 _spriteOrigin;
         Rectangle _originsSet;
         float _maxSpeed;
 
-        public SimpleStraitBulletFactory(Texture2D bulletSprite, Rectangle originsSet, float maxSpeed)
+        public SimpleRandomStraitBulletFactory(Texture2D bulletSprite, Rectangle originsSet, float maxSpeed)
         {
             _bulletSprite = bulletSprite;
             _originsSet = originsSet;
@@ -26,7 +23,7 @@ namespace Test.XNAWindowsGame.Bullets
         public IGameElement GenerateBullet()
         {
             Vector2 origin = new Vector2(_originsSet.X + rnd.Next(_originsSet.Width), _originsSet.Y + rnd.Next(_originsSet.Height));
-            float angle =(float)( rnd.NextDouble() * 2 * Math.PI);
+            float angle = (float)(rnd.NextDouble() * 2 * Math.PI);
             float speed = (float)(rnd.NextDouble() * _maxSpeed);
             return new StraitLineBullet<StaticSprite>(new StaticSprite(_bulletSprite, _spriteOrigin), origin, angle, speed);
         }

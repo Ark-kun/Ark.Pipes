@@ -4,24 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Test.XNAWindowsGame
 {
-    public class Sprite : IGameElement
+    public class Sprite
     {
-        #region IGameElement Members
+        public Texture2D texture;
+        public Vector2 origin;
+        public float scale = 1.0f;
+        public Color tint = Color.White;
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            throw new NotImplementedException();
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, float angle){
+            spriteBatch.Draw(texture, position, null, tint, angle, origin, scale, SpriteEffects.None, 0);
         }
-
-        #endregion
-
-        #region IUpdatable Members
-
-        public void Update(GameTime gameTime)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
     }
 }

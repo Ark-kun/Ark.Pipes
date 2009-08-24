@@ -25,11 +25,13 @@ namespace Test.XNAWindowsGame
 
         SpriteFont someFont;
         int frameCount = 0;
-        Vector2 fpsPosition;
+        Vector2 screenCenter;
+        Rectangle screenRectangle;
         Color fpsColor = Color.BlanchedAlmond;
 
         //SimpleRandomStraitBulletFactory bulletFactory;
-        HomingBulletFactory bulletFactory;
+        //HomingBulletFactory bulletFactory;
+        RadialBulletFactory bulletFactory;
 
         List<IGameElement> gameElements = new List<IGameElement>();
 
@@ -43,8 +45,9 @@ namespace Test.XNAWindowsGame
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            someFont = Content.Load<SpriteFont>("Some Font");
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.someFont = Content.Load<SpriteFont>("Some Font");
+            this.Services.AddService(typeof(SpriteBatch), spriteBatch);
 
             //spriteTexture = Content.Load<Texture2D>("6861023");
             //Texture2D spriteTexture1 = null;
@@ -58,12 +61,18 @@ namespace Test.XNAWindowsGame
             //Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
             //bulletFactory = new SimpleRandomStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
-            bulletFactory = new HomingBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            //bulletFactory = new HomingBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            var bulletSprite = new Sprite(){texture=bulletTexture1,origin = new Vector2(bulletTexture1.Width/2, bulletTexture1.Height/2) };
+            
+            screenRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.X,graphics.GraphicsDevice.Viewport.Y,graphics.GraphicsDevice.Viewport.Width,graphics.GraphicsDevice.Viewport.Height);
+            Func<Vector2,bool> destroyer = v => !screenRectangle.Contains(new Point((int)v.X,(int)v.Y));
+            bulletFactory = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 10, 10, int.MaxValue, 1, destroyer);
+            this.Components.Add(bulletFactory);
         }
 
         protected override void Initialize()
         {
-            fpsPosition = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
+            screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
             base.Initialize();
         }
@@ -79,15 +88,15 @@ namespace Test.XNAWindowsGame
             HandleInput();
             GetInput();
 
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastBulletTime > 100)
-            {
-                for (int i = 0; i < 10; i++)
-                {
-                    gameElements.Add(bulletFactory.GenerateBullet());
-                }
-                lastBulletTime = gameTime.TotalGameTime.TotalMilliseconds;
-            }
-           
+            //if (gameTime.TotalGameTime.TotalMilliseconds - lastBulletTime > 100)
+            //{
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        gameElements.Add(bulletFactory.GenerateBullet());
+            //    }
+            //    lastBulletTime = gameTime.TotalGameTime.TotalMilliseconds;
+            //}
+
 
             foreach (var ge in gameElements)
             {
@@ -119,9 +128,9 @@ namespace Test.XNAWindowsGame
 
             //if (mouseState.LeftButton == ButtonState.Pressed)
             //{
-                spritePosition = new Vector2() { X = mouseState.X, Y = mouseState.Y };
+            spritePosition = new Vector2() { X = mouseState.X, Y = mouseState.Y };
             //}
-            bulletFactory.Target = new Vector2() { X = mouseState.X, Y = mouseState.Y };
+            //bulletFactory.Target = new Vector2() { X = mouseState.X, Y = mouseState.Y };
 
             // If any digital horizontal movement input is found, override the analog movement.
             if (keyboardState.IsKeyDown(Keys.Left) ||
@@ -156,7 +165,7 @@ namespace Test.XNAWindowsGame
 
             spriteBatch.Begin();
             //spriteBatch.Begin(SpriteBlendMode.AlphaBlend);
-            spriteBatch.DrawString(someFont, FPS.ToString(), fpsPosition, fpsColor);
+            spriteBatch.DrawString(someFont, FPS.ToString(), screenCenter, fpsColor);
             //spriteBatch.DrawString(someFont, gameTime.TotalGameTime.TotalSeconds.ToString(), fpsPosition, fpsColor);
 
             foreach (var ge in gameElements)
@@ -169,6 +178,17 @@ namespace Test.XNAWindowsGame
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+        }
+    }
+
+    static class Program
+    {
+        static void Main(string[] args)
+        {
+            using (Game game = new Game())
+            {
+                game.Run();
+            }
         }
     }
 }
