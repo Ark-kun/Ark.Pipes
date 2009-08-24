@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Test.XNAWindowsGame.SpriteTypes;
 using System.Collections.Generic;
+using Ark.XNA.Bullets;
 
 namespace Test.XNAWindowsGame.Bullets
 {
@@ -55,11 +56,19 @@ namespace Test.XNAWindowsGame.Bullets
             double totalSecondsPassed = gameTime.TotalGameTime.TotalSeconds - startTime;
             while (waveCount < waveNumber && waveCount < totalSecondsPassed * waveFrequency)
             {
-                double waveStartTime = waveCount / waveFrequency;
-                Func<double, double> movement = (time) => time < waveStartTime ? 0 : bulletSpeed * (time - waveStartTime);
+                double waveStartTime = startTime + waveCount / waveFrequency;
+                //Movements.Movement1D movement = (time) => time < waveStartTime ? 0 : bulletSpeed * (time - waveStartTime);
+                ////Func<double, double> movement = (time) => time < waveStartTime ? 0 :Math.Sqrt(100* bulletSpeed * (time - waveStartTime));
+                //Movements.Movement1D movement = Movements.ConditionalMovement(
+                //    (time) => time < waveStartTime,
+                //    Movements.StayAtStart,
+                //    Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime));
+                Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);                
                 for (int i = 0; i < bulletNumber; i++)
                 {
-                    bullets.Add(new Bullet1D(game, rayMatrices[i], bulletSprite, movement));
+                    //bullets.Add(new Bullet1D(game, rayMatrices[i], bulletSprite, movement));
+                    Matrix m = Matrix.CreateRotationZ((float)(2 * Math.PI * ((float)i / bulletNumber + (float)waveCount / 50))) * transform;
+                    bullets.Add(new Bullet1D(game, m, bulletSprite, movement));
                 }
                 waveCount++;
             }
@@ -84,10 +93,10 @@ namespace Test.XNAWindowsGame.Bullets
     {
         Matrix transform;
         Sprite bulletSprite;
-        Func<double, double> movement;
+        Movements.Movement1D movement;
         SpriteBatch spriteBatch;
 
-        public Bullet1D(Game game, Matrix transform, Sprite bulletSprite, Func<double, double> movement)
+        public Bullet1D(Game game, Matrix transform, Sprite bulletSprite, Movements.Movement1D movement)
             : base(game)
         {
             this.transform = transform;

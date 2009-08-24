@@ -86,7 +86,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bullets\RadialBulletFactory.cs" />
+    <Compile Include="Bullets\Factories\RadialBulletFactory.cs" />
+    <Compile Include="Bullets\Movements\Movements.cs" />
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
     <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
