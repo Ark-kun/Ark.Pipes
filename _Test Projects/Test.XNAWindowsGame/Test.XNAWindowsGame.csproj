@@ -86,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bullets\Factories\HeighwayDragonFactory.cs" />
     <Compile Include="Bullets\Factories\RadialBulletFactory.cs" />
     <Compile Include="Bullets\Movements\Movements.cs" />
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Bullets\StraitLineBullet.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="SharedSpriteBatch.cs" />
     <Compile Include="SpriteTypes\CoolSprite.cs" />
     <Compile Include="SpriteTypes\Sprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
@@ -100,6 +102,8 @@
     <Compile Include="Game.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\StaticSprite.cs" />
+    <Compile Include="TransformBase.cs" />
+    <Compile Include="XnaMatrixTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -9,8 +9,6 @@ namespace Test.XNAWindowsGame.Bullets
 {
     class RadialBulletFactory : DrawableGameComponent
     {
-        Game game;
-
         Sprite bulletSprite;
 
         int bulletNumber;
@@ -30,7 +28,6 @@ namespace Test.XNAWindowsGame.Bullets
         public RadialBulletFactory(Game game, Matrix transform, double startTime, Sprite bulletSprite, int bulletNumber, float bulletSpeed, int waveNumber, float waveFrequency, Func<Vector2, bool> shouldDestroyBullet)
             : base(game)
         {
-            this.game = game;
             this.bulletSprite = bulletSprite;
             this.bulletNumber = bulletNumber;
             this.bulletSpeed = bulletSpeed;
@@ -63,12 +60,12 @@ namespace Test.XNAWindowsGame.Bullets
                 //    (time) => time < waveStartTime,
                 //    Movements.StayAtStart,
                 //    Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime));
-                Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);                
+                Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);
                 for (int i = 0; i < bulletNumber; i++)
                 {
                     //bullets.Add(new Bullet1D(game, rayMatrices[i], bulletSprite, movement));
                     Matrix m = Matrix.CreateRotationZ((float)(2 * Math.PI * ((float)i / bulletNumber + (float)waveCount / 50))) * transform;
-                    bullets.Add(new Bullet1D(game, m, bulletSprite, movement));
+                    bullets.Add(new Bullet1D(Game, m, bulletSprite, movement));
                 }
                 waveCount++;
             }

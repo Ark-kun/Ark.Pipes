@@ -11,10 +11,11 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Test.XNAWindowsGame.Bullets;
+using Test.XNAWindowsGame.Bullets.Factories;
 
 namespace Test.XNAWindowsGame
 {
-    public class Game : Microsoft.Xna.Framework.Game
+    public class MyGame : Microsoft.Xna.Framework.Game
     {
         private const int TargetFrameRate = 60;
         private const int BackBufferWidth = 1280;
@@ -35,7 +36,7 @@ namespace Test.XNAWindowsGame
 
         List<IGameElement> gameElements = new List<IGameElement>();
 
-        public Game()
+        public MyGame()
         {
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
@@ -45,7 +46,8 @@ namespace Test.XNAWindowsGame
 
         protected override void LoadContent()
         {
-            this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            //this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
             this.someFont = Content.Load<SpriteFont>("Some Font");
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
 
@@ -77,8 +79,23 @@ namespace Test.XNAWindowsGame
             var mat = Matrix.CreateRotationZ(1);
             mat.Translation = new Vector3(screenCenter.X-200, screenCenter.Y+50,0);
             var bulletFactory2 = new RadialBulletFactory(this, mat, 0.5f, bulletSprite3, 20, 80, int.MaxValue, 3f, destroyer);
-            this.Components.Add(bulletFactory1);
-            this.Components.Add(bulletFactory2);
+            //this.Components.Add(bulletFactory1);
+            //this.Components.Add(bulletFactory2);
+
+            var bulletSpriteInBatch = new SpriteInBatch() { spriteBatch = (SharedSpriteBatch)spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2) };
+            var bulletSpriteInBatch2 = new SpriteInBatch() { spriteBatch = (SharedSpriteBatch)spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Black };
+            var bulletSpriteInBatch3 = new SpriteInBatch() { spriteBatch = (SharedSpriteBatch)spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Blue };
+            var bulletSpriteInBatch4 = new SpriteInBatch() { spriteBatch = (SharedSpriteBatch)spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
+            //var bulletFactoryHeighway = new HeighwayDragonBullet(this, null, new Vector2(200, 250), new Vector2(800, 250), bulletSpriteInBatch, 1);
+            var bulletFactoryHeighway1 = new HeighwayDragonBullet(this, null, new Vector2(600, 250), new Vector2(900, 250), bulletSpriteInBatch, 1);
+            var bulletFactoryHeighway2 = new HeighwayDragonBullet(this, null, new Vector2(600, 250), new Vector2(300, 250), bulletSpriteInBatch2, 1);
+            var bulletFactoryHeighway3 = new HeighwayDragonBullet(this, null, new Vector2(600, 250), new Vector2(600, -50), bulletSpriteInBatch3, 1);
+            var bulletFactoryHeighway4 = new HeighwayDragonBullet(this, null, new Vector2(600, 250), new Vector2(600, 550), bulletSpriteInBatch4, 1);
+            //this.Components.Add(bulletFactoryHeighway);
+            this.Components.Add(bulletFactoryHeighway1);
+            this.Components.Add(bulletFactoryHeighway2);
+            this.Components.Add(bulletFactoryHeighway3);
+            this.Components.Add(bulletFactoryHeighway4);
         }
 
         protected override void Initialize()
@@ -196,7 +213,7 @@ namespace Test.XNAWindowsGame
     {
         static void Main(string[] args)
         {
-            using (Game game = new Game())
+            using (Game game = new MyGame())
             {
                 game.Run();
             }
