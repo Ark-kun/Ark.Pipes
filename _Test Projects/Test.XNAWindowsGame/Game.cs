@@ -93,15 +93,22 @@ namespace Test.XNAWindowsGame {
             var bulletSpriteInBatch3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Blue };
             var bulletSpriteInBatch4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
             //var bulletFactoryHeighway = new HeighwayDragonBullet(this, null, new Vector2(200, 250), new Vector2(800, 250), bulletSpriteInBatch, 1);
-            var bulletFactoryHeighway1 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(700, 400), bulletSpriteInBatch, 1);
-            var bulletFactoryHeighway2 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(100, 400), bulletSpriteInBatch2, 1);
-            var bulletFactoryHeighway3 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 100), bulletSpriteInBatch3, 1);
-            var bulletFactoryHeighway4 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 700), bulletSpriteInBatch4, 1);
+            //var bulletFactoryHeighway1 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(700, 400), bulletSpriteInBatch, 1);
+            //var bulletFactoryHeighway2 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(100, 400), bulletSpriteInBatch2, 1);
+            //var bulletFactoryHeighway3 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 100), bulletSpriteInBatch3, 1);
+            //var bulletFactoryHeighway4 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 700), bulletSpriteInBatch4, 1);
             //this.Components.Add(bulletFactoryHeighway);
+            //this.Components.Add(bulletFactoryHeighway1);
+            //this.Components.Add(bulletFactoryHeighway2);
+            //this.Components.Add(bulletFactoryHeighway3);
+            //this.Components.Add(bulletFactoryHeighway4);
+            //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(Matrix.CreateTranslation(400, 400,0)), bulletSpriteInBatch, 1);
+            //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, Ark.XNA.Transforms.Transform<Vector2>.Identity, bulletSpriteInBatch, 1);
+            var m = Matrix.CreateScale(100);
+            m.Translation = new Vector3(400,400,0);
+            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m), bulletSpriteInBatch, 1);
             this.Components.Add(bulletFactoryHeighway1);
-            this.Components.Add(bulletFactoryHeighway2);
-            this.Components.Add(bulletFactoryHeighway3);
-            this.Components.Add(bulletFactoryHeighway4);
+
 
 
             screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
