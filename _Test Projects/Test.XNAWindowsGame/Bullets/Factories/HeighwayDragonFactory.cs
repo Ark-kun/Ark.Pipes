@@ -5,20 +5,24 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Test.XNAWindowsGame.Bullets.Factories {
-    //public class HeighwayDragonFactory : IBulletFactory2D {
-    //    List<IBullet> _bullets;
+    public class HeighwayDragonFactory : IBulletFactory2D {
+        HeighwayDragonBullet _bullet;
 
-    //    IEnumerable<IBulletFactory> IContainer<IBulletFactory>.Elements {
-    //        get {
-    //            throw new NotImplementedException();
-    //        }
-    //    }
+        IEnumerable<IBulletFactory> IContainer<IBulletFactory>.Elements {
+            get {
+                throw new NotImplementedException();
+            }
+        }
 
-    //    IEnumerable<IBullet> IContainer<IBullet>.Elements {
-    //        get {
-    //            return _bullets;
-    //        }
-    //    }
+        IEnumerable<IBullet> IContainer<IBullet>.Elements {
+            get {
+                return new IBullet[] { _bullet };
+            }
+        }
+        public ITransform<Vector2> Transform {
+            get { throw new NotImplementedException(); }
+        }
+    }
     public class HeighwayDragonBullet : DrawableGameComponent, IBullet2D, IBulletFactory2D {
         List<HeighwayDragonBullet> _bullets = null;
         HeighwayDragonBullet _parent;
@@ -41,8 +45,11 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             _bulletSprite = bulletSprite;
             _bullets = new List<HeighwayDragonBullet>();
             _lastFireTime = startFireTime;
+
+            _oldDirectionTarget = _directionTarget;
         }
 
+        Vector2 _oldDirectionTarget;
         void Fire() {
             Vector2 newPositionTarget;
             if (_bullets.Count == 0) {
@@ -52,6 +59,7 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             }
             _lastFireTime++;
             var newBullet = new HeighwayDragonBullet(Game, this, newPositionTarget, _directionTarget, _bulletSprite, _lastFireTime);
+            _oldDirectionTarget = _directionTarget;
             _directionTarget = newPositionTarget;
             _bullets.Add(newBullet);
         }
@@ -95,15 +103,16 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             base.Draw(gameTime);
             //_bulletSprite.Draw(_positionTarget, 0);
             //_bulletSprite.Draw(_positionTarget, 0, (float)((_directionTarget - _positionTarget).Length() / 10));
-            _bulletSprite.Draw((_positionTarget + _directionTarget) * 0.5f, 0, (float)((_directionTarget - _positionTarget).Length() / 20));
+            //_bulletSprite.Draw((_positionTarget + _directionTarget) * 0.5f, 0, (float)((_directionTarget - _positionTarget).Length() / 20));
+            //_bulletSprite.Draw(_positionTarget, 0, (float)(40 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
+            //var alpha = gameTime.TotalGameTime.Milliseconds / 1000.0;
+            //var alpha = gameTime.TotalGameTime.Milliseconds / 900;
+            //alpha = alpha > 1 ? 1 : alpha;
+            var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
+            _bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
             foreach (var bullet in _bullets) {
                 bullet.Draw(gameTime);
             }
         }
     }
-
-    //public ITransform<Vector2> Transform {
-    //    get { throw new NotImplementedException(); }
-    //}
-    //}
 }
