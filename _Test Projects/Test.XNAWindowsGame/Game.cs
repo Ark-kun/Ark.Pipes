@@ -40,45 +40,45 @@ namespace Test.XNAWindowsGame {
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
 
-            
+
         }
 
         protected override void LoadContent() {
 
 
-//////            //spriteTexture = Content.Load<Texture2D>("6861023");
-//////            //Texture2D spriteTexture1 = null;
-//////            //Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle5");
-//////            //Texture2D spriteTexture1 = Content.Load<Texture2D>("Circle2");
-//////            //Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle3");
-//////            //sprite = new RotatingSprite() { Sprite = spriteTexture1 };
-////////            sprite = new CoolSprite(this, "Circle2", "Circle5");
+            //////            //spriteTexture = Content.Load<Texture2D>("6861023");
+            //////            //Texture2D spriteTexture1 = null;
+            //////            //Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle5");
+            //////            //Texture2D spriteTexture1 = Content.Load<Texture2D>("Circle2");
+            //////            //Texture2D spriteTexture2 = Content.Load<Texture2D>("Circle3");
+            //////            //sprite = new RotatingSprite() { Sprite = spriteTexture1 };
+            ////////            sprite = new CoolSprite(this, "Circle2", "Circle5");
 
-//////            //Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
+            //////            //Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
             ///////Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
-//////            Texture2D bulletTexture3 = Content.Load<Texture2D>("Bullet 3");
-//////            //bulletFactory = new SimpleRandomStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
-//////            //bulletFactory = new HomingBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
-//////            var bulletSprite = new Sprite() { texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2) };
-//////            var bulletSprite2 = new Sprite() { texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
-//////            var bulletSprite3 = new Sprite() { texture = bulletTexture3, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
+            //////            Texture2D bulletTexture3 = Content.Load<Texture2D>("Bullet 3");
+            //////            //bulletFactory = new SimpleRandomStraitBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            //////            //bulletFactory = new HomingBulletFactory(bulletTexture1, new Rectangle(0, 0, graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight), 1.0001f);
+            //////            var bulletSprite = new Sprite() { texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2) };
+            //////            var bulletSprite2 = new Sprite() { texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
+            //////            var bulletSprite3 = new Sprite() { texture = bulletTexture3, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
 
-//////            screenRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.X, graphics.GraphicsDevice.Viewport.Y, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
-//////            Func<Vector2, bool> destroyer = v => !screenRectangle.Contains(new Point((int)v.X, (int)v.Y));
-//////            //bulletFactory = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 10, 10, int.MaxValue, 1, destroyer);
-//////            //bulletFactory = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 20, 50, int.MaxValue, 2f, destroyer);
-//////            var bulletFactory1 = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 20, 50, int.MaxValue, 2f, destroyer);
-//////            //var bulletFactory2 = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X-200, screenCenter.Y+50, 0), 0.5f, bulletSprite2, 20, 50, int.MaxValue, 3f, destroyer);
-//////            //var mat = Matrix.CreateScale(1,4,1);
-//////            var mat = Matrix.CreateRotationZ(1);
-//////            mat.Translation = new Vector3(screenCenter.X - 200, screenCenter.Y + 50, 0);
-//////            var bulletFactory2 = new RadialBulletFactory(this, mat, 0.5f, bulletSprite3, 20, 80, int.MaxValue, 3f, destroyer);
-//////            //this.Components.Add(bulletFactory1);
-//////            //this.Components.Add(bulletFactory2);
+            //////            screenRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.X, graphics.GraphicsDevice.Viewport.Y, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            //////            Func<Vector2, bool> destroyer = v => !screenRectangle.Contains(new Point((int)v.X, (int)v.Y));
+            //////            //bulletFactory = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 10, 10, int.MaxValue, 1, destroyer);
+            //////            //bulletFactory = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 20, 50, int.MaxValue, 2f, destroyer);
+            //////            var bulletFactory1 = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0), 0, bulletSprite, 20, 50, int.MaxValue, 2f, destroyer);
+            //////            //var bulletFactory2 = new RadialBulletFactory(this, Matrix.CreateTranslation(screenCenter.X-200, screenCenter.Y+50, 0), 0.5f, bulletSprite2, 20, 50, int.MaxValue, 3f, destroyer);
+            //////            //var mat = Matrix.CreateScale(1,4,1);
+            //////            var mat = Matrix.CreateRotationZ(1);
+            //////            mat.Translation = new Vector3(screenCenter.X - 200, screenCenter.Y + 50, 0);
+            //////            var bulletFactory2 = new RadialBulletFactory(this, mat, 0.5f, bulletSprite3, 20, 80, int.MaxValue, 3f, destroyer);
+            //////            //this.Components.Add(bulletFactory1);
+            //////            //this.Components.Add(bulletFactory2);
 
 
 
-            
+
         }
 
         protected override void Initialize() {
@@ -86,7 +86,7 @@ namespace Test.XNAWindowsGame {
             this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
 
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
-            
+
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
             var bulletSpriteInBatch = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2) };
             var bulletSpriteInBatch2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Black };
@@ -104,9 +104,11 @@ namespace Test.XNAWindowsGame {
             //this.Components.Add(bulletFactoryHeighway4);
             //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(Matrix.CreateTranslation(400, 400,0)), bulletSpriteInBatch, 1);
             //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, Ark.XNA.Transforms.Transform<Vector2>.Identity, bulletSpriteInBatch, 1);
-            var m = Matrix.CreateScale(100);
-            m.Translation = new Vector3(400,400,0);
-            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m), bulletSpriteInBatch, 1);
+
+            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = 1.0f / 20 };
+            var m = Matrix.CreateScale(400);
+            m.Translation = new Vector3(400, 400, 0);
+            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m), bulletSpriteInBatchNew1, 1);
             this.Components.Add(bulletFactoryHeighway1);
 
 

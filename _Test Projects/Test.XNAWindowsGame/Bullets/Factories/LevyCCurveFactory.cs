@@ -6,19 +6,19 @@ using Microsoft.Xna.Framework.Graphics;
 using Ark.XNA.Transforms;
 
 namespace Test.XNAWindowsGame.Bullets.Factories {
-    public class HeighwayDragonFactory : HeighwayDragonBullet {
+    public class LevyCCurveFactory : LevyCCurveBullet {
         ITransform<Vector2> _parentTransform;
-        public HeighwayDragonFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime)
+        public LevyCCurveFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime)
             : base(game, null, transform, bulletSprite, startFireTime) {
 
             _parentTransform = transform;
         }
     }
-    public class HeighwayDragonBullet : DrawableGameComponent, IBullet2D, IBulletFactory2D {
-        List<HeighwayDragonBullet> _bullets = null;
+    public class LevyCCurveBullet : DrawableGameComponent, IBullet2D, IBulletFactory2D {
+        List<LevyCCurveBullet> _bullets = null;
         IBulletFactory2D _parent;
         ITransform<Vector2> _transform;
-        Matrix _directionMatrix = Matrix.Identity;
+        Matrix _childMatrix = Matrix.CreateTranslation(1, 0, 0);
 
         SpriteInBatch _bulletSprite;
         Double _lastFireTime;
@@ -26,27 +26,23 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
         static Matrix RotationPlus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(Math.PI / 4));
         static Matrix RotationMinus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(-Math.PI / 4));
 
-        public HeighwayDragonBullet(Game game, IBulletFactory2D parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime)
+        public LevyCCurveBullet(Game game, IBulletFactory2D parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime)
             : base(game) {
             _transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
             _parent = parent;
             _bulletSprite = bulletSprite;
-            _bullets = new List<HeighwayDragonBullet>();
+            _bullets = new List<LevyCCurveBullet>();
             _lastFireTime = startFireTime;
         }
 
         void Fire() {
-            Matrix childMatrix;
-            if (_bullets.Count == 0 && !(this is HeighwayDragonFactory)) {
-                _directionMatrix *= RotationPlus;
-                childMatrix = _directionMatrix * Matrix.CreateRotationZ((float)(-Math.PI / 2));
+            if (_bullets.Count == 0) {
+                _childMatrix *= RotationPlus;
             } else {
-                _directionMatrix *= RotationMinus;
-                childMatrix = _directionMatrix * Matrix.CreateRotationZ((float)(Math.PI / 2));
+                _childMatrix *= RotationMinus;
             }
-            childMatrix.Translation = Vector3.Transform(new Vector3(1, 0, 0), _directionMatrix);
             _lastFireTime++;
-            var newBullet = new HeighwayDragonBullet(Game, this, new XnaMatrixTransform(childMatrix), _bulletSprite, _lastFireTime);
+            var newBullet = new LevyCCurveBullet(Game, this, new XnaMatrixTransform(_childMatrix), _bulletSprite, _lastFireTime);
             _bullets.Add(newBullet);
         }
 
@@ -97,10 +93,9 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             //var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
             //_bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
 
-            var position = _transform.Transform(new Vector2(0, 0));
-            var position1 = _transform.Transform(new Vector2(1, 0));
-
-            _bulletSprite.Draw(position, 0, _bulletSprite.scale * (position1 - position).Length());
+            var position = new Vector2(0, 0);
+            position = _transform.Transform(position);
+            _bulletSprite.Draw(position, 0);
             foreach (var bullet in _bullets) {
                 bullet.Draw(gameTime);
             }
