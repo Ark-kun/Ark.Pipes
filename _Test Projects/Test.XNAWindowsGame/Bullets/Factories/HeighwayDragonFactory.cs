@@ -97,8 +97,8 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             //var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
             //_bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
 
-            var position = _transform.Transform(new Vector2(0, 0));
-            var position1 = _transform.Transform(new Vector2(1, 0));
+            var position = _transform.Transform(Vector2.Transform(new Vector2(0, 0),_directionMatrix));
+            var position1 = _transform.Transform(Vector2.Transform(new Vector2(1, 0), _directionMatrix));
 
             _bulletSprite.Draw(position, 0, _bulletSprite.scale * (position1 - position).Length());
             foreach (var bullet in _bullets) {
