@@ -26,6 +26,7 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
         static Matrix RotationPlus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(Math.PI / 4));
         static Matrix RotationMinus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(-Math.PI / 4));
 
+        Vector2 _oldPosition;
         public HeighwayDragonBullet(Game game, IBulletFactory2D parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime)
             : base(game) {
             _transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
@@ -33,10 +34,19 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             _bulletSprite = bulletSprite;
             _bullets = new List<HeighwayDragonBullet>();
             _lastFireTime = startFireTime;
+
+            if(parent == null ){
+                _oldPosition = new Vector2(1, 0);
+            } else if (((IContainer<IBullet>)parent).Elements.Count() > 0 || parent is HeighwayDragonFactory) {
+                _oldPosition = new Vector2(0.5f, 0.5f);
+            } else {
+                _oldPosition = new Vector2(0.5f, -0.5f);
+            }
         }
 
         void Fire() {
             Matrix childMatrix;
+            _oldPosition = Vector2.Transform(new Vector2(0.5f, 0), _directionMatrix);
             if (_bullets.Count == 0 && !(this is HeighwayDragonFactory)) {
                 _directionMatrix *= RotationPlus;
                 childMatrix = _directionMatrix * Matrix.CreateRotationZ((float)(-Math.PI / 2));
@@ -87,20 +97,14 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
 
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
-            //_bulletSprite.Draw(_positionTarget, 0);
-            //_bulletSprite.Draw(_positionTarget, 0, (float)((_directionTarget - _positionTarget).Length() / 10));
-            //_bulletSprite.Draw((_positionTarget + _directionTarget) * 0.5f, 0, (float)((_directionTarget - _positionTarget).Length() / 20));
-            //_bulletSprite.Draw(_positionTarget, 0, (float)(40 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
-            //var alpha = gameTime.TotalGameTime.Milliseconds / 1000.0;
-            //var alpha = gameTime.TotalGameTime.Milliseconds / 900;
-            //alpha = alpha > 1 ? 1 : alpha;
-            //var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
-            //_bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
 
-            var position = _transform.Transform(Vector2.Transform(new Vector2(0, 0),_directionMatrix));
-            var position1 = _transform.Transform(Vector2.Transform(new Vector2(1, 0), _directionMatrix));
+            var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
 
-            _bulletSprite.Draw(position, 0, _bulletSprite.scale * (position1 - position).Length());
+            //alpha = 0.5 - 0.5 * Math.Cos(alpha * Math.PI);
+
+            var positionAlpha = (float)(1 - alpha) * _oldPosition + (float)alpha * Vector2.Transform(new Vector2(0.5f, 0), _directionMatrix);
+
+            _bulletSprite.Draw(_transform.Transform(positionAlpha), 0, _bulletSprite.scale * (float)(Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
             foreach (var bullet in _bullets) {
                 bullet.Draw(gameTime);
             }

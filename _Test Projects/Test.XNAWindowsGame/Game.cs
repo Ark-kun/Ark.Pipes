@@ -18,13 +18,12 @@ namespace Test.XNAWindowsGame {
         private const int TargetFrameRate = 60;
         //private const int BackBufferWidth = 1280;
         //private const int BackBufferHeight = 720;
-        private const int BackBufferWidth = 800;
-        private const int BackBufferHeight = 800;
+        private const int BackBufferWidth = 1000;
+        private const int BackBufferHeight = 1000;
 
         GraphicsDeviceManager graphics;
         SharedSpriteBatch spriteBatch;
 
-        SpriteFont someFont;
         Vector2 screenCenter;
         Rectangle screenRectangle;
 
@@ -82,38 +81,36 @@ namespace Test.XNAWindowsGame {
         }
 
         protected override void Initialize() {
-            //this.spriteBatch = new SpriteBatch(GraphicsDevice);
-            this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
+            screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);            
 
+            this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
 
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
-            var bulletSpriteInBatch = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2) };
-            var bulletSpriteInBatch2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Black };
-            var bulletSpriteInBatch3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Blue };
-            var bulletSpriteInBatch4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), tint = Color.Red };
-            //var bulletFactoryHeighway = new HeighwayDragonBullet(this, null, new Vector2(200, 250), new Vector2(800, 250), bulletSpriteInBatch, 1);
-            //var bulletFactoryHeighway1 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(700, 400), bulletSpriteInBatch, 1);
-            //var bulletFactoryHeighway2 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(100, 400), bulletSpriteInBatch2, 1);
-            //var bulletFactoryHeighway3 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 100), bulletSpriteInBatch3, 1);
-            //var bulletFactoryHeighway4 = new HeighwayDragonBullet(this, null, new Vector2(400, 400), new Vector2(400, 700), bulletSpriteInBatch4, 1);
-            //this.Components.Add(bulletFactoryHeighway);
-            //this.Components.Add(bulletFactoryHeighway1);
-            //this.Components.Add(bulletFactoryHeighway2);
-            //this.Components.Add(bulletFactoryHeighway3);
-            //this.Components.Add(bulletFactoryHeighway4);
-            //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(Matrix.CreateTranslation(400, 400,0)), bulletSpriteInBatch, 1);
-            //var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, Ark.XNA.Transforms.Transform<Vector2>.Identity, bulletSpriteInBatch, 1);
+            float scale = 400;
 
-            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = 1.0f / 20 };
-            var m = Matrix.CreateScale(400);
-            m.Translation = new Vector3(400, 400, 0);
-            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m), bulletSpriteInBatchNew1, 1);
+            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.White };
+            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Black };
+            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Blue };
+            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Red };
+            
+            var m1 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(0 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+            var m2 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(1 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+            var m3 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(2 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+            var m4 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(3 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+
+
+            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m1), bulletSpriteInBatchNew1, 1);
+            var bulletFactoryHeighway2 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m2), bulletSpriteInBatchNew2, 1);
+            var bulletFactoryHeighway3 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m3), bulletSpriteInBatchNew3, 1);
+            var bulletFactoryHeighway4 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m4), bulletSpriteInBatchNew4, 1);
+
             this.Components.Add(bulletFactoryHeighway1);
+            this.Components.Add(bulletFactoryHeighway2);
+            this.Components.Add(bulletFactoryHeighway3);
+            this.Components.Add(bulletFactoryHeighway4);
 
 
-
-            screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
             //Components.Add(new FpsCounter(this, spriteBatch, screenCenter));
 
             //var cursor = new CoolSprite(this, "Circle2", "Circle5");
