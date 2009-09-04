@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 namespace Ark.XNA.Transforms {
     public class FunctionTransform<T> : ITransform<T> {
         Func<T, T> _transform;
@@ -9,6 +10,25 @@ namespace Ark.XNA.Transforms {
         public T Transform(T value) {
             return _transform(value);
         }
+    }
+
+    public class UpdateableFunctionTransform<T> : GameComponent, ITransform<T> {
+        Func<double, Func<T, T>> _transformFactory = null;
+        Func<T, T> _transform = null;
+
+        public UpdateableFunctionTransform(Game game, Func<double, Func<T, T>> transformFactory)
+            : base(game) {
+            _transformFactory = transformFactory;
+        }
+
+        public T Transform(T value) {
+            return _transform(value);
+        }
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+            _transform = _transformFactory(gameTime.TotalGameTime.TotalSeconds);
+        }
+
     }
 
     public class IdentityTransform<T> : ITransform<T> {

@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
 using Test.XNAWindowsGame.Bullets;
 using Test.XNAWindowsGame.Bullets.Factories;
+using Ark.XNA.Transforms;
 
 namespace Test.XNAWindowsGame {
     public class MyGame : Microsoft.Xna.Framework.Game {
@@ -81,7 +82,7 @@ namespace Test.XNAWindowsGame {
         }
 
         protected override void Initialize() {
-            screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);            
+            screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
             this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
@@ -89,21 +90,33 @@ namespace Test.XNAWindowsGame {
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
             float scale = 400;
 
-            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.White };
-            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Black };
-            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Blue };
-            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 10) * scale, tint = Color.Red };
-            
-            var m1 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(0 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
-            var m2 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(1 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
-            var m3 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(2 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
-            var m4 = Matrix.CreateScale(scale) * Matrix.CreateRotationZ((float)(3 * 0.5 * Math.PI)) * Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.White };
+            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Black };
+            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Blue };
+            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Red };
+
+            var scaleMatrix = Matrix.CreateScale(scale);
+            var translationMatrix = Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
+
+            //var rotator = new UpdateableFunctionTransform<Vector2>(this, (t) => (v) => Vector2.Transform(Vector2.Transform(v, Matrix.CreateScale((float)(Math.Sqrt(2) * t))), Matrix.CreateRotationZ((float)(Math.PI / 4 * t))));
+            //var antiScaler = new UpdateableFunctionTransform<Vector2>(this, (t) => (v) => Vector2.Transform(Vector2.Transform(Vector2.Transform(v, Matrix.CreateScale((float)(Math.Pow(2.0, (t < 5 ? 0 : t - 5) / 2)))), Matrix.Identity), translationMatrix));
+            var rotator = new UpdateableFunctionTransform<Vector2>(this, (t) => (v) => Vector2.Transform(Vector2.Transform(Vector2.Transform(v, Matrix.CreateScale((float)(Math.Pow(2.0, (t < 6 ? 0 : t - 6) / 2)))), Matrix.CreateRotationZ((float)(Math.PI / 4 * t))), translationMatrix));
+            //var identity = new UpdateableFunctionTransform<Vector2>(this, (t) => (v) => Vector2.Transform(Vector2.Transform(v, Matrix.Identity), translationMatrix));
+
+            Components.Add(rotator);
 
 
-            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m1), bulletSpriteInBatchNew1, 1);
-            var bulletFactoryHeighway2 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m2), bulletSpriteInBatchNew2, 1);
-            var bulletFactoryHeighway3 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m3), bulletSpriteInBatchNew3, 1);
-            var bulletFactoryHeighway4 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m4), bulletSpriteInBatchNew4, 1);
+            var m1 = scaleMatrix * Matrix.CreateRotationZ((float)(0 * 0.5 * Math.PI));
+            var m2 = scaleMatrix * Matrix.CreateRotationZ((float)(1 * 0.5 * Math.PI));
+            var m3 = scaleMatrix * Matrix.CreateRotationZ((float)(2 * 0.5 * Math.PI));
+            var m4 = scaleMatrix * Matrix.CreateRotationZ((float)(3 * 0.5 * Math.PI));
+
+            Func<Vector2, bool> killer = (v) => (v - screenCenter).Length() > screenCenter.Length() + 20;
+
+            var bulletFactoryHeighway1 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m1).Append(rotator), bulletSpriteInBatchNew1, 1, killer);
+            var bulletFactoryHeighway2 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m2).Append(rotator), bulletSpriteInBatchNew2, 1, killer);
+            var bulletFactoryHeighway3 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m3).Append(rotator), bulletSpriteInBatchNew3, 1, killer);
+            var bulletFactoryHeighway4 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m4).Append(rotator), bulletSpriteInBatchNew4, 1, killer);
 
             this.Components.Add(bulletFactoryHeighway1);
             this.Components.Add(bulletFactoryHeighway2);

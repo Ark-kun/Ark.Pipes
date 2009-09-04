@@ -10,6 +10,14 @@ public interface IGameElement : IUpdatable {
     void Draw(GameTime gameTime, SpriteBatch spriteBatch);
 }
 
+public interface IHasPosition {
+    Vector2 Position { get;}
+}
+
+public interface IHasPosition<T> {
+    Vector2 Position { get; }
+}
+
 public interface IHasChangeablePosition {
     Vector2 Position { get; set; }
 }
@@ -25,9 +33,12 @@ public interface IContainer<TElement> {
 }
 
 public interface IBullet : IDrawable, IUpdateable { }
-public interface IBullet2D : IBullet, IHasParent<IBulletFactory2D> { }
+public interface IBullet2D : IBullet, IHasParent<IBulletFactory2D>, IHasPosition { }
 public interface IBulletFactory : IContainer<IBulletFactory>, IContainer<IBullet> { }
 public interface IBulletFactory2D : IBulletFactory, IHasTransform<Vector2> { };
+
+public interface IBullet<T> : IDrawable, IUpdateable, IHasPosition<T>, IHasParent<IBulletFactory<T>> { }
+public interface IBulletFactory<T> : IUpdateable, IContainer<IBulletFactory<T>>, IContainer<IBullet<T>>, IHasTransform<T> { }
 
 public interface ITransform<T> {
     T Transform(T value);

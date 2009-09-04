@@ -80,7 +80,7 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
                 bullet.Update(gameTime);
             }
         }
-
+        Vector2 position;
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
             //_bulletSprite.Draw(_positionTarget, 0);
@@ -93,12 +93,19 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             //var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
             //_bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
 
-            var position = new Vector2(0, 0);
+            position = new Vector2(0, 0);
             position = _transform.Transform(position);
             _bulletSprite.Draw(position, 0);
             foreach (var bullet in _bullets) {
                 bullet.Draw(gameTime);
             }
         }
+
+        public Vector2 Position {
+            get {
+                return position;
+            }
+        }
+
     }
 }
