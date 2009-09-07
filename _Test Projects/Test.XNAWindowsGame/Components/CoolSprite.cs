@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Test.XNAWindowsGame {
+namespace Ark.XNA.Components {
     public class CoolSprite : DrawableGameComponent, IHasChangeablePosition {
         double _angle;
         Game _game;

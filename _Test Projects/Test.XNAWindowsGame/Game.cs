@@ -14,8 +14,10 @@ using Ark.XNA.Bullets;
 using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
 using Ark.XNA.Sprites;
+using Ark.XNA;
+using Ark.XNA.Components;
 
-namespace Test.XNAWindowsGame {
+namespace Ark.XNA {
     public class MyGame : Microsoft.Xna.Framework.Game {
         private const int TargetFrameRate = 60;
         //private const int BackBufferWidth = 1280;
@@ -29,19 +31,11 @@ namespace Test.XNAWindowsGame {
         Vector2 screenCenter;
         Rectangle screenRectangle;
 
-        //SimpleRandomStraitBulletFactory bulletFactory;
-        //HomingBulletFactory bulletFactory;
-        //RadialBulletFactory bulletFactory;
-
-        List<IGameElement> gameElements = new List<IGameElement>();
-
         public MyGame() {
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
             graphics.PreferredBackBufferHeight = BackBufferHeight;
-
-
         }
 
         protected override void LoadContent() {

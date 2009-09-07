@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Ark.XNA.Transforms;
-using Ark.XNA.Bullets;
+using System.Linq;
 using Ark.XNA.Sprites;
+using Ark.XNA.Transforms;
+using Microsoft.Xna.Framework;
 
 namespace Ark.XNA.Bullets.Factories {
     public class HeighwayDragonFactory : HeighwayDragonBullet {
@@ -13,6 +11,7 @@ namespace Ark.XNA.Bullets.Factories {
             : base(game, null, transform, bulletSprite, startFireTime, shouldDestroyBullet) {
         }
     }
+
     public class HeighwayDragonBullet : BulletFactoryBulletBase<Vector2> {
         Matrix _directionMatrix = Matrix.Identity;
         SpriteInBatch _bulletSprite;

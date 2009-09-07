@@ -104,13 +104,13 @@
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
     <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
-    <Compile Include="KeyboardControlledObject.cs" />
+    <Compile Include="Components\KeyboardControlledObject.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="FpsCounter.cs" />
+    <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="MouseControlledObject.cs" />
+    <Compile Include="Components\MouseControlledObject.cs" />
     <Compile Include="SharedSpriteBatch.cs" />
-    <Compile Include="SpriteTypes\CoolSprite.cs" />
+    <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="SpriteTypes\Sprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,11 +1,8 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Test.XNAWindowsGame.SpriteTypes;
 using System.Collections.Generic;
-using Ark.XNA.Bullets;
-using Ark.XNA.Transforms;
 using Ark.XNA.Sprites;
+using Ark.XNA.Transforms;
+using Microsoft.Xna.Framework;
 
 namespace Ark.XNA.Bullets.Factories {
     public class RadialBulletFactory : DrawableGameComponent {
@@ -56,10 +53,10 @@ namespace Ark.XNA.Bullets.Factories {
 
                 //Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);
                 for (int i = 0; i < bulletNumber; i++) {
-                Movements.Movement1D movement = Movements.ConditionalMovement(
-                    (time) => time < waveStartTime - (float)i / bulletNumber / waveFrequency,
-                    Movements.StayAtStart,
-                    Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime - (float)i / bulletNumber / waveFrequency));        
+                    Movements.Movement1D movement = Movements.ConditionalMovement(
+                        (time) => time < waveStartTime - (float)i / bulletNumber / waveFrequency,
+                        Movements.StayAtStart,
+                        Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime - (float)i / bulletNumber / waveFrequency));
                     //bullets.Add(new Bullet1D(game, rayMatrices[i], bulletSprite, movement));
                     var m = Matrix.CreateRotationZ((float)(2 * Math.PI * ((float)i / bulletNumber + (float)waveCount / 50)));
                     //var t = new XnaMatrixTransform(m).Append(_transform);

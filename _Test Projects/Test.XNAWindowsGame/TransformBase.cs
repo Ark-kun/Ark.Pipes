@@ -1,8 +1,10 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+
 namespace Ark.XNA.Transforms {
     public class FunctionTransform<T> : ITransform<T> {
         Func<T, T> _transform;
+
         public FunctionTransform(Func<T, T> transform) {
             _transform = transform;
         }

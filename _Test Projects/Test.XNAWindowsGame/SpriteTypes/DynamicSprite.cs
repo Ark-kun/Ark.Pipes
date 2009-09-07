@@ -1,20 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Test.XNAWindowsGame
-{
-    public class DynamicSprite : IGameElement
-    {
-        public void Update(GameTime gameTime)
-        {
-        }   
+namespace Ark.XNA.Sprites {
+    public class DynamicSprite : IGameElement {
+        public void Update(GameTime gameTime) {
+        }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch)
-        {
-            if (Texture != null)
-            {
+        public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+            if (Texture != null) {
                 spriteBatch.Draw(Texture, Position, null, Color.White, Angle, Origin, 1, SpriteEffects.None, 0);
-                
             }
 
         }

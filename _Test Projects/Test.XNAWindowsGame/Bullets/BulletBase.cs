@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using Ark.XNA;
-using Ark.XNA.Transforms;
 using Microsoft.Xna.Framework;
 
 namespace Ark.XNA.Bullets {
