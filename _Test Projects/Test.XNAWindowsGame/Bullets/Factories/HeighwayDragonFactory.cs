@@ -4,22 +4,17 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.XNA.Transforms;
+using Ark.XNA.Bullets;
+using Ark.XNA.Sprites;
 
-namespace Test.XNAWindowsGame.Bullets.Factories {
+namespace Ark.XNA.Bullets.Factories {
     public class HeighwayDragonFactory : HeighwayDragonBullet {
-        ITransform<Vector2> _parentTransform;
         public HeighwayDragonFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
             : base(game, null, transform, bulletSprite, startFireTime, shouldDestroyBullet) {
-
-            _parentTransform = transform;
         }
     }
-    public class HeighwayDragonBullet : DrawableGameComponent, IBulletFactory<Vector2>, IBullet<Vector2> {
-        List<IBullet<Vector2>> _bullets = null;
-        IBulletFactory<Vector2> _parent;
-        ITransform<Vector2> _transform;
+    public class HeighwayDragonBullet : BulletFactoryBulletBase<Vector2> {
         Matrix _directionMatrix = Matrix.Identity;
-
         SpriteInBatch _bulletSprite;
         Double _lastFireTime;
 
@@ -30,17 +25,14 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
 
         Vector2 _oldPosition;
         public HeighwayDragonBullet(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
-            : base(game) {
-            _transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
-            _parent = parent;
+            : base(game, parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform), parent) {
             _bulletSprite = bulletSprite;
-            _bullets = new List<IBullet<Vector2>>();
             _lastFireTime = startFireTime;
             _shouldDestroyBullet = shouldDestroyBullet;
 
             if (parent == null) {
                 _oldPosition = new Vector2(1, 0);
-            } else if (((IContainer<IBullet<Vector2>>)parent).Elements.Count() > 0 || parent is HeighwayDragonFactory) {
+            } else if (parent is HeighwayDragonFactory || ((HeighwayDragonBullet)parent).BulletFactories.Any()) {
                 _oldPosition = new Vector2(0.5f, 0.5f);
             } else {
                 _oldPosition = new Vector2(0.5f, -0.5f);
@@ -50,17 +42,17 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
         void Fire() {
             Matrix childMatrix;
             _oldPosition = Vector2.Transform(new Vector2(0.5f, 0), _directionMatrix);
-            if (_bullets.Count == 0 && !(this is HeighwayDragonFactory)) {
+            if (!Elements.Any() && !(this is HeighwayDragonFactory)) {
                 _directionMatrix *= RotationPlus;
                 childMatrix = _directionMatrix * Matrix.CreateRotationZ((float)(-Math.PI / 2));
             } else {
                 _directionMatrix *= RotationMinus;
                 childMatrix = _directionMatrix * Matrix.CreateRotationZ((float)(Math.PI / 2));
             }
-            childMatrix.Translation = Vector3.Transform(new Vector3(1, 0, 0), _directionMatrix);
+            childMatrix.Translation = Vector3.Transform(Vector3.UnitX, _directionMatrix);
             _lastFireTime++;
             var newBullet = new HeighwayDragonBullet(Game, this, new XnaMatrixTransform(childMatrix), _bulletSprite, _lastFireTime, _shouldDestroyBullet);
-            _bullets.Add(newBullet);
+            BulletFactories.Add(newBullet);
         }
 
         public override void Update(GameTime gameTime) {
@@ -68,20 +60,19 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
             if (gameTime.TotalGameTime.TotalSeconds - _lastFireTime > 1) {
                 Fire();
             }
-            var bulletsToDestroy = new List<IBullet<Vector2>>();
-            foreach (var bullet in _bullets) {
+            var bulletsToDestroy = new List<IBulletFactoryBullet<Vector2>>();
+            foreach (var bullet in BulletFactories) {
                 bullet.Update(gameTime);
                 if (_shouldDestroyBullet(bullet.Position)) {
                     bulletsToDestroy.Add(bullet);
                 }
             }
-            foreach (var bullet in bulletsToDestroy) {
-                _bullets.Remove(bullet);
-                _bullets.AddRange(((IContainer<IBullet<Vector2>>)bullet).Elements);
+            foreach (HeighwayDragonBullet bullet in bulletsToDestroy) {
+                BulletFactories.Remove(bullet);
+                BulletFactories.AddRange(bullet.BulletFactories);
             }
         }
 
-        Vector2 position;
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
 
@@ -91,45 +82,15 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
 
             var positionAlpha = (float)(1 - alpha) * _oldPosition + (float)alpha * Vector2.Transform(new Vector2(0.5f, 0), _directionMatrix);
 
-            var scale = (_transform.Transform(Vector2.Transform(new Vector2(1, 0), _directionMatrix)) - _transform.Transform(Vector2.Transform(new Vector2(0, 0), _directionMatrix))).Length();
+            var scale = (Transform.Transform(Vector2.Transform(Vector2.UnitX, _directionMatrix)) - Transform.Transform(Vector2.Transform(Vector2.Zero, _directionMatrix))).Length();
 
-            position = _transform.Transform(positionAlpha);
+            Position = Transform.Transform(positionAlpha);
 
-            _bulletSprite.Draw(position, 0, _bulletSprite.scale * scale * (float)(Math.Pow(2, -alpha / 2)));
-            foreach (var bullet in _bullets) {
+            _bulletSprite.Draw(Position, 0, _bulletSprite.scale * scale * (float)(Math.Pow(2, -alpha / 2)));
+            foreach (var bullet in BulletFactories) {
                 bullet.Draw(gameTime);
             }
 
-        }
-
-        public Vector2 Position {
-            get {
-                return position;
-            }
-        }
-
-        public IBulletFactory<Vector2> Parent {
-            get {
-                return _parent;
-            }
-        }
-
-        public ITransform<Vector2> Transform {
-            get {
-                return _transform;
-            }
-        }
-
-        IEnumerable<IBulletFactory<Vector2>> IContainer<IBulletFactory<Vector2>>.Elements {
-            get {
-                return _bullets.Cast<IBulletFactory<Vector2>>();
-            }
-        }
- 
-        IEnumerable<IBullet<Vector2>> IContainer<IBullet<Vector2>>.Elements {
-            get {
-                return _bullets.Cast<IBullet<Vector2>>();
-            }
         }
     }
 }

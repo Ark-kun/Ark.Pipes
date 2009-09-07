@@ -4,12 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Test.XNAWindowsGame.SpriteTypes;
 using System.Collections.Generic;
 using Ark.XNA.Bullets;
+using Ark.XNA.Transforms;
+using Ark.XNA.Sprites;
 
-namespace Test.XNAWindowsGame.Bullets
-{
-    class RadialBulletFactory : DrawableGameComponent
-    {
-        Sprite bulletSprite;
+namespace Ark.XNA.Bullets.Factories {
+    public class RadialBulletFactory : DrawableGameComponent {
+        SpriteInBatch bulletSprite;
 
         int bulletNumber;
         float bulletSpeed;
@@ -17,42 +17,35 @@ namespace Test.XNAWindowsGame.Bullets
         int waveNumber;
         double startTime;
 
-        Matrix transform;
+        ITransform<Vector2> _transform;
         Func<Vector2, bool> shouldDestroyBullet;
-        SpriteBatch spriteBatch;
 
         List<Bullet1D> bullets = new List<Bullet1D>();
-        Matrix[] rayMatrices;
+        ITransform<Vector2>[] rayMatrices;
         int waveCount;
 
-        public RadialBulletFactory(Game game, Matrix transform, double startTime, Sprite bulletSprite, int bulletNumber, float bulletSpeed, int waveNumber, float waveFrequency, Func<Vector2, bool> shouldDestroyBullet)
-            : base(game)
-        {
+        public RadialBulletFactory(Game game, ITransform<Vector2> transform, double startTime, SpriteInBatch bulletSprite, int bulletNumber, float bulletSpeed, int waveNumber, float waveFrequency, Func<Vector2, bool> shouldDestroyBullet)
+            : base(game) {
             this.bulletSprite = bulletSprite;
             this.bulletNumber = bulletNumber;
             this.bulletSpeed = bulletSpeed;
             this.waveNumber = waveNumber;
             this.waveFrequency = waveFrequency;
-            this.transform = transform;
+            this._transform = transform;
             this.startTime = startTime;
             this.shouldDestroyBullet = shouldDestroyBullet;
 
-            this.spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-
-            rayMatrices = new Matrix[bulletNumber];
-            for (int i = 0; i < bulletNumber; i++)
-            {
-                rayMatrices[i] = Matrix.CreateRotationZ((float)(2 * Math.PI * i / bulletNumber)) * transform;
+            rayMatrices = new ITransform<Vector2>[bulletNumber];
+            for (int i = 0; i < bulletNumber; i++) {
+                rayMatrices[i] = new XnaMatrixTransform(Matrix.CreateRotationZ((float)(2 * Math.PI * i / bulletNumber))).Append(_transform);
             }
         }
 
-        public override void Update(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
             base.Update(gameTime);
 
             double totalSecondsPassed = gameTime.TotalGameTime.TotalSeconds - startTime;
-            while (waveCount < waveNumber && waveCount < totalSecondsPassed * waveFrequency)
-            {
+            while (waveCount < waveNumber && waveCount < totalSecondsPassed * waveFrequency) {
                 double waveStartTime = startTime + waveCount / waveFrequency;
                 //Movements.Movement1D movement = (time) => time < waveStartTime ? 0 : bulletSpeed * (time - waveStartTime);
                 ////Func<double, double> movement = (time) => time < waveStartTime ? 0 :Math.Sqrt(100* bulletSpeed * (time - waveStartTime));
@@ -60,65 +53,64 @@ namespace Test.XNAWindowsGame.Bullets
                 //    (time) => time < waveStartTime,
                 //    Movements.StayAtStart,
                 //    Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime));
-                Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);
-                for (int i = 0; i < bulletNumber; i++)
-                {
+
+                //Movements.Movement1D movement = (time) => 200 * Math.Sin(time - waveStartTime);
+                for (int i = 0; i < bulletNumber; i++) {
+                Movements.Movement1D movement = Movements.ConditionalMovement(
+                    (time) => time < waveStartTime - (float)i / bulletNumber / waveFrequency,
+                    Movements.StayAtStart,
+                    Movements.MoveAtConstantSpeed(bulletSpeed).TranslateTime(waveStartTime - (float)i / bulletNumber / waveFrequency));        
                     //bullets.Add(new Bullet1D(game, rayMatrices[i], bulletSprite, movement));
-                    Matrix m = Matrix.CreateRotationZ((float)(2 * Math.PI * ((float)i / bulletNumber + (float)waveCount / 50))) * transform;
-                    bullets.Add(new Bullet1D(Game, m, bulletSprite, movement));
+                    var m = Matrix.CreateRotationZ((float)(2 * Math.PI * ((float)i / bulletNumber + (float)waveCount / 50)));
+                    //var t = new XnaMatrixTransform(m).Append(_transform);
+                    var v = _transform.Transform(Vector2.Zero);
+                    m.Translation = new Vector3(v.X, v.Y, 0);
+                    var t = new XnaMatrixTransform(m);
+                    bullets.Add(new Bullet1D(Game, null, t, bulletSprite, movement));
                 }
                 waveCount++;
             }
-            foreach (var bullet in bullets)
-            {
+            foreach (var bullet in bullets) {
                 bullet.Update(gameTime);
             }
-            bullets.RemoveAll(bullet => shouldDestroyBullet(bullet.position));
+            bullets.RemoveAll(bullet => shouldDestroyBullet(bullet.Position));
         }
-        public override void Draw(GameTime gameTime)
-        {
+        public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
-            spriteBatch.Begin();
-            foreach (var bullet in bullets)
-            {
+            foreach (var bullet in bullets) {
                 bullet.Draw(gameTime);
             }
-            spriteBatch.End();
         }
     }
-    public class Bullet1D : DrawableGameComponent
-    {
-        Matrix transform;
-        Sprite bulletSprite;
-        Movements.Movement1D movement;
-        SpriteBatch spriteBatch;
 
-        public Bullet1D(Game game, Matrix transform, Sprite bulletSprite, Movements.Movement1D movement)
-            : base(game)
-        {
-            this.transform = transform;
-            this.bulletSprite = bulletSprite;
-            this.movement = movement;
-            this.spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
-        }
-
-        public Vector2 position;
+    public class Bullet1D : BulletBase<Vector2> {
+        ITransform<Vector2> _transform;
+        SpriteInBatch _bulletSprite;
+        Movements.Movement1D _movement;
         float angle;
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-            var x = (float)movement(gameTime.TotalGameTime.TotalSeconds);
-            //var ownPosition = new Vector2((float)x, 0);
-            //this.position = Vector2.Transform(ownPosition, transform);
-            this.position = new Vector2(x * transform.M11 + transform.M41, x * transform.M12 + transform.M42);
-            var direction = new Vector2(transform.M11, transform.M12);
-            this.angle = (float)direction.Angle();
+        Vector2 _oldPosition;
+
+        public Bullet1D(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, Movements.Movement1D movement)
+            : base(game, parent) {
+            this._transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
+            this._bulletSprite = bulletSprite;
+            this._movement = movement;
+            _oldPosition = _transform.Transform(Vector2.Zero);
         }
 
-        public override void Draw(GameTime gameTime)
-        {
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+            var x = (float)_movement(gameTime.TotalGameTime.TotalSeconds);
+            Position = _transform.Transform(Vector2.UnitX * x);
+            var direction = (Position - _oldPosition);
+            if (direction.Length() > 0) {
+                angle = (float)direction.Angle();
+            }
+        }
+
+        public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
-            bulletSprite.Draw(spriteBatch, position, angle);
+            _bulletSprite.Draw(Position, angle);
         }
     }
 }

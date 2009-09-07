@@ -15,7 +15,7 @@ public interface IHasPosition {
 }
 
 public interface IHasPosition<T> {
-    Vector2 Position { get; }
+    T Position { get; }
 }
 
 public interface IHasChangeablePosition {
@@ -32,13 +32,12 @@ public interface IContainer<TElement> {
     IEnumerable<TElement> Elements { get; }
 }
 
-public interface IBullet : IDrawable, IUpdateable { }
-public interface IBullet2D : IBullet, IHasParent<IBulletFactory2D>, IHasPosition { }
-public interface IBulletFactory : IContainer<IBulletFactory>, IContainer<IBullet> { }
-public interface IBulletFactory2D : IBulletFactory, IHasTransform<Vector2> { };
-
 public interface IBullet<T> : IDrawable, IUpdateable, IHasPosition<T>, IHasParent<IBulletFactory<T>> { }
 public interface IBulletFactory<T> : IUpdateable, IContainer<IBulletFactory<T>>, IContainer<IBullet<T>>, IHasTransform<T> { }
+public interface IBulletFactoryBullet<T> : IBulletFactory<T>, IBullet<T> { }
+
+public interface IBullet2D : IBullet<Vector2> {}
+public interface IBulletFactory2D : IBulletFactory<Vector2> { }
 
 public interface ITransform<T> {
     T Transform(T value);

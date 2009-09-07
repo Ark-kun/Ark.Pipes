@@ -45,8 +45,23 @@ namespace Ark.XNA.Transforms {
                 return _identity;
             }
         }
+    }
 
+    public class TranslationTransform2D : ITransform<Vector2>, IHasChangeablePosition {
+        Vector2 _translation;
 
+        public Vector2 Transform(Vector2 value) {
+            return value + _translation;
+        }
+
+        public Vector2 Position {
+            get {
+                return _translation;
+            }
+            set {
+                _translation = value;
+            }
+        }
     }
 
     public static class Extensions {

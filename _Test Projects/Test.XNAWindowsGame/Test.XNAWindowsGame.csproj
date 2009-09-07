@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bullets\BulletBase.cs" />
     <Compile Include="Bullets\Factories\LevyCCurveFactory.cs" />
     <Compile Include="Bullets\Factories\HeighwayDragonFactory.cs" />
     <Compile Include="Bullets\Factories\RadialBulletFactory.cs" />

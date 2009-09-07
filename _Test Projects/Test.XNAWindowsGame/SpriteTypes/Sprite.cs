@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Test.XNAWindowsGame {
+namespace Ark.XNA.Sprites {
     public class Sprite {
         public Texture2D texture;
         public Vector2 origin;

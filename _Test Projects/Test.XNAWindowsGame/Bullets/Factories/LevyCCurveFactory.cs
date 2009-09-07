@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.XNA.Transforms;
+using Ark.XNA.Sprites;
 
-namespace Test.XNAWindowsGame.Bullets.Factories {
+namespace Ark.XNA.Bullets.Factories {
     public class LevyCCurveFactory : LevyCCurveBullet {
         ITransform<Vector2> _parentTransform;
         public LevyCCurveFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime)
@@ -16,7 +17,7 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
     }
     public class LevyCCurveBullet : DrawableGameComponent, IBullet2D, IBulletFactory2D {
         List<LevyCCurveBullet> _bullets = null;
-        IBulletFactory2D _parent;
+        IBulletFactory<Vector2> _parent;
         ITransform<Vector2> _transform;
         Matrix _childMatrix = Matrix.CreateTranslation(1, 0, 0);
 
@@ -47,19 +48,19 @@ namespace Test.XNAWindowsGame.Bullets.Factories {
         }
 
 
-        IEnumerable<IBulletFactory> IContainer<IBulletFactory>.Elements {
+        IEnumerable<IBulletFactory<Vector2>> IContainer<IBulletFactory<Vector2>>.Elements {
             get {
-                return _bullets.Cast<IBulletFactory>();
+                return _bullets.Cast<IBulletFactory<Vector2>>();
             }
         }
 
-        IEnumerable<IBullet> IContainer<IBullet>.Elements {
+        IEnumerable<IBullet<Vector2>> IContainer<IBullet<Vector2>>.Elements {
             get {
-                return _bullets.Cast<IBullet>();
+                return _bullets.Cast<IBullet<Vector2>>();
             }
         }
 
-        public IBulletFactory2D Parent {
+        public IBulletFactory<Vector2> Parent {
             get {
                 return _parent;
             }

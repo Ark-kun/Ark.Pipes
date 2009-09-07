@@ -10,9 +10,10 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Net;
 using Microsoft.Xna.Framework.Storage;
-using Test.XNAWindowsGame.Bullets;
-using Test.XNAWindowsGame.Bullets.Factories;
+using Ark.XNA.Bullets;
+using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
+using Ark.XNA.Sprites;
 
 namespace Test.XNAWindowsGame {
     public class MyGame : Microsoft.Xna.Framework.Game {
@@ -87,13 +88,16 @@ namespace Test.XNAWindowsGame {
             this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
 
-            Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 2");
+            Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
+            Texture2D bulletTexture2 = Content.Load<Texture2D>("Bullet 2");
+            Texture2D bulletTexture3 = Content.Load<Texture2D>("Bullet 3");
+
             float scale = 400;
 
-            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.White };
-            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Black };
-            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Blue };
-            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture1, origin = new Vector2(bulletTexture1.Width / 2, bulletTexture1.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Red };
+            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.White };
+            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Black };
+            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Blue };
+            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Red };
 
             var scaleMatrix = Matrix.CreateScale(scale);
             var translationMatrix = Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
@@ -105,7 +109,7 @@ namespace Test.XNAWindowsGame {
 
             Components.Add(rotator);
 
-
+            //HeighwayDragonFactories
             var m1 = scaleMatrix * Matrix.CreateRotationZ((float)(0 * 0.5 * Math.PI));
             var m2 = scaleMatrix * Matrix.CreateRotationZ((float)(1 * 0.5 * Math.PI));
             var m3 = scaleMatrix * Matrix.CreateRotationZ((float)(2 * 0.5 * Math.PI));
@@ -118,10 +122,22 @@ namespace Test.XNAWindowsGame {
             var bulletFactoryHeighway3 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m3).Append(rotator), bulletSpriteInBatchNew3, 1, killer);
             var bulletFactoryHeighway4 = new HeighwayDragonFactory(this, new XnaMatrixTransform(m4).Append(rotator), bulletSpriteInBatchNew4, 1, killer);
 
-            this.Components.Add(bulletFactoryHeighway1);
-            this.Components.Add(bulletFactoryHeighway2);
-            this.Components.Add(bulletFactoryHeighway3);
-            this.Components.Add(bulletFactoryHeighway4);
+            //this.Components.Add(bulletFactoryHeighway1);
+            //this.Components.Add(bulletFactoryHeighway2);
+            //this.Components.Add(bulletFactoryHeighway3);
+            //this.Components.Add(bulletFactoryHeighway4);
+
+            //RadialBulletFactories
+            screenRectangle = new Rectangle(graphics.GraphicsDevice.Viewport.X, graphics.GraphicsDevice.Viewport.Y, graphics.GraphicsDevice.Viewport.Width, graphics.GraphicsDevice.Viewport.Height);
+            Func<Vector2, bool> destroyer = v => !screenRectangle.Contains(new Point((int)v.X, (int)v.Y));
+
+            var tt2D = new TranslationTransform2D();
+            Components.Add(new MouseControlledObject(this, tt2D));
+
+            var bulletSpriteInBatchRadial1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture3, origin = new Vector2(bulletTexture3.Width / 2, bulletTexture3.Height / 2), scale = 1.0f, tint = Color.Red };
+            //var bulletFactoryRadial1 = new RadialBulletFactory(this, translationMatrix, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
+            var bulletFactoryRadial1 = new RadialBulletFactory(this, tt2D, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
+            this.Components.Add(bulletFactoryRadial1);
 
 
             //Components.Add(new FpsCounter(this, spriteBatch, screenCenter));
