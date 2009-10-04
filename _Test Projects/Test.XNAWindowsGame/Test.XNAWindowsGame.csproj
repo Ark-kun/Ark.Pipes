@@ -109,6 +109,7 @@
     <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Components\MouseControlledObject.cs" />
+    <Compile Include="Ark.Pipes.cs" />
     <Compile Include="SharedSpriteBatch.cs" />
     <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="SpriteTypes\Sprite.cs" />
@@ -168,6 +169,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ark.Pipes.Tests.cs" />
     <None Include="Properties\app.manifest" />
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>

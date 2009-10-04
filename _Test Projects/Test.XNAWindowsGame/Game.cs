@@ -15,6 +15,7 @@ using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
 using Ark.XNA.Sprites;
 using Ark.XNA;
+using Ark.Pipes;
 using Ark.XNA.Components;
 
 namespace Ark.XNA {
@@ -139,10 +140,10 @@ namespace Ark.XNA {
             //var cursor = new CoolSprite(this, "Circle2", "Circle5");
             var cursor = new CoolSprite(this, "Circle2", "Circle3");
             Components.Add(cursor);
-            Components.Add(new MouseControlledObject(this, cursor));
-            //Components.Add(new KeyboardControlledObject(this, cursor, 1000));   
+            //Components.Add(new MouseControlledObject(this, cursor));
 
-
+            cursor.PositionXXX.Provider = MouseXXX.Position;
+            //Components.Add(new KeyboardControlledObject(this, cursor, 1000));
 
             base.Initialize();
         }
@@ -155,6 +156,8 @@ namespace Ark.XNA {
 
     static class Program {
         static void Main(string[] args) {
+            //Ark.Pipes.Tests.Test();
+
             using (Game game = new MyGame()) {
                 game.Run();
             }

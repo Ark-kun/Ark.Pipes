@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ark.Pipes;
 
 namespace Ark.XNA.Components {
     public class CoolSprite : DrawableGameComponent, IHasChangeablePosition {
@@ -47,7 +48,21 @@ namespace Ark.XNA.Components {
             _spriteBatch.SharedEnd();
         }
 
-        public Vector2 Position { get; set; }
+        public Vector2 Position {
+            get {
+                return _pos;
+            }
+            set {
+                _pos.Value = value;
+            }
+        }
+
+        private Property<Vector2> _pos = new Property<Vector2>();
+        public Property<Vector2> PositionXXX {
+            get {
+                return _pos;
+            }
+        }
 
         public Texture2D Sprite1 {
             get {
