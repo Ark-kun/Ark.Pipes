@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Ark.Pipes;
 
 namespace Ark.XNA.Components {
-    public class CoolSprite : DrawableGameComponent, IHasChangeablePosition {
+    public class CoolSprite : DrawableGameComponent {
         double _angle;
         Game _game;
         SharedSpriteBatch _spriteBatch;
@@ -37,30 +37,25 @@ namespace Ark.XNA.Components {
 
         public override void Draw(GameTime gameTime) {
             _spriteBatch.SharedBegin();
+            var position = Position;
             if (Sprite1 != null) {
                 Vector2 origin = new Vector2() { X = Sprite1.Width / 2, Y = Sprite1.Height / 2 };
-                _spriteBatch.Draw(Sprite1, Position, null, Color.White, -(float)_angle, origin, 0.5f, SpriteEffects.None, 0);
+                _spriteBatch.Draw(Sprite1, position, null, Color.White, -(float)_angle, origin, 0.5f, SpriteEffects.None, 0);
             }
             if (Sprite2 != null) {
                 Vector2 origin = new Vector2() { X = Sprite2.Width / 2, Y = Sprite2.Height / 2 };
-                _spriteBatch.Draw(Sprite2, Position, null, Color.White, (float)_angle, origin, 0.5f, SpriteEffects.None, 0);
+                _spriteBatch.Draw(Sprite2, position, null, Color.White, (float)_angle, origin, 0.5f, SpriteEffects.None, 0);
             }
             _spriteBatch.SharedEnd();
         }
 
-        public Vector2 Position {
+        private Provider<Vector2> _pos = Vector2.Zero;
+        public Provider<Vector2> Position {
             get {
                 return _pos;
             }
             set {
-                _pos.Value = value;
-            }
-        }
-
-        private Property<Vector2> _pos = new Property<Vector2>();
-        public Property<Vector2> PositionXXX {
-            get {
-                return _pos;
+                _pos = value;
             }
         }
 

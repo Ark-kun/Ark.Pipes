@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-using Microsoft.Xna.Framework.Input;
 
 namespace Ark.Pipes {
     public class Tests {
@@ -45,9 +44,9 @@ namespace Ark.Pipes {
         }
     }
 
-    public class MouseXXX {
+    public class Mouse {
         static Provider<Vector2> _p = (Func<Vector2>)(() => {
-            var mouseState = Mouse.GetState();
+            var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
             return new Vector2(mouseState.X, mouseState.Y);
         });
 
@@ -61,7 +60,7 @@ namespace Ark.Pipes {
     public class MousePosition : Provider<Vector2> {
         public override Vector2 Value {
             get {
-                var mouseState = Mouse.GetState();
+                var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
                 return new Vector2(mouseState.X, mouseState.Y);
             }
         }

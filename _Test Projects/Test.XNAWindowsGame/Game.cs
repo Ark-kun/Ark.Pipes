@@ -40,7 +40,8 @@ namespace Ark.XNA {
         }
 
         protected override void LoadContent() {
-
+            //((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(this.Window.Handle)).FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            
 
             //////            //spriteTexture = Content.Load<Texture2D>("6861023");
             //////            //Texture2D spriteTexture1 = null;
@@ -127,7 +128,8 @@ namespace Ark.XNA {
             Func<Vector2, bool> destroyer = v => !screenRectangle.Contains(new Point((int)v.X, (int)v.Y));
 
             var tt2D = new TranslationTransform2D();
-            Components.Add(new MouseControlledObject(this, tt2D));
+            //Components.Add(new MouseControlledObject(this, tt2D));
+            tt2D.Translation = Ark.Pipes.Mouse.Position;
 
             var bulletSpriteInBatchRadial1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture3, origin = new Vector2(bulletTexture3.Width / 2, bulletTexture3.Height / 2), scale = 1.0f, tint = Color.Red };
             //var bulletFactoryRadial1 = new RadialBulletFactory(this, translationMatrix, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
@@ -142,7 +144,7 @@ namespace Ark.XNA {
             Components.Add(cursor);
             //Components.Add(new MouseControlledObject(this, cursor));
 
-            cursor.PositionXXX.Provider = MouseXXX.Position;
+            cursor.Position = Ark.Pipes.Mouse.Position;
             //Components.Add(new KeyboardControlledObject(this, cursor, 1000));
 
             base.Initialize();

@@ -108,7 +108,6 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="Components\MouseControlledObject.cs" />
     <Compile Include="Ark.Pipes.cs" />
     <Compile Include="SharedSpriteBatch.cs" />
     <Compile Include="Components\CoolSprite.cs" />

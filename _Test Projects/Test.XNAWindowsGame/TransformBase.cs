@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Ark.Pipes;
 
 namespace Ark.XNA.Transforms {
     public class FunctionTransform<T> : ITransform<T> {
@@ -49,14 +50,14 @@ namespace Ark.XNA.Transforms {
         }
     }
 
-    public class TranslationTransform2D : ITransform<Vector2>, IHasChangeablePosition {
-        Vector2 _translation;
+    public class TranslationTransform2D : ITransform<Vector2> {
+        Provider<Vector2> _translation = Vector2.Zero;
 
         public Vector2 Transform(Vector2 value) {
             return value + _translation;
         }
 
-        public Vector2 Position {
+        public Provider<Vector2> Translation {
             get {
                 return _translation;
             }

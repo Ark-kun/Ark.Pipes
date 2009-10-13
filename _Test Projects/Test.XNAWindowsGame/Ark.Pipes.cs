@@ -28,7 +28,7 @@ namespace Ark.Pipes {
         public abstract T Value { get; }
     }
 
-    public class Function<TResult> : Provider<TResult> {
+    public sealed class Function<TResult> : Provider<TResult> {
         private Func<TResult> _f;
 
         public Function(Func<TResult> f) {
@@ -42,7 +42,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class Constant<T> : Provider<T> {
+    public sealed class Constant<T> : Provider<T> {
         static Constant<T> _default = new Constant<T>(default(T));
         private T _value;
 
@@ -63,43 +63,43 @@ namespace Ark.Pipes {
         }
     }
 
-    public class Property<T> : In<T>, Out<T> {
-        private Provider<T> _provider;
+    //public class Property<T> : In<T>, Out<T> {
+    //    private Provider<T> _provider;
 
-        public Property() {
-            _provider = Constant<T>.Default;
-        }
+    //    public Property() {
+    //        _provider = Constant<T>.Default;
+    //    }
 
-        public Property(T value) {
-            _provider = new Constant<T>(value);
-        }
+    //    public Property(T value) {
+    //        _provider = new Constant<T>(value);
+    //    }
 
-        public Property(Provider<T> provider) {
-            _provider = provider;
-        }
+    //    public Property(Provider<T> provider) {
+    //        _provider = provider;
+    //    }
 
-        public Provider<T> Provider {
-            get {
-                return _provider;
-            }
-            set {
-                _provider = value;
-            }
-        }
+    //    public Provider<T> Provider {
+    //        get {
+    //            return _provider;
+    //        }
+    //        set {
+    //            _provider = value;
+    //        }
+    //    }
 
-        public T Value {
-            get {
-                return _provider.Value;
-            }
-            set {
-                _provider = new Constant<T>(value);
-            }
-        }
+    //    public T Value {
+    //        get {
+    //            return _provider.Value;
+    //        }
+    //        set {
+    //            _provider = new Constant<T>(value);
+    //        }
+    //    }
 
-        static public implicit operator T(Property<T> property) {
-            return property.Value;
-        }
-    }
+    //    static public implicit operator T(Property<T> property) {
+    //        return property.Value;
+    //    }
+    //}
 
     //public class Consumer<T> : In<T> {
     //    private Provider<T> _provider = new Constant<T>();
@@ -107,27 +107,30 @@ namespace Ark.Pipes {
 
     public class Function<T1, TResult> : Provider<TResult> {
         private Func<T1, TResult> _f;
-        private Property<T1> _arg1Provider;
+        private Provider<T1> _arg1Provider;
 
         public Function(Func<T1, TResult> f) {
             _f = f;
-            _arg1Provider = new Property<T1>();
+            _arg1Provider = Constant<T1>.Default;
         }
 
         public Function(Func<T1, TResult> f, Provider<T1> arg1Provider) {
             _f = f;
-            _arg1Provider = new Property<T1>(arg1Provider);
+            _arg1Provider = arg1Provider;
         }
 
         public override TResult Value {
             get {
-                return _f(_arg1Provider.Provider.Value);
+                return _f(_arg1Provider);
             }
         }
 
-        public Property<T1> Argument1 {
+        public Provider<T1> Argument1 {
             get {
                 return _arg1Provider;
+            }
+            set {
+                _arg1Provider = value;
             }
         }
     }
