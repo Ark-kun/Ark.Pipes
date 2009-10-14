@@ -4,34 +4,35 @@ using System.Linq;
 using Ark.XNA.Sprites;
 using Ark.XNA.Transforms;
 using Microsoft.Xna.Framework;
+using Ark.Pipes;
 
 namespace Ark.XNA.Bullets.Factories {
     public class LevyCCurveFactory : LevyCCurveBullet {
         ITransform<Vector2> _parentTransform;
-        public LevyCCurveFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime)
+        public LevyCCurveFactory(Game game, ITransform<Vector2> transform, StaticSprite bulletSprite, double startFireTime)
             : base(game, null, transform, bulletSprite, startFireTime) {
 
             _parentTransform = transform;
         }
     }
     public class LevyCCurveBullet : DrawableGameComponent, IBullet2D, IBulletFactory2D {
-        List<LevyCCurveBullet> _bullets = null;
+        HashSet<LevyCCurveBullet> _bullets = null;
         IBulletFactory<Vector2> _parent;
         ITransform<Vector2> _transform;
         Matrix _childMatrix = Matrix.CreateTranslation(1, 0, 0);
 
-        SpriteInBatch _bulletSprite;
+        StaticSprite _bulletSprite;
         Double _lastFireTime;
 
         static Matrix RotationPlus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(Math.PI / 4));
         static Matrix RotationMinus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(-Math.PI / 4));
 
-        public LevyCCurveBullet(Game game, IBulletFactory2D parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime)
+        public LevyCCurveBullet(Game game, IBulletFactory2D parent, ITransform<Vector2> relativeTransform, StaticSprite bulletSprite, double startFireTime)
             : base(game) {
             _transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
             _parent = parent;
             _bulletSprite = bulletSprite;
-            _bullets = new List<LevyCCurveBullet>();
+            _bullets = new HashSet<LevyCCurveBullet>();
             _lastFireTime = startFireTime;
         }
 
@@ -80,7 +81,7 @@ namespace Ark.XNA.Bullets.Factories {
                 bullet.Update(gameTime);
             }
         }
-        Vector2 position;
+
         public override void Draw(GameTime gameTime) {
             base.Draw(gameTime);
             //_bulletSprite.Draw(_positionTarget, 0);
@@ -93,17 +94,19 @@ namespace Ark.XNA.Bullets.Factories {
             //var alpha = gameTime.TotalGameTime.TotalSeconds - _lastFireTime;
             //_bulletSprite.Draw((_positionTarget + (float)(1 - alpha) * _oldDirectionTarget + (float)alpha * _directionTarget) * 0.5f, 0, (float)(25.0 * Math.Pow(2, -gameTime.TotalGameTime.TotalSeconds / 2)));
 
-            position = new Vector2(0, 0);
+            var position = new Vector2(0, 0);
             position = _transform.Transform(position);
             _bulletSprite.Draw(position, 0);
             foreach (var bullet in _bullets) {
                 bullet.Draw(gameTime);
             }
+            _position = position;
         }
 
-        public Vector2 Position {
+        Provider<Vector2> _position = Vector2.Zero;
+        public Provider<Vector2> Position {
             get {
-                return position;
+                return _position;
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Ark.XNA {
     public static class Extensions {
@@ -11,7 +12,11 @@ namespace Ark.XNA {
             return new Vector3(v.X, v.Y, 0);
         }
 
-        public static void RemoveBorder(this Game game){
+        public static Vector2 CenterOrigin(this Texture2D texture) {
+            return new Vector2(texture.Width / 2, texture.Height / 2);
+        }
+
+        public static void RemoveBorder(this Game game) {
             var handle = game.Window.Handle;
             if (handle != IntPtr.Zero) {
 #if Windows 

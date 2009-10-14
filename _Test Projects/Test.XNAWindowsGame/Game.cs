@@ -27,7 +27,7 @@ namespace Ark.XNA {
         private const int BackBufferHeight = 1000;
 
         GraphicsDeviceManager graphics;
-        SharedSpriteBatch spriteBatch;
+        SpriteBatch spriteBatch;
 
         Vector2 screenCenter;
         Rectangle screenRectangle;
@@ -41,7 +41,7 @@ namespace Ark.XNA {
 
         protected override void LoadContent() {
             //((System.Windows.Forms.Form)System.Windows.Forms.Form.FromHandle(this.Window.Handle)).FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            
+
 
             //////            //spriteTexture = Content.Load<Texture2D>("6861023");
             //////            //Texture2D spriteTexture1 = null;
@@ -81,7 +81,7 @@ namespace Ark.XNA {
         protected override void Initialize() {
             screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
 
-            this.spriteBatch = new SharedSpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
 
             Texture2D bulletTexture1 = Content.Load<Texture2D>("Bullet 1");
@@ -90,10 +90,10 @@ namespace Ark.XNA {
 
             float scale = 400;
 
-            var bulletSpriteInBatchNew1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.White };
-            var bulletSpriteInBatchNew2 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Black };
-            var bulletSpriteInBatchNew3 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Blue };
-            var bulletSpriteInBatchNew4 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture2, origin = new Vector2(bulletTexture2.Width / 2, bulletTexture2.Height / 2), scale = (1.0f / 20) * 20 / 15, tint = Color.Red };
+            var bulletSpriteInBatchNew1 = new StaticSprite(spriteBatch, bulletTexture2, (1.0f / 20) * 20 / 15);
+            var bulletSpriteInBatchNew2 = new StaticSprite(spriteBatch, bulletTexture2, (1.0f / 20) * 20 / 15, Color.Black);
+            var bulletSpriteInBatchNew3 = new StaticSprite(spriteBatch, bulletTexture2, (1.0f / 20) * 20 / 15, Color.Blue);
+            var bulletSpriteInBatchNew4 = new StaticSprite(spriteBatch, bulletTexture2, (1.0f / 20) * 20 / 15, Color.Red);
 
             var scaleMatrix = Matrix.CreateScale(scale);
             var translationMatrix = Matrix.CreateTranslation(screenCenter.X, screenCenter.Y, 0);
@@ -131,7 +131,7 @@ namespace Ark.XNA {
             //Components.Add(new MouseControlledObject(this, tt2D));
             tt2D.Translation = Ark.Pipes.Mouse.Position;
 
-            var bulletSpriteInBatchRadial1 = new SpriteInBatch() { spriteBatch = spriteBatch, texture = bulletTexture3, origin = new Vector2(bulletTexture3.Width / 2, bulletTexture3.Height / 2), scale = 1.0f, tint = Color.Red };
+            var bulletSpriteInBatchRadial1 = new StaticSprite(spriteBatch, bulletTexture3, 1.0f, Color.Red);
             //var bulletFactoryRadial1 = new RadialBulletFactory(this, translationMatrix, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
             var bulletFactoryRadial1 = new RadialBulletFactory(this, tt2D, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
             this.Components.Add(bulletFactoryRadial1);
@@ -153,6 +153,16 @@ namespace Ark.XNA {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
+        }
+
+        protected override bool BeginDraw() {
+            spriteBatch.Begin();
+            return base.BeginDraw();
+        }
+
+        protected override void EndDraw() {
+            spriteBatch.End();
+            base.EndDraw();
         }
     }
 

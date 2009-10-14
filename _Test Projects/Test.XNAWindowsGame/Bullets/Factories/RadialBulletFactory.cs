@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using Ark.XNA.Sprites;
 using Ark.XNA.Transforms;
 using Microsoft.Xna.Framework;
 
 namespace Ark.XNA.Bullets.Factories {
-    public class RadialBulletFactory : DrawableGameComponent {
-        SpriteInBatch bulletSprite;
+    public class RadialBulletFactory : GameComponent {
+        StaticSprite bulletSprite;
 
         int bulletNumber;
         float bulletSpeed;
@@ -17,11 +18,11 @@ namespace Ark.XNA.Bullets.Factories {
         ITransform<Vector2> _transform;
         Func<Vector2, bool> shouldDestroyBullet;
 
-        List<Bullet1D> bullets = new List<Bullet1D>();
+        HashSet<Bullet1D> bullets = new HashSet<Bullet1D>();
         ITransform<Vector2>[] rayMatrices;
         int waveCount;
 
-        public RadialBulletFactory(Game game, ITransform<Vector2> transform, double startTime, SpriteInBatch bulletSprite, int bulletNumber, float bulletSpeed, int waveNumber, float waveFrequency, Func<Vector2, bool> shouldDestroyBullet)
+        public RadialBulletFactory(Game game, ITransform<Vector2> transform, double startTime, StaticSprite bulletSprite, int bulletNumber, float bulletSpeed, int waveNumber, float waveFrequency, Func<Vector2, bool> shouldDestroyBullet)
             : base(game) {
             this.bulletSprite = bulletSprite;
             this.bulletNumber = bulletNumber;
@@ -63,31 +64,29 @@ namespace Ark.XNA.Bullets.Factories {
                     var v = _transform.Transform(Vector2.Zero);
                     m.Translation = new Vector3(v.X, v.Y, 0);
                     var t = new XnaMatrixTransform(m);
-                    bullets.Add(new Bullet1D(Game, null, t, bulletSprite, movement));
+                    var bullet = new Bullet1D(Game, null, t, bulletSprite, movement);
+                    bullets.Add(bullet);
+                    Game.Components.Add(bullet);
                 }
                 waveCount++;
             }
-            foreach (var bullet in bullets) {
-                bullet.Update(gameTime);
-            }
-            bullets.RemoveAll(bullet => shouldDestroyBullet(bullet.Position));
-        }
-        public override void Draw(GameTime gameTime) {
-            base.Draw(gameTime);
-            foreach (var bullet in bullets) {
-                bullet.Draw(gameTime);
+            var bulletsToRemove = bullets.Where((bullet) => shouldDestroyBullet(bullet.Position)).ToArray();
+            foreach (var bullet in bulletsToRemove) {
+                bullets.Remove(bullet);
+                Game.Components.Remove(bullet);
             }
         }
+
     }
 
     public class Bullet1D : BulletBase<Vector2> {
         ITransform<Vector2> _transform;
-        SpriteInBatch _bulletSprite;
+        StaticSprite _bulletSprite;
         Movements.Movement1D _movement;
         float angle;
         Vector2 _oldPosition;
 
-        public Bullet1D(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, Movements.Movement1D movement)
+        public Bullet1D(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, StaticSprite bulletSprite, Movements.Movement1D movement)
             : base(game, parent) {
             this._transform = parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform);
             this._bulletSprite = bulletSprite;

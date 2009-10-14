@@ -1,34 +1,24 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ark.Pipes;
 
 namespace Ark.XNA {
-    public interface IUpdatable {
-        void Update(GameTime gameTime);
-    }
-
-    public interface IGameElement : IUpdatable {
-        void Draw(GameTime gameTime, SpriteBatch spriteBatch);
-    }
-
-    public interface IHasPosition {
-        Vector2 Position { get; }
-    }
 
     public interface IHasPosition<T> {
-        T Position { get; }
+        Provider<T> Position { get; }
     }
 
     public interface IHasChangeablePosition {
-        Vector2 Position { get; set; }
+        Provider<Vector2> Position { get; set; }
     }
 
     public interface IHasChangeableAngle {
-        float Angle { get; set; }
+        Provider<float> Angle { get; set; }
     }
 
     public interface IHasChangeableTexture {
-        Texture2D Texture { get; set; }
+        Provider<Texture2D> Texture { get; set; }
     }
 
     public interface IContainer<TElement> {

@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Ark.Pipes;
 
 namespace Ark.XNA.Bullets {
     public class BulletBase<T> : DrawableGameComponent, IBullet<T> {
-        private T _position;
         private IBulletFactory<T> _parent;
 
         public BulletBase(Game game, IBulletFactory<T> parent)
@@ -12,11 +12,11 @@ namespace Ark.XNA.Bullets {
             _parent = parent;
         }
 
-        public T Position {
-            get {
+        Provider<T> _position = Constant<T>.Default;
+        public Provider<T> Position { get {
                 return _position;
             }
-            protected set {
+            set {
                 _position = value;
             }
         }
@@ -30,8 +30,8 @@ namespace Ark.XNA.Bullets {
 
     public class BulletFactoryBase<T> : DrawableGameComponent, IBulletFactory<T> {
         private ITransform<T> _transform;
-        private List<IBullet<T>> _bullets = new List<IBullet<T>>();
-        private List<IBulletFactory<T>> _bulletFactories = new List<IBulletFactory<T>>();
+        private HashSet<IBullet<T>> _bullets = new HashSet<IBullet<T>>();
+        private HashSet<IBulletFactory<T>> _bulletFactories = new HashSet<IBulletFactory<T>>();
 
         public BulletFactoryBase(Game game, ITransform<T> transform)
             : base(game) {
@@ -56,13 +56,13 @@ namespace Ark.XNA.Bullets {
             }
         }
 
-        protected IList<IBullet<T>> Bullets {
+        protected IEnumerable<IBullet<T>> Bullets {
             get {
                 return _bullets;
             }
         }
 
-        protected IList<IBulletFactory<T>> BulletFactories {
+        protected IEnumerable<IBulletFactory<T>> BulletFactories {
             get {
                 return _bulletFactories;
             }
@@ -70,10 +70,9 @@ namespace Ark.XNA.Bullets {
     }
 
     public class BulletFactoryBulletBase<T> : DrawableGameComponent, IBulletFactoryBullet<T> {
-        private T _position;
         private IBulletFactory<T> _parent;
         private ITransform<T> _transform;
-        private List<IBulletFactoryBullet<T>> _bulletFactories = new List<IBulletFactoryBullet<T>>();
+        private HashSet<IBulletFactoryBullet<T>> _bulletFactories = new HashSet<IBulletFactoryBullet<T>>();
 
         public BulletFactoryBulletBase(Game game, ITransform<T> transform, IBulletFactory<T> parent)
             : base(game) {
@@ -81,11 +80,12 @@ namespace Ark.XNA.Bullets {
             _transform = transform;
         }
 
-        public T Position {
+        Provider<T> _position = Constant<T>.Default;
+        public Provider<T> Position {
             get {
                 return _position;
             }
-            protected set {
+            set {
                 _position = value;
             }
         }
@@ -108,7 +108,7 @@ namespace Ark.XNA.Bullets {
             }
         }
 
-        protected List<IBulletFactoryBullet<T>> BulletFactories {
+        protected HashSet<IBulletFactoryBullet<T>> BulletFactories {
             get {
                 return _bulletFactories;
             }

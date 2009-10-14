@@ -1,16 +1,17 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ark.Pipes;
 
 namespace Ark.XNA.Sprites {
     public class RotatingSprite : DrawableGameComponent, IHasChangeablePosition {
         double angle;
-        SharedSpriteBatch spriteBatch;
+        SpriteBatch spriteBatch;
 
         public RotatingSprite(Game game)
             : base(game) {
             RotationSpeed = 2 * Math.PI * 1.0 / 4; // 1/10; = 1/3s // 1/60 = 1/20s
-            spriteBatch = (SharedSpriteBatch)game.Services.GetService(typeof(SharedSpriteBatch));
+            spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
         }
 
         public override void Update(GameTime gameTime) {
@@ -37,7 +38,7 @@ namespace Ark.XNA.Sprites {
 
         }
 
-        public Vector2 Position { get; set; }
+        public Provider<Vector2> Position { get; set; }
 
         public Texture2D Sprite { get; set; }
 

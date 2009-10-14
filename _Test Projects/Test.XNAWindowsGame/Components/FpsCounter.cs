@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Ark.XNA.Components {
     public class FpsCounter : DrawableGameComponent {
-        SharedSpriteBatch spriteBatch;
+        SpriteBatch spriteBatch;
         Color fpsColor = Color.BlanchedAlmond;
         SpriteFont someFont;
         Game game;
@@ -14,7 +14,7 @@ namespace Ark.XNA.Components {
         //    : base(game) {
         //    this.game = game;
         //}
-        public FpsCounter(Game game, SharedSpriteBatch spriteBatch, Vector2 position)
+        public FpsCounter(Game game, SpriteBatch spriteBatch, Vector2 position)
             : base(game) {
             this.game = game;
             this.spriteBatch = spriteBatch;
@@ -36,10 +36,8 @@ namespace Ark.XNA.Components {
             frameCount += 1;
             var FPS = frameCount / gameTime.TotalRealTime.TotalSeconds;
 
-            spriteBatch.SharedBegin();
             spriteBatch.DrawString(someFont, FPS.ToString(), position, fpsColor);
             //spriteBatch.DrawString(someFont, gameTime.TotalGameTime.TotalSeconds.ToString(), fpsPosition, fpsColor);
-            spriteBatch.SharedEnd();
         }
     }
 }

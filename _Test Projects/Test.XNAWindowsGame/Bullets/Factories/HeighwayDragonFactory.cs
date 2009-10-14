@@ -7,14 +7,14 @@ using Microsoft.Xna.Framework;
 
 namespace Ark.XNA.Bullets.Factories {
     public class HeighwayDragonFactory : HeighwayDragonBullet {
-        public HeighwayDragonFactory(Game game, ITransform<Vector2> transform, SpriteInBatch bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
+        public HeighwayDragonFactory(Game game, ITransform<Vector2> transform, StaticSprite bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
             : base(game, null, transform, bulletSprite, startFireTime, shouldDestroyBullet) {
         }
     }
 
     public class HeighwayDragonBullet : BulletFactoryBulletBase<Vector2> {
         Matrix _directionMatrix = Matrix.Identity;
-        SpriteInBatch _bulletSprite;
+        StaticSprite _bulletSprite;
         Double _lastFireTime;
 
         Func<Vector2, bool> _shouldDestroyBullet;
@@ -23,7 +23,7 @@ namespace Ark.XNA.Bullets.Factories {
         static Matrix RotationMinus = Matrix.CreateScale((float)Math.Sqrt(1.0 / 2)) * Matrix.CreateRotationZ((float)(-Math.PI / 4));
 
         Vector2 _oldPosition;
-        public HeighwayDragonBullet(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, SpriteInBatch bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
+        public HeighwayDragonBullet(Game game, IBulletFactory<Vector2> parent, ITransform<Vector2> relativeTransform, StaticSprite bulletSprite, double startFireTime, Func<Vector2, bool> shouldDestroyBullet)
             : base(game, parent == null ? relativeTransform : parent.Transform.Prepend(relativeTransform), parent) {
             _bulletSprite = bulletSprite;
             _lastFireTime = startFireTime;
@@ -66,9 +66,11 @@ namespace Ark.XNA.Bullets.Factories {
                     bulletsToDestroy.Add(bullet);
                 }
             }
-            foreach (HeighwayDragonBullet bullet in bulletsToDestroy) {
+            foreach (HeighwayDragonBullet bullet in bulletsToDestroy) {                
                 BulletFactories.Remove(bullet);
-                BulletFactories.AddRange(bullet.BulletFactories);
+                foreach (var bulletFactory in bullet.BulletFactories) {
+                    BulletFactories.Add(bulletFactory);
+                }
             }
         }
 
@@ -85,7 +87,7 @@ namespace Ark.XNA.Bullets.Factories {
 
             Position = Transform.Transform(positionAlpha);
 
-            _bulletSprite.Draw(Position, 0, _bulletSprite.scale * scale * (float)(Math.Pow(2, -alpha / 2)));
+            _bulletSprite.Draw(Position, 0, scale * (float)(Math.Pow(2, -alpha / 2)));
             foreach (var bullet in BulletFactories) {
                 bullet.Draw(gameTime);
             }

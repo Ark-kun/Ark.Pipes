@@ -7,7 +7,7 @@ namespace Ark.XNA.Components {
     public class CoolSprite : DrawableGameComponent {
         double _angle;
         Game _game;
-        SharedSpriteBatch _spriteBatch;
+        SpriteBatch _spriteBatch;
         Texture2D _sprite1;
         Texture2D _sprite2;
         string _spriteFile1 = null;
@@ -18,7 +18,7 @@ namespace Ark.XNA.Components {
             _game = game;
             _spriteFile1 = spriteFile1;
             _spriteFile2 = spriteFile2;
-            _spriteBatch = (SharedSpriteBatch)game.Services.GetService(typeof(SpriteBatch));
+            _spriteBatch = (SpriteBatch)game.Services.GetService(typeof(SpriteBatch));
             this.RotationSpeed = 2 * Math.PI * 1.0 / 2; // 1/10; = 1/3s // 1/60 = 1/20s
         }
 
@@ -36,7 +36,6 @@ namespace Ark.XNA.Components {
         }
 
         public override void Draw(GameTime gameTime) {
-            _spriteBatch.SharedBegin();
             var position = Position;
             if (Sprite1 != null) {
                 Vector2 origin = new Vector2() { X = Sprite1.Width / 2, Y = Sprite1.Height / 2 };
@@ -46,18 +45,9 @@ namespace Ark.XNA.Components {
                 Vector2 origin = new Vector2() { X = Sprite2.Width / 2, Y = Sprite2.Height / 2 };
                 _spriteBatch.Draw(Sprite2, position, null, Color.White, (float)_angle, origin, 0.5f, SpriteEffects.None, 0);
             }
-            _spriteBatch.SharedEnd();
         }
 
-        private Provider<Vector2> _pos = Vector2.Zero;
-        public Provider<Vector2> Position {
-            get {
-                return _pos;
-            }
-            set {
-                _pos = value;
-            }
-        }
+        public Provider<Vector2> Position { get; set; }
 
         public Texture2D Sprite1 {
             get {
