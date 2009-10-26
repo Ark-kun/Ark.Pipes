@@ -9,6 +9,13 @@ namespace Ark.XNA.Sprites {
         public DynamicSprite(Game game, SpriteBatch spriteBatch)
             : base(game) {
             _spriteBatch = spriteBatch;
+
+            Position = Vector2.Zero;
+            Origin = Vector2.Zero;
+            Texture = Constant<Texture2D>.Default;
+            Angle = 0;
+            Scale = 1;
+            Tint = Color.White;
         }
 
         public void Draw() {
@@ -37,5 +44,10 @@ namespace Ark.XNA.Sprites {
         public Provider<float> Angle { get; set; }
         public Provider<float> Scale { get; set; }
         public Provider<Color> Tint { get; set; }
+
+        public override void Draw(GameTime gameTime) {
+            base.Draw(gameTime);
+            Draw();
+        }
     }
 }

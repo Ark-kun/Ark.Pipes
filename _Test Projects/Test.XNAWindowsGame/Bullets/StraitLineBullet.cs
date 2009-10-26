@@ -7,7 +7,8 @@ namespace Ark.XNA.Bullets {
         TBullet _bullet;
         Vector2 _origin;
         Vector2 _velocity;
-        double _millisecondsPassed;
+        //double _millisecondsPassed;
+        double _startTime = double.NaN;
 
         public StraitLineBullet(Game game, TBullet bullet, Vector2 origin, Vector2 velocity)
             : base(game) {
@@ -17,7 +18,7 @@ namespace Ark.XNA.Bullets {
 
             var rotatableBullet = _bullet as IHasChangeableAngle;
             if (rotatableBullet != null) {
-                rotatableBullet.Angle = (float)(Math.Sign(_velocity.Y) * Math.Acos(_velocity.X / _velocity.Length()));
+                rotatableBullet.Angle = (float)_velocity.Angle();
             }
         }
 
@@ -29,18 +30,21 @@ namespace Ark.XNA.Bullets {
 
             var rotatableBullet = _bullet as IHasChangeableAngle;
             if (rotatableBullet != null) {
-                rotatableBullet.Angle = angle;
+                //rotatableBullet.Angle = angle;
             }
         }
 
         public override void Update(GameTime gameTime) {
-            _millisecondsPassed += gameTime.ElapsedGameTime.TotalMilliseconds;
+            //_millisecondsPassed += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (double.IsNaN(_startTime)) {
+                _startTime = gameTime.TotalGameTime.TotalMilliseconds;
+            }
             _bullet.Update(gameTime);
             base.Update(gameTime);
         }
 
         public override void Draw(GameTime gameTime) {
-            _bullet.Position = _origin + _velocity * (float)(_millisecondsPassed);
+            _bullet.Position = _origin + _velocity * (float)(gameTime.TotalGameTime.TotalMilliseconds - _startTime);
             _bullet.Draw(gameTime);
             base.Draw(gameTime);
         }

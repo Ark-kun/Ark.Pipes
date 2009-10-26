@@ -66,7 +66,7 @@ namespace Ark.XNA.Bullets.Factories {
                     bulletsToDestroy.Add(bullet);
                 }
             }
-            foreach (HeighwayDragonBullet bullet in bulletsToDestroy) {                
+            foreach (HeighwayDragonBullet bullet in bulletsToDestroy) {
                 BulletFactories.Remove(bullet);
                 foreach (var bulletFactory in bullet.BulletFactories) {
                     BulletFactories.Add(bulletFactory);

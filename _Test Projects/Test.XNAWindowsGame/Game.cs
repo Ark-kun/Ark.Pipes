@@ -134,7 +134,7 @@ namespace Ark.XNA {
             var bulletSpriteInBatchRadial1 = new StaticSprite(spriteBatch, bulletTexture3, 1.0f, Color.Red);
             //var bulletFactoryRadial1 = new RadialBulletFactory(this, translationMatrix, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
             var bulletFactoryRadial1 = new RadialBulletFactory(this, tt2D, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
-            this.Components.Add(bulletFactoryRadial1);
+            //this.Components.Add(bulletFactoryRadial1);
 
 
             //Components.Add(new FpsCounter(this, spriteBatch, screenCenter));
@@ -147,12 +147,18 @@ namespace Ark.XNA {
             cursor.Position = Ark.Pipes.Mouse.Position;
             //Components.Add(new KeyboardControlledObject(this, cursor, 1000));
 
+            var ds1 = new DynamicSprite(this, spriteBatch) { Texture = bulletTexture3 };
+            hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.1f);
+            //hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.00000000000001f);
+            //hbf.Target = Ark.Pipes.Mouse.Position;
+
             base.Initialize();
         }
-
+        HomingBulletFactory hbf;
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
+            Components.Add(hbf.GenerateBullet());
         }
 
         protected override bool BeginDraw() {

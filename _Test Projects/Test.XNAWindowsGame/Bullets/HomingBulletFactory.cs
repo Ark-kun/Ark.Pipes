@@ -2,14 +2,16 @@
 using Ark.XNA.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Ark.Pipes;
 
 namespace Ark.XNA.Bullets {
-    class HomingBulletFactory {
+    public class HomingBulletFactory {
         DynamicSprite _bulletSprite;
         Rectangle _originsSet;
         float _maxSpeed;
-        Vector2 _target = Vector2.Zero;
-        Random rnd = new Random(666);
+        Provider<Vector2> _target = Constant<Vector2>.Default;
+        //Random rnd = new Random(666);
+        Random rnd = new Random();
         Game _game;
 
         public HomingBulletFactory(Game game, DynamicSprite bulletSprite, Rectangle originsSet, float maxSpeed) {
@@ -30,7 +32,7 @@ namespace Ark.XNA.Bullets {
             return new StraitLineBullet<DynamicSprite>(_game, _bulletSprite, origin, direction);
         }
 
-        public Vector2 Target {
+        public Provider<Vector2> Target {
             get {
                 return _target;
             }
