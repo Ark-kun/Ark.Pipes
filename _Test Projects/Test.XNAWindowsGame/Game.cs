@@ -17,6 +17,9 @@ using Ark.XNA.Sprites;
 using Ark.XNA;
 using Ark.Pipes;
 using Ark.XNA.Components;
+using Ark.XNA.Geometry;
+using Ark.XNA.Geometry.Curves.Dynamic;
+using Ark.XNA.Geometry.Curves;
 
 namespace Ark.XNA {
     public class MyGame : Microsoft.Xna.Framework.Game {
@@ -147,18 +150,32 @@ namespace Ark.XNA {
             cursor.Position = Ark.Pipes.Mouse.Position;
             //Components.Add(new KeyboardControlledObject(this, cursor, 1000));
 
-            var ds1 = new DynamicSprite(this, spriteBatch) { Texture = bulletTexture3 };
-            hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.1f);
-            //hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.00000000000001f);
-            //hbf.Target = Ark.Pipes.Mouse.Position;
+            //var ds1 = new DynamicSprite(this, spriteBatch) { Texture = bulletTexture3 };
+            //hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.1f);
+            ////hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.00000000000001f);
+            ////hbf.Target = Ark.Pipes.Mouse.Position;
+
+            var time = new Time();
+            Components.Add(time);
+
+            var randomVector = new RandomVectorInsideRectangle(screenRectangle);
+            for (int i = 0; i < 200; i++) {
+                var line = new DynamicBoundVector() { StartPoint = randomVector.Value, EndPoint = Ark.Pipes.Mouse.Position };
+                var curve = new LineSectionCurve(line);
+                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f) };
+                var movement = new CurveMovement(curve) { Time = new Function<float>(() => 1 + (float)Math.Cos(time.Value * 0.001f)) };
+                var bullet = new DynamicSprite(this, spriteBatch) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
+                Components.Add(bullet);
+            }
 
             base.Initialize();
         }
-        HomingBulletFactory hbf;
+        //HomingBulletFactory hbf;
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
-            Components.Add(hbf.GenerateBullet());
+            //Components.OfType<HomingBulletFactory>()
+            //Components.Add(hbf.GenerateBullet());
         }
 
         protected override bool BeginDraw() {

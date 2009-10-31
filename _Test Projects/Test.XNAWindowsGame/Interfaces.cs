@@ -21,6 +21,10 @@ namespace Ark.XNA {
         Provider<Texture2D> Texture { get; set; }
     }
 
+    public interface ITimeDependent {
+        Provider<float> Time { get; set; }
+    }
+
     public interface IContainer<TElement> {
         IEnumerable<TElement> Elements { get; }
     }

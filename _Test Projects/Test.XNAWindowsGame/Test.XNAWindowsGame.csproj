@@ -108,7 +108,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="Ark.Pipes.cs" />
+    <Compile Include="Ark.Pipes\Ark.Pipes.cs" />
     <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
@@ -165,8 +165,16 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ark.Pipes.Tests.cs" />
+    <Compile Include="Ark.Pipes\Ark.Pipes.Tests.cs" />
+    <Compile Include="Geometry\BoundVector.cs" />
+    <Compile Include="Geometry\DynamicBoundVector.cs" />
+    <Compile Include="Ark.Pipes\DynamicConverter.cs" />
+    <Compile Include="Geometry\Curves\LineCurve.cs" />
+    <Compile Include="Geometry\RandomVectorInsideRectangle.cs" />
+    <Compile Include="ProviderGameComponent.cs" />
     <Compile Include="SpriteTypes\StaticSprite.cs" />
+    <Compile Include="Geometry\Curves\CurveMovement.cs" />
+    <Compile Include="Time.cs" />
     <None Include="Properties\app.manifest" />
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>

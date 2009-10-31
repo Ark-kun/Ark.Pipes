@@ -105,32 +105,21 @@ namespace Ark.Pipes {
     //    private Provider<T> _provider = new Constant<T>();
     //}
 
-    public class Function<T1, TResult> : Provider<TResult> {
-        private Func<T1, TResult> _f;
-        private Provider<T1> _arg1Provider;
+    public class Function<T, TResult> : DynamicConverter<T, TResult> {
+        private Func<T, TResult> _function;
 
-        public Function(Func<T1, TResult> f) {
-            _f = f;
-            _arg1Provider = Constant<T1>.Default;
+        public Function(Func<T, TResult> f) {
+            _function = f;
         }
 
-        public Function(Func<T1, TResult> f, Provider<T1> arg1Provider) {
-            _f = f;
-            _arg1Provider = arg1Provider;
+        public Function(Func<T, TResult> f, Provider<T> argument)
+            : base(argument) {
+            _function = f;
         }
 
         public override TResult Value {
             get {
-                return _f(_arg1Provider);
-            }
-        }
-
-        public Provider<T1> Argument1 {
-            get {
-                return _arg1Provider;
-            }
-            set {
-                _arg1Provider = value;
+                return _function(Input);
             }
         }
     }

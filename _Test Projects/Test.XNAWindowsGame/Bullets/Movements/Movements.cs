@@ -1,9 +1,10 @@
-﻿namespace Ark.XNA.Bullets {
+﻿using Microsoft.Xna.Framework;
+namespace Ark.XNA.Bullets {
     public static class Movements {
+        public delegate bool TimeCondition(double t);
         public delegate double Movement1D(double t);
-        public delegate bool Condition1D(double t);
 
-        public static Movement1D StayAtStart = (t) => 0;
+        public static readonly Movement1D StayAtStart = (t) => 0;
 
         public static Movement1D StayAt(double x) {
             return (t) => x;
@@ -19,9 +20,11 @@
             return (t) => x0 + movement(t);
         }
 
-        public static Movement1D ConditionalMovement(Condition1D condition, Movement1D thenMovement, Movement1D elseMovement) {
+        public static Movement1D ConditionalMovement(TimeCondition condition, Movement1D thenMovement, Movement1D elseMovement) {
             return (t) => condition(t) ? thenMovement(t) : elseMovement(t);
         }
+
+        public delegate Vector2 Movement2D(double t);
 
     }
 }
