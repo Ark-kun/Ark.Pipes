@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.XNAWindowsGame", "Test.XNAWindowsGame.csproj", "{6F03A699-9C62-4F74-863E-6A7D40112177}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shohou Project", "Shohou Project.csproj", "{6F03A699-9C62-4F74-863E-6A7D40112177}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

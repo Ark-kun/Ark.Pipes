@@ -21,7 +21,7 @@ using Ark.XNA.Geometry;
 using Ark.XNA.Geometry.Curves.Dynamic;
 using Ark.XNA.Geometry.Curves;
 
-namespace Ark.XNA {
+namespace Ark.Shohou {
     public class MyGame : Microsoft.Xna.Framework.Game {
         private const int TargetFrameRate = 60;
         //private const int BackBufferWidth = 1280;
