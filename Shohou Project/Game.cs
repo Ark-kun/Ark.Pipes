@@ -179,13 +179,17 @@ namespace Ark.Shohou {
                 //lemniscate of Bernoulli 
                 var curve = new LemniscateOfBernoulliCurve(line);
                 //linear
-                var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f) };
+                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f) };
                 //linear fast
                 //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.01f) };
                 //linear sine
                 //var movement = new CurveMovement(curve) { Time = new Function<float>(() => 1 + (float)Math.Cos(time.Value * 0.001f)) };
                 //linear chaotic phase
                 //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f + (float)rnd.NextDouble()) };
+                //linear random phase
+                //float phase = (float)rnd.NextDouble(); //small delta
+                float phase = (float)(rnd.NextDouble() * (2 * Math.PI)); //full delta
+                var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f + phase) };
 
                 var bullet = new DynamicSprite(this, spriteBatch) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
                 Components.Add(bullet);
