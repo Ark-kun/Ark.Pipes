@@ -78,11 +78,24 @@ namespace Ark.Shohou {
 
 
 
-
+            base.LoadContent();
         }
+        //public const int HORZSIZE = 4;
+        //public const int VERTSIZE = 6;
+
+        //public const int LOGPIXELSX = 0x58;
+        //public const int LOGPIXELSY = 90;
+
+        //[System.Security.SuppressUnmanagedCodeSecurity, System.Security.SecurityCritical, System.Runtime.InteropServices.DllImport("gdi32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        //public static extern int GetDeviceCaps(IntPtr hDC, int nIndex);
+
+        //[System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        //public static extern IntPtr GetDC(IntPtr hWnd);
 
         protected override void Initialize() {
             screenCenter = new Vector2(graphics.GraphicsDevice.Viewport.Width / 2, graphics.GraphicsDevice.Viewport.Height / 2);
+
+            //var xxx = GetDeviceCaps(GetDC(IntPtr.Zero), HORZSIZE);
 
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
             this.Services.AddService(typeof(SpriteBatch), spriteBatch);
@@ -158,24 +171,64 @@ namespace Ark.Shohou {
             var time = new Time();
             Components.Add(time);
 
+            Random rnd = new Random();
             var randomVector = new RandomVectorInsideRectangle(screenRectangle);
             for (int i = 0; i < 200; i++) {
                 var line = new DynamicBoundVector() { StartPoint = randomVector.Value, EndPoint = Ark.Pipes.Mouse.Position };
-                var curve = new LineSectionCurve(line);
-                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f) };
-                var movement = new CurveMovement(curve) { Time = new Function<float>(() => 1 + (float)Math.Cos(time.Value * 0.001f)) };
+                //var curve = new LineSectionCurve(line);
+                //lemniscate of Bernoulli 
+                var curve = new LemniscateOfBernoulliCurve(line);
+                //linear
+                var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f) };
+                //linear fast
+                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.01f) };
+                //linear sine
+                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => 1 + (float)Math.Cos(time.Value * 0.001f)) };
+                //linear chaotic phase
+                //var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f + (float)rnd.NextDouble()) };
+
                 var bullet = new DynamicSprite(this, spriteBatch) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
                 Components.Add(bullet);
             }
 
+            //song1 = Content.Load<Song>("All Reflexive Arcade Games 1_0crk_xm");
+            //song2 = Content.Load<Song>("ACDSee 8_0_14crk_xm");
+            //base.Initialize();
+            //MediaPlayer.Play(song1);
+
             base.Initialize();
         }
+        Song song1;
+        Song song2;
         //HomingBulletFactory hbf;
+        protected override void Update(GameTime gameTime) {
+            //if (song1 == null) {
+                //(new System.Threading.Thread(() => { song1 = Content.Load<Song>("All Reflexive Arcade Games 1_0crk_xm"); MediaPlayer.Play(song1); }) { Priority =System.Threading.ThreadPriority.Lowest }).Start();
+                //song1 = Content.Load<Song>("All Reflexive Arcade Games 1_0crk_xm");
+                //MediaPlayer.Play(song1);
+            //}
+            //Components.OfType<HomingBulletFactory>()
+            //Components.Add(hbf.GenerateBullet());
+            if (Microsoft.Xna.Framework.Input.Mouse.GetState().LeftButton == ButtonState.Pressed) {
+                MediaPlayer.Pause();
+            } else {
+                //if (MediaPlayer.State == MediaState.Paused) {
+                //    MediaPlayer.Resume();
+                //}
+            }
+            if (Microsoft.Xna.Framework.Input.Mouse.GetState().RightButton == ButtonState.Pressed) {
+                if (song2 != null) {
+                    MediaPlayer.Play(song2);
+                    song2 = null;
+                }
+            }
+
+            base.Update(gameTime);
+        }
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
-            //Components.OfType<HomingBulletFactory>()
-            //Components.Add(hbf.GenerateBullet());
+
         }
 
         protected override bool BeginDraw() {

@@ -168,6 +168,8 @@
   <ItemGroup>
     <Compile Include="Ark.Pipes\Ark.Pipes.Tests.cs" />
     <Compile Include="Geometry\BoundVector.cs" />
+    <Compile Include="Geometry\Curves\LemniscateOfBernoulliCurve.cs" />
+    <Compile Include="Geometry\Curves\BadLemniscateOfBernoulliCurve.cs" />
     <Compile Include="Geometry\DynamicBoundVector.cs" />
     <Compile Include="Ark.Pipes\DynamicConverter.cs" />
     <Compile Include="Geometry\Curves\LineCurve.cs" />

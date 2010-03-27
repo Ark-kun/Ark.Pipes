@@ -6,6 +6,7 @@ namespace Ark.XNA.Geometry {
         public DynamicBoundVector() {
             StartPoint = Constant<Vector2>.Default;
             EndPoint = Constant<Vector2>.Default;
+            _center = (Provider<Vector2>)(() => (StartPoint.Value + EndPoint.Value) / 2);
         }
 
         public Provider<Vector2> StartPoint { get; set; }
@@ -16,5 +17,12 @@ namespace Ark.XNA.Geometry {
                 return new BoundVector(StartPoint, EndPoint);
             }
         }
-    }    
+
+        private Provider<Vector2> _center;
+        public Provider<Vector2> Center {
+            get {
+                return _center;
+            }
+        }
+    }
 }
