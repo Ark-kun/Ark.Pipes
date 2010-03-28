@@ -114,7 +114,7 @@
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Game.cs" />
+    <Compile Include="Games\TestGame1.cs" />
     <Compile Include="TransformBase.cs" />
     <Compile Include="XnaMatrixTransform.cs" />
   </ItemGroup>
@@ -167,6 +167,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ark.Pipes\Ark.Pipes.Tests.cs" />
+    <Compile Include="Games\TestGame2.cs" />
     <Compile Include="Geometry\BoundVector.cs" />
     <Compile Include="Geometry\Curves\LemniscateOfBernoulliCurve.cs" />
     <Compile Include="Geometry\Curves\BadLemniscateOfBernoulliCurve.cs" />
@@ -174,6 +175,7 @@
     <Compile Include="Ark.Pipes\DynamicConverter.cs" />
     <Compile Include="Geometry\Curves\LineCurve.cs" />
     <Compile Include="Geometry\RandomVectorInsideRectangle.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="ProviderGameComponent.cs" />
     <Compile Include="SpriteTypes\StaticSprite.cs" />
     <Compile Include="Geometry\Curves\CurveMovement.cs" />

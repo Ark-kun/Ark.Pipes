@@ -22,7 +22,7 @@ using Ark.XNA.Geometry.Curves.Dynamic;
 using Ark.XNA.Geometry.Curves;
 
 namespace Ark.Shohou {
-    public class MyGame : Microsoft.Xna.Framework.Game {
+    public class TestGame1 : Microsoft.Xna.Framework.Game {
         private const int TargetFrameRate = 60;
         //private const int BackBufferWidth = 1280;
         //private const int BackBufferHeight = 720;
@@ -35,7 +35,7 @@ namespace Ark.Shohou {
         Vector2 screenCenter;
         Rectangle screenRectangle;
 
-        public MyGame() {
+        public TestGame1() {
             Content.RootDirectory = "Content";
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = BackBufferWidth;
@@ -243,16 +243,6 @@ namespace Ark.Shohou {
         protected override void EndDraw() {
             spriteBatch.End();
             base.EndDraw();
-        }
-    }
-
-    static class Program {
-        static void Main(string[] args) {
-            //Ark.Pipes.Tests.Test();
-
-            using (Game game = new MyGame()) {
-                game.Run();
-            }
         }
     }
 }
