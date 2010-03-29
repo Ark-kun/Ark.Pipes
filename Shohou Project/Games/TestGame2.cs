@@ -55,9 +55,24 @@ namespace Ark.Shohou {
             var time = new Time();
             Components.Add(time);
 
-            var cursor = new CoolSprite(this, "Circle2", "Circle3");
-            cursor.Position = Ark.Pipes.Mouse.Position;
-            Components.Add(cursor);
+            //var cursor = new CoolSprite(this, "Circle2", "Circle3");
+            //cursor.Position = Ark.Pipes.Mouse.Position;
+            //Components.Add(cursor);
+
+            var rootTransform =  new XnaMatrix3Transform(Matrix.CreateRotationZ(1));
+            var rootFrame = new DynamicFrame(rootTransform);
+
+            var cursor3D = new Function<Vector2, Vector3>(v2 => v2.ToVector3(), Ark.Pipes.Mouse.Position);
+            var cursorTransform = new TranslationTransform3D() { Translation = cursor3D };
+            var cursorFrame = new DynamicFrame(rootFrame, cursorTransform);
+
+
+            //var cursorSprite = new DynamicSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Position = Ark.Pipes.Mouse.Position };
+
+            var cursorSpriteTransform = new FunctionTransform<Vector2>(v2 => cursorFrame.GetAbsoluteTransform().Transform (v2.ToVector3()).ToVector2());
+            var cursorSprite = new TransformedSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Transform = cursorSpriteTransform };
+
+            Components.Add(cursorSprite);
 
             base.Initialize();
         }

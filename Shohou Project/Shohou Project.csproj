@@ -105,12 +105,9 @@
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
     <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
-    <Compile Include="Components\KeyboardControlledObject.cs" />
     <Compile Include="Extensions.cs" />
-    <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Ark.Pipes\Ark.Pipes.cs" />
-    <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -166,7 +163,12 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ark.Functional.For.cs" />
     <Compile Include="Ark.Pipes\Ark.Pipes.Tests.cs" />
+    <Compile Include="Components\CoolSprite.cs" />
+    <Compile Include="Components\FpsCounter.cs" />
+    <Compile Include="Components\KeyboardControlledObject.cs" />
+    <Compile Include="Frame.cs" />
     <Compile Include="Games\TestGame2.cs" />
     <Compile Include="Geometry\BoundVector.cs" />
     <Compile Include="Geometry\Curves\LemniscateOfBernoulliCurve.cs" />

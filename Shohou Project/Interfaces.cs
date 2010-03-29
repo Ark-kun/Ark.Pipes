@@ -44,8 +44,8 @@ namespace Ark.XNA {
     public interface ITransform<T> {
         T Transform(T value);
     }
-    public interface IInversibleTransform<T> : ITransform<T> {
-        IInversibleTransform<T> Inverse { get; }
+    public interface IInvertibleTransform<T> : ITransform<T> {
+        IInvertibleTransform<T> Inverse { get; }
     }
 
     public interface IHasParent<T> {

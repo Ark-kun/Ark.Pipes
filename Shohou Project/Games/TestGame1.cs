@@ -191,7 +191,7 @@ namespace Ark.Shohou {
                 float phase = (float)(rnd.NextDouble() * (2 * Math.PI)); //full delta
                 var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f + phase) };
 
-                var bullet = new DynamicSprite(this, spriteBatch) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
+                var bullet = new DynamicSprite(this) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
                 Components.Add(bullet);
             }
 
