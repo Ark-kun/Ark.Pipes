@@ -11,9 +11,13 @@ namespace Ark.XNA {
 
         // Events
         //public event EventHandler Disposed;
+#if XNA4
+        public event EventHandler<EventArgs> EnabledChanged;
+        public event EventHandler<EventArgs> UpdateOrderChanged;
+#else
         public event EventHandler EnabledChanged;
         public event EventHandler UpdateOrderChanged;
-
+#endif
         //// Methods
         //public ProviderGameComponent(Game game) {
         //    _game = game;

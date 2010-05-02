@@ -34,7 +34,7 @@ namespace Ark.XNA.Components {
             base.Draw(gameTime);
 
             frameCount += 1;
-            var FPS = frameCount / gameTime.TotalRealTime.TotalSeconds;
+            var FPS = frameCount / gameTime.TotalGameTime.TotalSeconds;
 
             spriteBatch.DrawString(someFont, FPS.ToString(), position, fpsColor);
             //spriteBatch.DrawString(someFont, gameTime.TotalGameTime.TotalSeconds.ToString(), fpsPosition, fpsColor);

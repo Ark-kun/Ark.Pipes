@@ -61,13 +61,13 @@ namespace Ark.XNA.Transforms {
 
 
     public static class Transform<T> {
-        static IdentityTransform<T> _identity = new IdentityTransform<T>();
+        static IdentityTransform _identity = new IdentityTransform();
 
         public static IInvertibleTransform<T> Identity {
             get { return _identity; }
         }
 
-        private class IdentityTransform<T> : IInvertibleTransform<T> {
+        private class IdentityTransform : IInvertibleTransform<T> {
             public T Transform(T value) {
                 return value;
             }

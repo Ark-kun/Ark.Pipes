@@ -24,7 +24,8 @@ namespace Ark.Pipes {
             Vector3 v8 = rndVector3;
 
             //var rndDoubleScaled = (Provider<double>)((k) => k * rndDouble.RandomValue);
-
+            //var v1 = rndDouble.RandomValue.Value;
+            //double v2 = rndDouble.RandomValue;
             rndDouble = rndDouble;
         }
     }
