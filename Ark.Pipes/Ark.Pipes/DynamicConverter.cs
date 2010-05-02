@@ -1,8 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using Ark.Pipes;
-
-namespace Ark.Pipes {
+﻿namespace Ark.Pipes {
     public abstract class DynamicConverter<T, TResult> : Provider<TResult> {
         public DynamicConverter()
             : this(Constant<T>.Default) {

@@ -116,7 +116,6 @@
     <Compile Include="Bullets\StraitLineBullet.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="Ark.Pipes\Ark.Pipes.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -173,7 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ark.Functional.For.cs" />
-    <Compile Include="Ark.Pipes\Ark.Pipes.Tests.cs" />
     <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Components\KeyboardControlledObject.cs" />
@@ -183,7 +181,6 @@
     <Compile Include="Geometry\Curves\LemniscateOfBernoulliCurve.cs" />
     <Compile Include="Geometry\Curves\BadLemniscateOfBernoulliCurve.cs" />
     <Compile Include="Geometry\DynamicBoundVector.cs" />
-    <Compile Include="Ark.Pipes\DynamicConverter.cs" />
     <Compile Include="Geometry\Curves\LineCurve.cs" />
     <Compile Include="Geometry\RandomVectorInsideRectangle.cs" />
     <Compile Include="Program.cs" />
@@ -196,6 +193,14 @@
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Testing\Ark.Pipes.Testing.csproj">
+      <Project>{C5633165-EEA6-4768-99FE-75B7123AED17}</Project>
+      <Name>Ark.Pipes.Testing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes\Ark.Pipes.csproj">
+      <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
+      <Name>Ark.Pipes</Name>
+    </ProjectReference>
     <ProjectReference Include="Content\Content_vs2010.contentproj">
       <Project>{5C03F9DC-140D-4815-BFC9-A5E21BBE4899}</Project>
       <Name>Content_vs2010</Name>

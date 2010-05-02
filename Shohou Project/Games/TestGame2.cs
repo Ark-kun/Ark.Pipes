@@ -59,7 +59,7 @@ namespace Ark.Shohou {
             //cursor.Position = Ark.Pipes.Mouse.Position;
             //Components.Add(cursor);
 
-            var rootTransform =  new XnaMatrix3Transform(Matrix.CreateRotationZ(1));
+            var rootTransform = new XnaMatrix3Transform(Matrix.CreateTranslation(-300, -300, 0) * Matrix.CreateRotationZ(1) * Matrix.CreateTranslation(300, 300, 0));
             var rootFrame = new DynamicFrame(rootTransform);
 
             var cursor3D = new Function<Vector2, Vector3>(v2 => v2.ToVector3(), Ark.Pipes.Mouse.Position);
@@ -69,8 +69,25 @@ namespace Ark.Shohou {
 
             //var cursorSprite = new DynamicSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Position = Ark.Pipes.Mouse.Position };
 
-            var cursorSpriteTransform = new FunctionTransform<Vector2>(v2 => cursorFrame.GetAbsoluteTransform().Transform (v2.ToVector3()).ToVector2());
+            var cursorSpriteTransform = new FunctionTransform<Vector2>(v2 => cursorFrame.GetAbsoluteTransform().Transform(v2.ToVector3()).ToVector2());
             var cursorSprite = new TransformedSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Transform = cursorSpriteTransform };
+
+            //var source = Ark.Pipes.Mouse.Position;
+
+            ////immidiateTarget
+            //Provider<Vector2> immidiateTarget = source.Value;
+
+            ////singleHomingTarget
+            //{
+            //    Vector2 target = Vector2.Zero;
+            //    bool locked = false;
+            //    Provider<Vector2> singleHomingTarget = (Provider<Vector2>)(() => { if (!locked) { target = source; locked = true; } return target; });
+            //}
+
+            ////homingTarget
+            //Provider<Vector2> homingTarget = source;
+
+            
 
             Components.Add(cursorSprite);
 

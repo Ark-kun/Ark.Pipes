@@ -3,7 +3,7 @@ using System;
 
 namespace Ark.Pipes {
     public class Tests {
-        public static void Test() {
+        public static void Main() {
 
             var rndDouble = new RandomDouble();
             var v1 = rndDouble.RandomValue.Value;
