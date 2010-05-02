@@ -116,6 +116,7 @@
     <Compile Include="Bullets\StraitLineBullet.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
+    <Compile Include="SpriteTypes\TransformedSprite.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
     <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
