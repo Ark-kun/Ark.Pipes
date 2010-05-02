@@ -11,7 +11,8 @@
     <RootNamespace>Ark.Pipes.testing</RootNamespace>
     <AssemblyName>Ark.Pipes.testing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>Svn</SccProjectName>
     <SccLocalPath>Svn</SccLocalPath>
@@ -37,6 +38,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>Ark.Pipes.Tests</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ark.Pipes.Tests.cs" />
   </ItemGroup>
@@ -45,6 +49,14 @@
       <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
       <Name>Ark.Pipes</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib">
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
