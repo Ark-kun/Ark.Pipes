@@ -115,6 +115,7 @@
     <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Games\TestGame3.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="SpriteTypes\TransformedSprite.cs" />
     <Compile Include="SpriteTypes\DynamicSprite.cs" />
@@ -193,7 +194,7 @@
     <Compile Include="ProviderGameComponent.cs" />
     <Compile Include="SpriteTypes\StaticSprite.cs" />
     <Compile Include="Geometry\Curves\CurveMovement.cs" />
-    <Compile Include="Time.cs" />
+    <Compile Include="GameTimeProvider.cs" />
     <None Include="app.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />

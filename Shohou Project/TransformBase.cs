@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Ark.XNA.Transforms {
-    public class FunctionTransform<T> : ITransform<T> {
+    public sealed class FunctionTransform<T> : ITransform<T> {
         Func<T, T> _transform;
 
         public FunctionTransform(Func<T, T> transform) {
@@ -17,7 +17,7 @@ namespace Ark.XNA.Transforms {
         }
     }
 
-    public class InvertibleFunctionTransform<T> : IInvertibleTransform<T> {
+    public sealed class InvertibleFunctionTransform<T> : IInvertibleTransform<T> {
         Func<T, T> _transform;
         IInvertibleTransform<T> _inverseTransform;
 
@@ -40,7 +40,7 @@ namespace Ark.XNA.Transforms {
         }
     }
 
-    public class UpdateableFunctionTransform<T> : GameComponent, ITransform<T> {
+    public sealed class UpdateableFunctionTransform<T> : GameComponent, ITransform<T> {
         Func<double, Func<T, T>> _transformFactory = null;
         Func<T, T> _transform = null;
 

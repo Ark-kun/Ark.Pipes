@@ -22,6 +22,7 @@ using Ark.XNA.Geometry.Curves.Dynamic;
 using Ark.XNA.Geometry.Curves;
 
 namespace Ark.Shohou {
+    //Testing DynamicFrame
     public class TestGame2 : Microsoft.Xna.Framework.Game {
         private const int TargetFrameRate = 60;
         private const int BackBufferWidth = 1000;
@@ -52,7 +53,7 @@ namespace Ark.Shohou {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Services.AddService(typeof(SpriteBatch), _spriteBatch);
 
-            var time = new Time();
+            var time = new GameTimeProvider();
             Components.Add(time);
 
             //var cursor = new CoolSprite(this, "Circle2", "Circle3");

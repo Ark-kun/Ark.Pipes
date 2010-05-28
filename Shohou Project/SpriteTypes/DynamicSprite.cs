@@ -49,5 +49,14 @@ namespace Ark.XNA.Sprites {
             base.Draw(gameTime);
             Draw();
         }
+
+        public delegate void GameTimeEvent(GameTime gameTime);
+        public event GameTimeEvent Updated;
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+            if (Updated != null) {
+                Updated(gameTime);
+            }
+        }
     }
 }

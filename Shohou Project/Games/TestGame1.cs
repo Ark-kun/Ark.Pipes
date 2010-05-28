@@ -168,7 +168,7 @@ namespace Ark.Shohou {
             ////hbf = new HomingBulletFactory(this, ds1, screenRectangle, 0.00000000000001f);
             ////hbf.Target = Ark.Pipes.Mouse.Position;
 
-            var time = new Time();
+            var time = new GameTimeProvider();
             Components.Add(time);
 
             Random rnd = new Random();

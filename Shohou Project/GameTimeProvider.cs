@@ -6,7 +6,7 @@ using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
 namespace Ark.XNA {
-    public class Time : ProviderGameComponent<float> {
+    public class GameTimeProvider : ProviderGameComponent<float> {
         float _time;
 
         public override void Update(GameTime gameTime) {
