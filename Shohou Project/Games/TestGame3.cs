@@ -33,6 +33,7 @@ namespace Ark.Shohou {
         Rectangle _screenRectangle;
 
         GameTimeProvider time;
+        Time realTime;
 
         Random _rnd = new Random();
 
@@ -50,6 +51,7 @@ namespace Ark.Shohou {
 
         LemniscateOfBernoulliCurve inf;
         CurveMovement cm;
+        CurveMovement cm2;
 
         protected override void Initialize() {
             _screenRectangle = new Rectangle(_graphics.GraphicsDevice.Viewport.X, _graphics.GraphicsDevice.Viewport.Y, _graphics.GraphicsDevice.Viewport.Width, _graphics.GraphicsDevice.Viewport.Height);
@@ -59,13 +61,22 @@ namespace Ark.Shohou {
 
             time = new GameTimeProvider();
             Components.Add(time);
+            realTime = new Time();
 
             var bv = new DynamicBoundVector() {
                 StartPoint = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 - 100, _screenRectangle.Top + _screenRectangle.Height - 200),
                 EndPoint = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 + 100, _screenRectangle.Top + _screenRectangle.Height - 200)
             };
             inf = new LemniscateOfBernoulliCurve(bv);
-            cm = new CurveMovement(inf) { Time = time };
+            cm = new CurveMovement(inf) { Time = new Function<float>(() => time.Value * 0.004f) };
+            cm2 = new CurveMovement(inf) { Time = new Function<float>(() => realTime.Value * 0.004f) };
+
+            var cannon2 = new DynamicSprite(this) { Position = cm.Position, Texture = Content.Load<Texture2D>("Bullet 2"), Tint = Color.Red };
+            Components.Add(cannon2);
+
+            var cannon3 = new DynamicSprite(this) { Position = cm2.Position, Texture = Content.Load<Texture2D>("Bullet 2"), Tint = Color.Red };
+            Components.Add(cannon3);
+
             base.Initialize();
         }
 
@@ -73,7 +84,8 @@ namespace Ark.Shohou {
             Vector2 position;
             //position = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 - 20, _screenRectangle.Top + _screenRectangle.Height - 100);
             //position = inf.Evaluate(time.Value) + new Vector2(-20, 0);
-            position = cm.Position + new Vector2(-20, 0);
+            //position = cm.Position + new Vector2(-20, 0);
+            position = cm.Position;
             var b = Bullets.CreateStraitConstantVelocityBullet(this, time, position, new Vector2(0, -0.5f), Content.Load<Texture2D>("Bullet 2"), startTime);
             var killerRect = _screenRectangle;
             //killerRect.Inflate(-100, -100);
@@ -85,8 +97,9 @@ namespace Ark.Shohou {
             Vector2 position;
             //position = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 + 20, _screenRectangle.Top + _screenRectangle.Height - 100);
             //position = inf.Evaluate(time.Value) + new Vector2(+20, 0);
-            position = cm.Position + new Vector2(+20, 0);
-            var b = Bullets.CreateStraitConstantVelocityBullet(this, time, position, new Vector2(0, -0.5f), Content.Load<Texture2D>("Bullet 2"), startTime);
+            //position = cm2.Position + new Vector2(+20, 0);
+            position = cm2.Position;
+            var b = Bullets.CreateStraitConstantVelocityBullet(this, realTime, position, new Vector2(0, -0.5f), Content.Load<Texture2D>("Bullet 2"), startTime);
             var killerRect = _screenRectangle;
             //killerRect.Inflate(-100, -100);
             var killer = Bullets.CreateBoundingRectangleCondition(b.Position, killerRect);
@@ -97,7 +110,7 @@ namespace Ark.Shohou {
         protected override void Update(GameTime gameTime) {
             //if (ShouldFire1(gameTime)) CreateBullet1();
             if (ShouldFire2(gameTime)) CreateBullet1();
-            TryFire3(gameTime);
+            TryFire3();
 
             base.Update(gameTime);
         }
@@ -118,6 +131,7 @@ namespace Ark.Shohou {
 
         TimeSpan _lastFireTime;
         TimeSpan _fireDelay = new TimeSpan(0, 0, 0, 0, 50);
+
         bool ShouldFire2(GameTime gameTime) {
             var state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Space)) {
@@ -130,21 +144,20 @@ namespace Ark.Shohou {
         }
 
         bool _keyPressed3 = false;
-        TimeSpan _lastFireTime3;
-        void TryFire3(GameTime gameTime) {
+        float _fireDelay3 = 50;
+        float _lastFireTime3;
+        void TryFire3() {
             var state = Keyboard.GetState();
             if (state.IsKeyDown(Keys.Space)) {
                 if (!_keyPressed3) {
                     _keyPressed3 = true;
-                    if (gameTime.TotalGameTime - _lastFireTime3 >= _fireDelay) {
-                        _lastFireTime3 = gameTime.TotalGameTime - _fireDelay;
+                    if (_lastFireTime3 < realTime.Value - _fireDelay3) {
+                        _lastFireTime3 = realTime.Value - _fireDelay3;
                     }
                 }
-                while (gameTime.TotalGameTime - _lastFireTime3 >= _fireDelay) {
-                    _lastFireTime3 += _fireDelay;
-                    if (state.IsKeyDown(Keys.Space)) {
-                        CreateBullet2((float)_lastFireTime3.TotalMilliseconds);
-                    }
+                while (realTime.Value - _lastFireTime3 >= _fireDelay3) {
+                    _lastFireTime3 += _fireDelay3;
+                    CreateBullet2(_lastFireTime3);
                 }
             } else {
                 _keyPressed3 = false;
