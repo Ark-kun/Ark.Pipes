@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes", "Ark.Pipes\Ark.Pipes.csproj", "{1BD2C1D6-FD34-4305-B92C-AB936814255F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Testing", "Ark.Pipes.testing\Ark.Pipes.Testing.csproj", "{C5633165-EEA6-4768-99FE-75B7123AED17}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Testing", "Ark.Pipes.Testing\Ark.Pipes.Testing.csproj", "{C5633165-EEA6-4768-99FE-75B7123AED17}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -11,16 +11,38 @@ Global
 		Manager = AnkhSVN - Subversion Support for Visual Studio
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Windows Phone = Debug|Windows Phone
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Windows Phone = Release|Windows Phone
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Windows Phone.ActiveCfg = Debug|x86
 		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|x86.ActiveCfg = Debug|x86
 		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|x86.Build.0 = Debug|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Any CPU.ActiveCfg = Release|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Mixed Platforms.Build.0 = Release|x86
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Windows Phone.ActiveCfg = Release|x86
 		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|x86.ActiveCfg = Release|x86
 		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|x86.Build.0 = Release|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|Windows Phone.ActiveCfg = Debug|x86
 		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|x86.ActiveCfg = Debug|x86
 		{C5633165-EEA6-4768-99FE-75B7123AED17}.Debug|x86.Build.0 = Debug|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|Any CPU.ActiveCfg = Release|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|Mixed Platforms.Build.0 = Release|x86
+		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|Windows Phone.ActiveCfg = Release|x86
 		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|x86.ActiveCfg = Release|x86
 		{C5633165-EEA6-4768-99FE-75B7123AED17}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection

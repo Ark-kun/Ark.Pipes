@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Testing portable", "Ark.Pipes.Testing\Ark.Pipes.Testing portable.csproj", "{4C0A2D8A-A746-484F-A27A-F49149EAE555}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|Windows Phone = Debug|Windows Phone
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|Windows Phone = Release|Windows Phone
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|x86.ActiveCfg = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Windows Phone.ActiveCfg = Release|Any CPU
+		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
