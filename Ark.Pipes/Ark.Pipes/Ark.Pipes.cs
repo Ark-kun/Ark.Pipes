@@ -1,11 +1,11 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public interface IIn<T> {
+    public interface IIn<in T> {
         void SetValue(T value);
     }
 
-    public interface IOut<T> {
+    public interface IOut<out T> {
         T GetValue();
     }
 
