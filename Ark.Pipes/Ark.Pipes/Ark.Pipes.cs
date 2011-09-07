@@ -69,19 +69,28 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class Variable<T> : Provider<T> {
-        public T value;
+    public sealed class Variable<T> : Provider<T>, IIn<T> {
+        T _value;
 
         public Variable()
             : this(default(T)) {
         }
 
         public Variable(T value) {
-            this.value = value;
+            _value = value;
         }
 
         public override T GetValue() {
-            return this.value;
+            return _value;
+        }
+
+        public void SetValue(T value) {
+            _value = value;
+        }
+
+        public new T Value {
+            get { return GetValue(); }
+            set { SetValue(value); }
         }
     }
 
