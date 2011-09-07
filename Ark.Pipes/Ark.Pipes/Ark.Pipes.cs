@@ -1,14 +1,15 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public interface In<T> {
-        T Value { set; }
-    }
-    public interface Out<T> {
-        T Value { get; }
+    public interface IIn<T> {
+        void SetValue(T value);
     }
 
-    public abstract class Provider<T> : Out<T> {
+    public interface IOut<T> {
+        T GetValue();
+    }
+
+    public abstract class Provider<T> : IOut<T> {
         static public implicit operator Provider<T>(T value) {
             return new Constant<T>(value);
         }
@@ -17,15 +18,24 @@ namespace Ark.Pipes {
             return new Function<T>(value);
         }
 
-        //static public implicit operator Provider<T>(Func<T1, T> value) {
-        //    return new Function<T1, T>(value);
-        //}
+        [System.Runtime.CompilerServices.SpecialName]
+        static public Provider<T> op_Implicit<T1>(Func<T1, T> value) {
+            return new Function<T1, T>(value);
+        }
+
+        static public implicit operator Provider<T>(Func<T, T> value) {
+            return new Function<T, T>(value);
+        }
 
         static public implicit operator T(Provider<T> provider) {
             return provider.Value;
         }
 
-        public abstract T Value { get; }
+        public abstract T GetValue();
+
+        public T Value {
+            get { return GetValue(); }
+        }
     }
 
     public sealed class Function<TResult> : Provider<TResult> {
@@ -35,10 +45,8 @@ namespace Ark.Pipes {
             _f = f;
         }
 
-        public override TResult Value {
-            get {
-                return _f();
-            }
+        public override TResult GetValue() {
+            return _f();
         }
     }
 
@@ -50,10 +58,8 @@ namespace Ark.Pipes {
             _value = value;
         }
 
-        public override T Value {
-            get {
-                return _value;
-            }
+        public override T GetValue() {
+            return _value;
         }
 
         public static Constant<T> Default {
@@ -74,10 +80,8 @@ namespace Ark.Pipes {
             this.value = value;
         }
 
-        public override T Value {
-            get {
-                return this.value;
-            }
+        public override T GetValue() {
+            return this.value;
         }
     }
 
@@ -135,10 +139,8 @@ namespace Ark.Pipes {
             _function = f;
         }
 
-        public override TResult Value {
-            get {
-                return _function(Input);
-            }
+        public override TResult GetValue() {
+            return _function(Input);
         }
     }
 }

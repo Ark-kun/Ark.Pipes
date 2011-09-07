@@ -27,6 +27,15 @@ namespace Ark.Pipes {
             //var v1 = rndDouble.RandomValue.Value;
             //double v2 = rndDouble.RandomValue;
             rndDouble = rndDouble;
+
+
+            Func<int, string> ff1 = i => i.ToString();
+            //Provider<string> p11 = (Provider<string>)ff1;
+            Provider<string> p12 = Provider<string>.op_Implicit(ff1);
+
+            Func<string, string> ff2 = s => s;
+            Provider<string> p21 = (Provider<string>)ff2;
+            Provider<string> p22 = Provider<string>.op_Implicit(ff2);
         }
     }
 
@@ -59,11 +68,9 @@ namespace Ark.Pipes {
     }
 
     public class MousePosition : Provider<Vector2> {
-        public override Vector2 Value {
-            get {
-                var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
-                return new Vector2(mouseState.X, mouseState.Y);
-            }
+        public override Vector2 GetValue() {
+            var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
+            return new Vector2(mouseState.X, mouseState.Y);
         }
     }
 }
