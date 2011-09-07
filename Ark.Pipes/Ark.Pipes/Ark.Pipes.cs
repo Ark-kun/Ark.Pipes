@@ -94,48 +94,6 @@ namespace Ark.Pipes {
         }
     }
 
-    //public class Property<T> : In<T>, Out<T> {
-    //    private Provider<T> _provider;
-
-    //    public Property() {
-    //        _provider = Constant<T>.Default;
-    //    }
-
-    //    public Property(T value) {
-    //        _provider = new Constant<T>(value);
-    //    }
-
-    //    public Property(Provider<T> provider) {
-    //        _provider = provider;
-    //    }
-
-    //    public Provider<T> Provider {
-    //        get {
-    //            return _provider;
-    //        }
-    //        set {
-    //            _provider = value;
-    //        }
-    //    }
-
-    //    public T Value {
-    //        get {
-    //            return _provider.Value;
-    //        }
-    //        set {
-    //            _provider = new Constant<T>(value);
-    //        }
-    //    }
-
-    //    static public implicit operator T(Property<T> property) {
-    //        return property.Value;
-    //    }
-    //}
-
-    //public class Consumer<T> : In<T> {
-    //    private Provider<T> _provider = new Constant<T>();
-    //}
-
     public class Function<T, TResult> : DynamicConverter<T, TResult> {
         private Func<T, TResult> _function;
 
