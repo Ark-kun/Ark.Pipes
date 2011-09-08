@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
 
-namespace Ark.Pipes {
+namespace Ark.Pipes.Testing {
     public class Tests {
         public static void Main() {
 
@@ -36,6 +36,11 @@ namespace Ark.Pipes {
             Func<string, string> ff2 = s => s;
             Provider<string> p21 = (Provider<string>)ff2;
             Provider<string> p22 = Provider<string>.op_Implicit(ff2);
+
+            var v2d1 = new Vector2D(7, 13);
+            double l1 = v2d1.Length;
+            v2d1.X = 666;
+            double l2 = v2d1.Length;
         }
     }
 

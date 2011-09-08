@@ -8,8 +8,8 @@
     <ProjectGuid>{C5633165-EEA6-4768-99FE-75B7123AED17}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ark.Pipes.testing</RootNamespace>
-    <AssemblyName>Ark.Pipes.testing</AssemblyName>
+    <RootNamespace>Ark.Pipes.Testing</RootNamespace>
+    <AssemblyName>Ark.Pipes.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -39,10 +39,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ark.Pipes.Tests</StartupObject>
+    <StartupObject>Ark.Pipes.Testing.Tests</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ark.Pipes.Tests.cs" />
+    <Compile Include="Vector2D.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">
@@ -53,6 +54,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
