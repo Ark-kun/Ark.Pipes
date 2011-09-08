@@ -38,18 +38,6 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class Function<TResult> : Provider<TResult> {
-        private Func<TResult> _f;
-
-        public Function(Func<TResult> f) {
-            _f = f;
-        }
-
-        public override TResult GetValue() {
-            return _f();
-        }
-    }
-
     public sealed class Constant<T> : Provider<T> {
         static Constant<T> _default = new Constant<T>(default(T));
         private T _value;
@@ -91,23 +79,6 @@ namespace Ark.Pipes {
         public new T Value {
             get { return GetValue(); }
             set { SetValue(value); }
-        }
-    }
-
-    public class Function<T, TResult> : DynamicConverter<T, TResult> {
-        private Func<T, TResult> _function;
-
-        public Function(Func<T, TResult> f) {
-            _function = f;
-        }
-
-        public Function(Func<T, TResult> f, Provider<T> argument)
-            : base(argument) {
-            _function = f;
-        }
-
-        public override TResult GetValue() {
-            return _function(Input);
         }
     }
 }
