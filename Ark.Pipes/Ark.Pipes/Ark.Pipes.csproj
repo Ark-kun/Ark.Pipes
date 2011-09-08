@@ -44,7 +44,6 @@
     <Compile Include="Ark.Pipes.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="Property.cs" />
-    <Compile Include="ReadOnlyProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

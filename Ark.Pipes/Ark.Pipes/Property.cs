@@ -1,5 +1,5 @@
 ﻿namespace Ark.Pipes {
-    public sealed class Property<T> : IIn<T>, IOut<T>, IIn<Provider<T>>, IOut<Provider<T>> {
+    public sealed class Property<T> : Provider<T>, IIn<T>, IIn<Provider<T>>, IOut<Provider<T>> {
         private Provider<T> _provider;
 
         public Property() {
@@ -10,7 +10,7 @@
             _provider = provider;
         }
 
-        public T Value {
+        public new T Value {
             get { return _provider.GetValue(); }
             set { _provider = value; }
         }
@@ -20,15 +20,15 @@
             set { _provider = value; }
         }
 
-        public ReadOnlyProperty<T> AsReadOnly() {
-            return new ReadOnlyProperty<T>(this);
+        public Provider<T> AsReadOnly() {
+            return new Function<T>(GetValue);
         }
 
         void IIn<T>.SetValue(T value) {
             _provider = value;
         }
 
-        T IOut<T>.GetValue() {
+        public override T GetValue() {
             return _provider.GetValue();
         }
 
@@ -40,11 +40,8 @@
             return _provider;
         }
 
-        public static implicit operator Provider<T>(Property<T> property) {
-            return property._provider;
-        }
-
-        public static implicit operator Property<T>(Provider<T> provider) {
+        [System.Runtime.CompilerServices.SpecialName]
+        public static Property<T> op_Implicit(Provider<T> provider) {
             return new Property<T>(provider);
         }
 

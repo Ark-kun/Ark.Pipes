@@ -23,7 +23,7 @@ namespace Ark.Pipes {
 
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
-            _arg = arg;
+            _arg = new Property<T>(arg);
         }
 
         public override TResult GetValue() {
@@ -47,8 +47,8 @@ namespace Ark.Pipes {
 
         public Function(Func<T1, T2, TResult> function, Provider<T1> arg1, Provider<T2> arg2) {
             _function = function;
-            _arg1 = arg1;
-            _arg2 = arg2;
+            _arg1 = new Property<T1>(arg1);
+            _arg2 = new Property<T2>(arg2);
         }
 
         public override TResult GetValue() {
