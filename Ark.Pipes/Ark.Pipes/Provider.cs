@@ -2,6 +2,20 @@
 
 namespace Ark.Pipes {
     public abstract class Provider<T> : IOut<T> {
+        public abstract T GetValue();
+
+        public T Value {
+            get { return GetValue(); }
+        }
+
+        public event Action Changed;
+
+        protected void OnChanged() {
+            if (Changed != null) {
+                Changed();
+            }
+        }
+
         static public implicit operator Provider<T>(T value) {
             return new Constant<T>(value);
         }
@@ -21,12 +35,6 @@ namespace Ark.Pipes {
 
         static public implicit operator T(Provider<T> provider) {
             return provider.Value;
-        }
-
-        public abstract T GetValue();
-
-        public T Value {
-            get { return GetValue(); }
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Ark.Pipes {
             _function = function;
         }
 
+        public Function(IOut<TResult> source)
+            : this(source.GetValue) {
+            source.Changed += OnChanged;
+        }
+
         public override TResult GetValue() {
             return _function();
         }
@@ -24,6 +29,7 @@ namespace Ark.Pipes {
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
             _arg = new Property<T>(arg);
+            _arg.Changed += OnChanged;
         }
 
         public override TResult GetValue() {
@@ -32,7 +38,10 @@ namespace Ark.Pipes {
 
         public Property<T> Argument {
             get { return _arg; }
-            set { _arg.Provider = value.Provider; }
+            set { 
+                _arg.Provider = value.Provider;
+                OnChanged(); 
+            }
         }
     }
 
@@ -49,6 +58,8 @@ namespace Ark.Pipes {
             _function = function;
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
+            _arg1.Changed += OnChanged;
+            _arg2.Changed += OnChanged;
         }
 
         public override TResult GetValue() {
@@ -57,12 +68,18 @@ namespace Ark.Pipes {
 
         public Property<T1> Argument1 {
             get { return _arg1; }
-            set { _arg1.Provider = value.Provider; }
+            set { 
+                _arg1.Provider = value.Provider;
+                OnChanged();
+            }
         }
 
         public Property<T2> Argument2 {
             get { return _arg2; }
-            set { _arg2.Provider = value.Provider; }
+            set { 
+                _arg2.Provider = value.Provider;
+                OnChanged();
+            }
         }
     }
 }

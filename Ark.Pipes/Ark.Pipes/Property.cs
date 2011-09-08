@@ -8,24 +8,36 @@
 
         public Property(Provider<T> provider) {
             _provider = provider;
+            _provider.Changed += OnChanged;
         }
 
         public new T Value {
             get { return _provider.GetValue(); }
-            set { _provider = value; }
+            set {
+                _provider.Changed -= OnChanged;
+                _provider = new Constant<T>(value);
+                OnChanged();
+            }
         }
 
         public Provider<T> Provider {
             get { return _provider; }
-            set { _provider = value; }
+            set {
+                _provider.Changed -= OnChanged;
+                _provider = value;
+                _provider.Changed += OnChanged;
+                OnChanged();
+            }
         }
 
         public Provider<T> AsReadOnly() {
-            return new Function<T>(GetValue);
+            return new Function<T>(this);
         }
 
         void IIn<T>.SetValue(T value) {
+            _provider.Changed -= OnChanged;
             _provider = value;
+            OnChanged();
         }
 
         public override T GetValue() {
@@ -33,7 +45,7 @@
         }
 
         void IIn<Provider<T>>.SetValue(Provider<T> value) {
-            _provider = value;
+            Provider = value;
         }
 
         Provider<T> IOut<Provider<T>>.GetValue() {
@@ -49,8 +61,8 @@
             return property.Value;
         }
 
-        public static implicit operator Property<T>(T provider) {
-            return new Property<T>(provider);
+        public static implicit operator Property<T>(T value) {
+            return new Property<T>(value);
         }
     }
 }
