@@ -1,6 +1,7 @@
 ﻿namespace Ark.Pipes {
-    public sealed class Property<T> : Provider<T>, IIn<T>, IIn<Provider<T>>, IOut<Provider<T>> {
+    public sealed class Property<T> : Provider<T>, IIn<T>, IIn<Provider<T>>, IOut<Provider<T>>, INotifyProviderChanged {
         private Provider<T> _provider;
+        public event System.Action ProviderChanged;
 
         public Property() {
             _provider = Constant<T>.Default;
@@ -8,25 +9,26 @@
 
         public Property(Provider<T> provider) {
             _provider = provider;
-            _provider.Changed += OnChanged;
+            _provider.ValueChanged += OnValueChanged;
         }
 
         public new T Value {
             get { return _provider.GetValue(); }
             set {
-                _provider.Changed -= OnChanged;
+                _provider.ValueChanged -= OnValueChanged;
                 _provider = new Constant<T>(value);
-                OnChanged();
+                OnValueChanged();
             }
         }
 
         public Provider<T> Provider {
             get { return _provider; }
             set {
-                _provider.Changed -= OnChanged;
+                _provider.ValueChanged -= OnValueChanged;
                 _provider = value;
-                _provider.Changed += OnChanged;
-                OnChanged();
+                _provider.ValueChanged += OnValueChanged;
+                OnProviderChanged();
+                OnValueChanged();
             }
         }
 
@@ -34,10 +36,16 @@
             return new Function<T>(this);
         }
 
+        void OnProviderChanged() {
+            if (ProviderChanged != null) {
+                ProviderChanged();
+            }
+        }
+
         void IIn<T>.SetValue(T value) {
-            _provider.Changed -= OnChanged;
+            _provider.ValueChanged -= OnValueChanged;
             _provider = value;
-            OnChanged();
+            OnValueChanged();
         }
 
         public override T GetValue() {
@@ -63,7 +71,7 @@
 
         public static implicit operator Property<T>(T value) {
             return new Property<T>(value);
-        }
+        }        
     }
 }
 

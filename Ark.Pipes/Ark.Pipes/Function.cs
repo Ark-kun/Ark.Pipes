@@ -8,9 +8,17 @@ namespace Ark.Pipes {
             _function = function;
         }
 
+        public Function(Func<TResult> function, ref Action changedTrigger) {
+            _function = function;
+            changedTrigger += OnValueChanged;
+        }
+
         public Function(IOut<TResult> source)
             : this(source.GetValue) {
-            source.Changed += OnChanged;
+            var notifier = source as INotifyValueChanged;
+            if (notifier != null) {
+                notifier.ValueChanged += OnValueChanged;
+            }
         }
 
         public override TResult GetValue() {
@@ -29,7 +37,7 @@ namespace Ark.Pipes {
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
             _arg = new Property<T>(arg);
-            _arg.Changed += OnChanged;
+            _arg.ValueChanged += OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -38,9 +46,9 @@ namespace Ark.Pipes {
 
         public Property<T> Argument {
             get { return _arg; }
-            set { 
+            set {
                 _arg.Provider = value.Provider;
-                OnChanged(); 
+                OnValueChanged();
             }
         }
     }
@@ -58,8 +66,8 @@ namespace Ark.Pipes {
             _function = function;
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
-            _arg1.Changed += OnChanged;
-            _arg2.Changed += OnChanged;
+            _arg1.ValueChanged += OnValueChanged;
+            _arg2.ValueChanged += OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -68,17 +76,17 @@ namespace Ark.Pipes {
 
         public Property<T1> Argument1 {
             get { return _arg1; }
-            set { 
+            set {
                 _arg1.Provider = value.Provider;
-                OnChanged();
+                OnValueChanged();
             }
         }
 
         public Property<T2> Argument2 {
             get { return _arg2; }
-            set { 
+            set {
                 _arg2.Provider = value.Provider;
-                OnChanged();
+                OnValueChanged();
             }
         }
     }

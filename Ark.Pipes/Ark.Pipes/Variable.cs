@@ -16,7 +16,7 @@
 
         public void SetValue(T value) {
             _value = value;
-            OnChanged();
+            OnValueChanged();
         }
 
         public new T Value {

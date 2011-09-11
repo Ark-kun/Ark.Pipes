@@ -1,18 +1,18 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public abstract class Provider<T> : IOut<T> {
+    public abstract class Provider<T> : IOut<T>, INotifyValueChanged {
         public abstract T GetValue();
 
         public T Value {
             get { return GetValue(); }
         }
 
-        public event Action Changed;
+        public event Action ValueChanged;
 
-        protected void OnChanged() {
-            if (Changed != null) {
-                Changed();
+        protected void OnValueChanged() {
+            if (ValueChanged != null) {
+                ValueChanged();
             }
         }
 

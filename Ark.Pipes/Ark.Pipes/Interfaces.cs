@@ -7,6 +7,14 @@ namespace Ark.Pipes {
 
     public interface IOut<out T> {
         T GetValue();
-        event Action Changed;
     }
+
+    public interface INotifyValueChanged {
+        event Action ValueChanged;
+    }
+
+    public interface INotifyProviderChanged {
+        event Action ProviderChanged;
+    }
+
 }
