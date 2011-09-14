@@ -46,10 +46,7 @@ namespace Ark.Pipes {
 
         public Property<T> Argument {
             get { return _arg; }
-            set {
-                _arg.Provider = value.Provider;
-                OnValueChanged();
-            }
+            set { _arg.Provider = value.Provider; }
         }
     }
 
@@ -76,10 +73,7 @@ namespace Ark.Pipes {
 
         public Property<T1> Argument1 {
             get { return _arg1; }
-            set {
-                _arg1.Provider = value.Provider;
-                OnValueChanged();
-            }
+            set { _arg1.Provider = value.Provider; }
         }
 
         public Property<T2> Argument2 {
