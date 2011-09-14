@@ -14,21 +14,19 @@
 
         public new T Value {
             get { return _provider.GetValue(); }
-            set {
-                _provider.ValueChanged -= OnValueChanged;
-                _provider = new Constant<T>(value);
-                OnValueChanged();
-            }
+            set { Provider = new Constant<T>(value); }
         }
 
         public Provider<T> Provider {
             get { return _provider; }
             set {
-                _provider.ValueChanged -= OnValueChanged;
-                _provider = value;
-                _provider.ValueChanged += OnValueChanged;
-                OnProviderChanged();
-                OnValueChanged();
+                if (value != _provider) {
+                    _provider.ValueChanged -= OnValueChanged;
+                    _provider = value;
+                    _provider.ValueChanged += OnValueChanged;
+                    OnProviderChanged();
+                    OnValueChanged();                    
+                }
             }
         }
 
@@ -43,9 +41,7 @@
         }
 
         void IIn<T>.SetValue(T value) {
-            _provider.ValueChanged -= OnValueChanged;
-            _provider = value;
-            OnValueChanged();
+            Provider = new Constant<T>(value);
         }
 
         public override T GetValue() {
