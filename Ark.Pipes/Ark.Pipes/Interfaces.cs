@@ -17,4 +17,7 @@ namespace Ark.Pipes {
         event Action ProviderChanged;
     }
 
+    public interface INotifyElementChanged {
+        event Action<int> ElementChanged;
+    }
 }

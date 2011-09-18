@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachedProperty.cs" />
+    <Compile Include="HomogenousFunction.cs" />
+    <Compile Include="ProviderArray.cs" />
     <Compile Include="Provider.cs" />
     <Compile Include="TwoWayBinding.cs" />
     <Compile Include="Variable.cs" />
