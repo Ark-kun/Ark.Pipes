@@ -7,6 +7,10 @@
             _provider = Constant<T>.Default;
         }
 
+        public Property(T value) {
+            _provider = new Constant<T>(value);
+        }
+
         public Property(Provider<T> provider) {
             _provider = provider;
             _provider.ValueChanged += OnValueChanged;
