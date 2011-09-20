@@ -12,6 +12,7 @@
     <AssemblyName>Ark.Pipes.Xna</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -33,13 +34,16 @@
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mouse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ark.Pipes.Input\Ark.Pipes.Input.csproj">
+      <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
+      <Name>Ark.Pipes.Input</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">
       <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
       <Name>Ark.Pipes</Name>
