@@ -10,8 +10,10 @@ namespace Ark.Pipes {
             : this(Constant<double>.Default, Constant<double>.Default) {
         }
 
-        public Vector2Components(Provider<dynamic> point)
-            : this(new Function<double>(() => point.Value.X), new Function<double>(() => point.Value.Y)) {
+        public static Vector2Components From<T>(Provider<T> point) {
+            var x = new Function<T, double>(p => (double)(((dynamic)p).X), point);
+            var y = new Function<T, double>(p => (double)(((dynamic)p).Y), point);
+            return new Vector2Components(x, y);
         }
 
         public Vector2Components(Provider<double> x, Provider<double> y) {
