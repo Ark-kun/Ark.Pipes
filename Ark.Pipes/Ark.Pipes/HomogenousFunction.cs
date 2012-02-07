@@ -13,7 +13,6 @@ namespace Ark.Pipes {
             _function = function;
             _arity = arity;
             _args = new ProviderArray<T>(arity);
-            _args.ElementChanged += OnElementChanged;
         }
 
         public HomogenousFunction(Func<T[], T> function, Provider<T>[] args) {
@@ -21,7 +20,6 @@ namespace Ark.Pipes {
             _arity = args.Length;
 
             _args = new ProviderArray<T>(args);
-            _args.ElementChanged += OnElementChanged;
         }
 
         public override T GetValue() {
@@ -36,10 +34,6 @@ namespace Ark.Pipes {
 
         public int Arity {
             get { return _arity; }
-        }
-
-        void OnElementChanged(int idx) {
-            OnValueChanged();
         }
     }
 }

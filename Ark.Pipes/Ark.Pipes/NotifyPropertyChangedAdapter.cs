@@ -3,16 +3,16 @@
 namespace Ark.Pipes.Wpf {
     public class NotifyPropertyChangedAdapter<T> : INotifyPropertyChanged {
         const string _propertyName = "Value";
-        Provider<T> _value;
+        NotifyingProvider<T> _value;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public NotifyPropertyChangedAdapter(Provider<T> provider) {
+        public NotifyPropertyChangedAdapter(NotifyingProvider<T> provider) {
             _value = provider;
             _value.ValueChanged += OnPropertyChanged;
             OnPropertyChanged();
         }
 
-        public Provider<T> Value {
+        public NotifyingProvider<T> Value {
             get { return _value; }
             set {
                 if (value != _value) {

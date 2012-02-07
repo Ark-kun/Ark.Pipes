@@ -9,6 +9,9 @@ namespace Ark.Pipes {
         T GetValue();
     }
 
+    public interface INotifyingOut<out T> : IOut<T>, INotifyValueChanged {
+    }
+
     public interface INotifyValueChanged {
         event Action ValueChanged;
     }

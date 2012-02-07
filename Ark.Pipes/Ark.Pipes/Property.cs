@@ -13,7 +13,6 @@
 
         public Property(Provider<T> provider) {
             _provider = provider;
-            _provider.ValueChanged += OnValueChanged;
         }
 
         public new T Value {
@@ -25,11 +24,8 @@
             get { return _provider; }
             set {
                 if (value != _provider) {
-                    _provider.ValueChanged -= OnValueChanged;
                     _provider = value;
-                    _provider.ValueChanged += OnValueChanged;
                     OnProviderChanged();
-                    OnValueChanged();                    
                 }
             }
         }

@@ -1,5 +1,5 @@
 ﻿namespace Ark.Pipes {
-    public sealed class Variable<T> : Provider<T>, IIn<T> {
+    public sealed class Variable<T> : NotifyingProvider<T>, IIn<T> {
         T _value;
 
         public Variable()

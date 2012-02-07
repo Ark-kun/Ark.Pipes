@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework;
-using System;
+﻿using System;
+using Microsoft.Xna.Framework;
 
 namespace Ark.Pipes.Testing {
     public class Tests {
@@ -38,13 +38,16 @@ namespace Ark.Pipes.Testing {
             Provider<string> p22 = Provider<string>.op_Implicit(ff2);
 
             //Vector2D
-            var v2d1 = new Vector2D(7, 13);
-            v2d1.Length.Changed += () => { rndInt = 666; };
+            var v2d1 = new Vector2Components (7, 13);
+            //v2d1.Length.ValueChanged += () => { rndInt = 666; };
             double l1 = v2d1.Length;
             v2d1.X = rndDouble.RandomValue;
             double l2 = v2d1.Length;
 
             v2d1.X = new Function<double>(() => 1);
+
+            HelperProperties.Name[v2d1] = "v1";
+            
 
             //ReadOnlyProperty
             //ReadOnlyProperty<int> rop = rndInt;

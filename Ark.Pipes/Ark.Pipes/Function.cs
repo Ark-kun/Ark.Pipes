@@ -1,24 +1,15 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public sealed class Function<TResult> : Provider<TResult> {
+    public class Function<TResult> : Provider<TResult> {
         private Func<TResult> _function;
 
         public Function(Func<TResult> function) {
             _function = function;
         }
 
-        public Function(Func<TResult> function, ref Action changedTrigger) {
-            _function = function;
-            changedTrigger += OnValueChanged;
-        }
-
         public Function(IOut<TResult> source)
             : this(source.GetValue) {
-            var notifier = source as INotifyValueChanged;
-            if (notifier != null) {
-                notifier.ValueChanged += OnValueChanged;
-            }
         }
 
         public override TResult GetValue() {
@@ -37,7 +28,6 @@ namespace Ark.Pipes {
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
             _arg = new Property<T>(arg);
-            _arg.ValueChanged += OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -63,8 +53,6 @@ namespace Ark.Pipes {
             _function = function;
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
-            _arg1.ValueChanged += OnValueChanged;
-            _arg2.ValueChanged += OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -78,10 +66,7 @@ namespace Ark.Pipes {
 
         public Property<T2> Argument2 {
             get { return _arg2; }
-            set {
-                _arg2.Provider = value.Provider;
-                OnValueChanged();
-            }
+            set { _arg2.Provider = value.Provider; }
         }
     }
 
@@ -100,9 +85,6 @@ namespace Ark.Pipes {
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
             _arg3 = new Property<T3>(arg3);
-            _arg1.ValueChanged += OnValueChanged;
-            _arg2.ValueChanged += OnValueChanged;
-            _arg3.ValueChanged += OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -116,18 +98,12 @@ namespace Ark.Pipes {
 
         public Property<T2> Argument2 {
             get { return _arg2; }
-            set {
-                _arg2.Provider = value.Provider;
-                OnValueChanged();
-            }
+            set { _arg2.Provider = value.Provider; }
         }
 
         public Property<T3> Argument3 {
             get { return _arg3; }
-            set {
-                _arg3.Provider = value.Provider;
-                OnValueChanged();
-            }
+            set { _arg3.Provider = value.Provider; }
         }
     }
 }

@@ -4,16 +4,13 @@ using System.Collections.Generic;
 
 namespace Ark.Pipes {
     //public class PropertyArray<T> : Provider<T[]>, IIn<T[]>, IIn<Provider<T>[]>, IOut<Provider<T>[]>, INotifyProviderChanged {
-    public class ProviderArrayBase<T> : Provider<T[]>, IOut<Provider<T>[]>, INotifyElementChanged {
+    public class ProviderArrayBase<T> : Provider<T[]>, IOut<Provider<T>[]> {
         protected Property<T>[] _properties;
-
-        public event Action<int> ElementChanged;
 
         public ProviderArrayBase(int size) {
             _properties = new Property<T>[size];
             for (int i = 0; i < size; i++) {
                 _properties[i] = new Property<T>();
-                _properties[i].ValueChanged += () => OnElementChanged(i);
             }
         }
 
@@ -22,7 +19,6 @@ namespace Ark.Pipes {
             _properties = new Property<T>[size];
             for (int i = 0; i < size; i++) {
                 _properties[i] = new Property<T>(values[i]);
-                _properties[i].ValueChanged += () => OnElementChanged(i);
             }
         }
 
@@ -31,7 +27,6 @@ namespace Ark.Pipes {
             _properties = new Property<T>[size];
             for (int i = 0; i < size; i++) {
                 _properties[i] = new Property<T>(providers[i]);
-                _properties[i].ValueChanged += () => OnElementChanged(i);
             }
         }
 
@@ -49,12 +44,6 @@ namespace Ark.Pipes {
         public T[] Values {
             get {
                 return GetValue();
-            }
-        }
-
-        void OnElementChanged(int idx) {
-            if (ElementChanged != null) {
-                ElementChanged(idx);
             }
         }
 

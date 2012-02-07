@@ -11,8 +11,7 @@
     <RootNamespace>Ark.Pipes.Testing</RootNamespace>
     <AssemblyName>Ark.Pipes.Testing</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>Svn</SccProjectName>
     <SccLocalPath>Svn</SccLocalPath>
@@ -43,9 +42,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ark.Pipes.Tests.cs" />
-    <Compile Include="Vector2D.cs" />
+    <Compile Include="HelperProperties.cs" />
+    <Compile Include="PropertyConverter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ark.Pipes.Animation\Ark.Pipes.Animation.csproj">
+      <Project>{EC0C8E84-487E-423C-99F9-1FC405A05861}</Project>
+      <Name>Ark.Pipes.Animation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj">
       <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
       <Name>Ark.Pipes.Xna</Name>
@@ -58,9 +62,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86" />
     <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

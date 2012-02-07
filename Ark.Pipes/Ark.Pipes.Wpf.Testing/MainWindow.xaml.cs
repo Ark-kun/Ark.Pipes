@@ -17,7 +17,7 @@ namespace Ark.Pipes.Wpf.Testing {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        Property<float> _prop = 10;
+        NotifyingProperty<float> _prop = 10;
         DependencyPropertyAdapter<float> _adapter;
         DC _dc = new DC();
 
@@ -100,7 +100,7 @@ namespace Ark.Pipes.Wpf.Testing {
         }
 
         private void button1_Click(object sender, RoutedEventArgs e) {
-            _prop.Provider = new Function<float, float>((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
+            _prop.Provider = new NotifyingFunction<float, float>((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e) {
@@ -133,7 +133,7 @@ namespace Ark.Pipes.Wpf.Testing {
         }
     }
 
-    public class MyTimer : Provider<float> {
+    public class MyTimer : NotifyingProvider<float> {
         System.Timers.Timer _t1 = new System.Timers.Timer(1000 / 100);
         DateTime _firstTime;
         DateTime _lastTime;

@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Ark.Pipes.Wpf {
     //Provider that reads from  DP
-    public class ProviderAdapter<T> : Provider<T> {
+    public class ProviderAdapter<T> : NotifyingProvider<T> {
         DependencyObject _obj;
         DependencyProperty _dp;
 

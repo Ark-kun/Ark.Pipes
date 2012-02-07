@@ -9,7 +9,7 @@ namespace Ark.Pipes.Wpf {
         public static readonly DependencyProperty ValueProperty;
         private static readonly DependencyPropertyKey ValuePropertyKey;
 
-        Provider<T> _value;
+        NotifyingProvider<T> _value;
 
         static DependencyPropertyAdapter() {
             ValuePropertyKey = DependencyProperty.RegisterReadOnly(_propertyName, typeof(T), typeof(DependencyPropertyAdapter<T>), null);
@@ -20,13 +20,13 @@ namespace Ark.Pipes.Wpf {
             : this(Constant<T>.Default) {
         }
 
-        public DependencyPropertyAdapter(Provider<T> provider) {
+        public DependencyPropertyAdapter(NotifyingProvider<T> provider) {
             _value = provider;
             _value.ValueChanged += OnPropertyChanged;
             OnPropertyChanged();
         }
 
-        public Provider<T> Value {
+        public NotifyingProvider<T> Value {
             get { return _value; }
             set {
                 if (value != _value) {
