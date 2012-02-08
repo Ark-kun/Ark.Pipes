@@ -28,7 +28,7 @@ namespace Ark.Pipes {
             _y = y;
             _z = z;
 
-            _length = new Function<double, double, double, double>((X, Y, Z) => Math.Sqrt(X * X + Y * Y + z * Z), _x, _y, _z);
+            _length = new Function<double, double, double, double>((X, Y, Z) => Math.Sqrt(X * X + Y * Y + Z * Z), _x, _y, _z);
         }
 
         public Provider<double> Length {
