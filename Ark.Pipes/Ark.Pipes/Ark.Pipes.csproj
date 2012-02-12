@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachedProperty.cs" />
+    <Compile Include="ReadableVariable.cs" />
     <Compile Include="Notifying\AttachedProperty.cs" />
     <Compile Include="Notifying\Function.cs" />
     <Compile Include="Notifying\Property.cs" />

@@ -1,27 +1,18 @@
 ﻿namespace Ark.Pipes {
-    public sealed class Variable<T> : NotifyingProvider<T>, IIn<T> {
-        T _value;
+    public sealed class Variable<T> : ReadableVariable<T>, IIn<T> {
+        public Variable() { }
 
-        public Variable()
-            : this(default(T)) {
-        }
-
-        public Variable(T value) {
-            _value = value;
-        }
-
-        public override T GetValue() {
-            return _value;
-        }
-
-        public void SetValue(T value) {
-            _value = value;
-            OnValueChanged();
+        public Variable(T value)
+            : base(value) {
         }
 
         public new T Value {
             get { return GetValue(); }
-            set { SetValue(value); }
+            set { base.SetValue(value); }
+        }
+
+        public new void SetValue(T value) {
+            base.SetValue(value);
         }
     }
 }
