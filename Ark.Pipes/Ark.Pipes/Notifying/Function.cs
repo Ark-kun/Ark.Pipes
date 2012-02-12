@@ -4,21 +4,13 @@ namespace Ark.Pipes {
     public sealed class NotifyingFunction<TResult> : NotifyingProvider<TResult> {
         private Func<TResult> _function;
 
-        public NotifyingFunction(Func<TResult> function) {
+        public NotifyingFunction(Func<TResult> function, ref Action changedTrigger) {
             _function = function;
-        }
-
-        public NotifyingFunction(IOut<TResult> source)
-            : this(source.GetValue) {
-        }
-
-        public NotifyingFunction(Func<TResult> function, ref Action changedTrigger)
-            : this(function) {
             changedTrigger += OnValueChanged;
         }
 
-        public NotifyingFunction(INotifyingOut<TResult> source)
-            : this(source.GetValue) {
+        public NotifyingFunction(INotifyingOut<TResult> source) {
+            _function = source.GetValue;
             source.ValueChanged += OnValueChanged;
         }
 
@@ -44,9 +36,6 @@ namespace Ark.Pipes {
         public NotifyingProperty<T> Argument {
             get { return _arg; }
             set {
-                var notifier = value.Provider as INotifyValueChanged;
-                if (notifier == null)
-                    throw new ArgumentException(); //TODO
                 _arg.ValueChanged -= OnValueChanged;
                 _arg.Value = value.Provider;
                 _arg.ValueChanged += OnValueChanged;
