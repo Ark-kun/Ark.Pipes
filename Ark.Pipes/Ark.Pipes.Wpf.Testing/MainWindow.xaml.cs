@@ -17,7 +17,7 @@ namespace Ark.Pipes.Wpf.Testing {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        NotifyingProperty<float> _prop = 10;
+        Property<float> _prop = 10;
         DependencyPropertyAdapter<float> _adapter;
         DC _dc = new DC();
 
