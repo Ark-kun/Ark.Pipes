@@ -1,6 +1,6 @@
 ﻿using System;
 namespace Ark.Pipes {
-    public class ReadableVariable<T> : NotifyingProvider<T> {
+    public class ReadableVariable<T> : Provider<T> {
         protected T _value;
 
         protected ReadableVariable()

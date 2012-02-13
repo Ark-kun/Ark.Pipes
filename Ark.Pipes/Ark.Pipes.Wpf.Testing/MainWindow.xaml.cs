@@ -100,7 +100,7 @@ namespace Ark.Pipes.Wpf.Testing {
         }
 
         private void button1_Click(object sender, RoutedEventArgs e) {
-            _prop.Provider = new NotifyingFunction<float, float>((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
+            _prop.Provider = new Function<float, float>((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
         }
 
         private void Grid_Loaded(object sender, RoutedEventArgs e) {
@@ -127,13 +127,14 @@ namespace Ark.Pipes.Wpf.Testing {
         }
 
         protected void OnPropertyChanged() {
-            if (PropertyChanged != null) {
-                PropertyChanged(this, new PropertyChangedEventArgs("Value"));
+            var handler = PropertyChanged;
+            if (handler != null) {
+                handler(this, new PropertyChangedEventArgs("Value"));
             }
         }
     }
 
-    public class MyTimer : NotifyingProvider<float> {
+    public class MyTimer : Provider<float> {
         System.Timers.Timer _t1 = new System.Timers.Timer(1000 / 100);
         DateTime _firstTime;
         DateTime _lastTime;

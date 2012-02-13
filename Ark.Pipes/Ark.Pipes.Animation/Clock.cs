@@ -5,8 +5,9 @@ namespace Ark.Pipes.Animation {
         public event Action Tick;
 
         protected void OnTick() {
-            if (Tick != null)
-                Tick();
+            var handler = Tick;
+            if (handler != null)
+                handler();
         }
     }
 

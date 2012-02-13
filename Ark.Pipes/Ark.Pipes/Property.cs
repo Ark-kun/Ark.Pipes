@@ -1,20 +1,37 @@
 ﻿using System;
+
 namespace Ark.Pipes {
     //ReadableProperty<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
     public class ReadableProvider<T> : Provider<T> {
         protected Provider<T> _provider;
 
+        public event Action ProviderChanged;
+
         public ReadableProvider(Provider<T> provider) {
             _provider = provider;
+            _provider.ValueChanged += OnValueChanged;
         }
 
-        public ReadableProvider(Provider<T> provider, out Action<Provider<T>> changer) {
-            _provider = provider;
+        public ReadableProvider(Provider<T> provider, out Action<Provider<T>> changer)
+            : this(provider) {
             changer = SetProvider;
         }
 
-        private void SetProvider(Provider<T> value) {
-            _provider = value;
+        protected void SetProvider(Provider<T> value) {
+            if (value != _provider) {
+                _provider.ValueChanged -= OnValueChanged;
+                _provider = value;
+                _provider.ValueChanged += OnValueChanged;
+                OnProviderChanged();
+                OnValueChanged();
+            }
+        }
+
+        void OnProviderChanged() {
+            var handler = ProviderChanged;
+            if (handler != null) {
+                handler();
+            }
         }
 
         public override T GetValue() {
@@ -22,7 +39,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class ReadableProperty<T> : ReadableProvider<T>, IOut<Provider<T>> {
+    public class ReadableProperty<T> : ReadableProvider<T>, INotifyingOut<Provider<T>> {
         public ReadableProperty(Provider<T> provider) : base(provider) { }
 
         public ReadableProperty(Provider<T> provider, out Action<Provider<T>> changer) : base(provider, out changer) { }
@@ -32,9 +49,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class Property<T> : ReadableProperty<T>, IIn<T>, IIn<Provider<T>>, INotifyProviderChanged {
-        public event System.Action ProviderChanged;
-
+    public sealed class Property<T> : ReadableProperty<T>, IIn<T>, IIn<Provider<T>> {
         public Property() : base(Constant<T>.Default) { }
 
         public Property(T value) : base(new Constant<T>(value)) { }
@@ -48,22 +63,11 @@ namespace Ark.Pipes {
 
         public Provider<T> Provider {
             get { return _provider; }
-            set {
-                if (value != _provider) {
-                    _provider = value;
-                    OnProviderChanged();
-                }
-            }
+            set { SetProvider(value); }
         }
 
         public Provider<T> AsReadOnly() {
             return new ReadableProvider<T>(this);
-        }
-
-        void OnProviderChanged() {
-            if (ProviderChanged != null) {
-                ProviderChanged();
-            }
         }
 
         void IIn<T>.SetValue(T value) {

@@ -1,5 +1,5 @@
 ﻿namespace Ark.Pipes {
-    public sealed class Constant<T> : NotifyingProvider<T> {
+    public sealed class Constant<T> : Provider<T> {
         static Constant<T> _default = new Constant<T>(default(T));
         private readonly T _value;
 

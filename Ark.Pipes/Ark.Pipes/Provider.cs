@@ -1,11 +1,20 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public abstract class Provider<T> : IOut<T> {
+    public abstract class Provider<T> : INotifyingOut<T> {
+        public event Action ValueChanged;
+
         public abstract T GetValue();
 
         public T Value {
             get { return GetValue(); }
+        }
+
+        protected void OnValueChanged() {
+            var handler = ValueChanged;
+            if (handler != null) {
+                handler();
+            }
         }
 
         static public implicit operator Provider<T>(T value) {
@@ -36,7 +45,7 @@ namespace Ark.Pipes {
         }
 
         [System.Runtime.CompilerServices.SpecialName]
-        static public Provider<T> op_Implicit(IOut<T> value) {
+        static public Provider<T> op_Implicit(INotifyingOut<T> value) {
             return new Function<T>(value);
         }
 
@@ -61,16 +70,16 @@ namespace Ark.Pipes {
             return new Function<T1, T>(value);
         }
 
-        static public NotifyingFunction<T> Create(Func<T> value, ref Action changedTrigger) {
-            return new NotifyingFunction<T>(value, ref changedTrigger);
+        static public Function<T> Create(Func<T> value, ref Action changedTrigger) {
+            return new Function<T>(value, ref changedTrigger);
         }
 
-        static public NotifyingFunction<T1, T> Create<T1>(Func<T1, T> value, NotifyingProvider<T1> arg) {
-            return new NotifyingFunction<T1, T>(value, arg);
+        static public Function<T1, T> Create<T1>(Func<T1, T> value, Provider<T1> arg) {
+            return new Function<T1, T>(value, arg);
         }
 
-        public NotifyingProvider<T> AddInvalidator(ref Action changedTrigger) {
-            return new NotifyingFunction<T>(this.GetValue, ref changedTrigger);
+        public Provider<T> AddInvalidator(ref Action changedTrigger) {
+            return new Function<T>(this.GetValue, ref changedTrigger);
         }
     }
 }

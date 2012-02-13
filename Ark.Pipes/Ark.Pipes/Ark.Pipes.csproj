@@ -43,13 +43,7 @@
   <ItemGroup>
     <Compile Include="AttachedProperty.cs" />
     <Compile Include="ReadableVariable.cs" />
-    <Compile Include="Notifying\AttachedProperty.cs" />
-    <Compile Include="Notifying\Function.cs" />
-    <Compile Include="Notifying\Property.cs" />
     <Compile Include="HomogenousFunction.cs" />
-    <Compile Include="Notifying\Provider.cs" />
-    <Compile Include="Notifying\ProviderArray.cs" />
-    <Compile Include="Notifying\TwoWayBinding.cs" />
     <Compile Include="NotifyPropertyChangedAdapter.cs" />
     <Compile Include="ProviderArray.cs" />
     <Compile Include="Provider.cs" />
