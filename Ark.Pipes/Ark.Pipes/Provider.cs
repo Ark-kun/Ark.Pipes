@@ -62,24 +62,46 @@ namespace Ark.Pipes {
             return provider.Value;
         }
 
+        public Provider<T> AddChangeTrigger(ref Action changedTrigger) {
+            return new Function<T>(this.GetValue, ref changedTrigger);
+        }
+
+        #region Syntax-sugar factories
         static public Constant<T> Create(T value) {
             return new Constant<T>(value);
         }
 
-        static public Provider<T> Create<T1>(Func<T1, T> value) {
-            return new Function<T1, T>(value);
+        public static Function<T> Create(Func<T> function) {
+            return new Function<T>(function);
         }
 
-        static public Function<T> Create(Func<T> value, ref Action changedTrigger) {
-            return new Function<T>(value, ref changedTrigger);
+        static public Function<T> Create(Func<T> function, ref Action changedTrigger) {
+            return new Function<T>(function, ref changedTrigger);
         }
 
-        static public Function<T1, T> Create<T1>(Func<T1, T> value, Provider<T1> arg) {
-            return new Function<T1, T>(value, arg);
+        public static Function<T1, T> Create<T1>(Func<T1, T> function) {
+            return new Function<T1, T>(function);
         }
 
-        public Provider<T> AddInvalidator(ref Action changedTrigger) {
-            return new Function<T>(this.GetValue, ref changedTrigger);
+        public static Function<T1, T> Create<T1>(Func<T1, T> function, Provider<T1> arg) {
+            return new Function<T1, T>(function);
         }
+
+        public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function) {
+            return new Function<T1, T2, T>(function);
+        }
+
+        public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function, Provider<T1> arg1, Provider<T2> arg2) {
+            return new Function<T1, T2, T>(function);
+        }
+
+        public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function) {
+            return new Function<T1, T2, T3, T>(function);
+        }
+
+        public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3) {
+            return new Function<T1, T2, T3, T>(function);
+        }
+        #endregion
     }
 }
