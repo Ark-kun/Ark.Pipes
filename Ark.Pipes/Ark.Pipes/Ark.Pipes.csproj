@@ -42,6 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachedProperty.cs" />
+    <Compile Include="Notifiers.cs" />
     <Compile Include="ReadableVariable.cs" />
     <Compile Include="HomogenousFunction.cs" />
     <Compile Include="NotifyPropertyChangedAdapter.cs" />

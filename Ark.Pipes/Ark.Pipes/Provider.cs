@@ -2,19 +2,14 @@
 
 namespace Ark.Pipes {
     public abstract class Provider<T> : INotifyingOut<T> {
-        public event Action ValueChanged;
-
         public abstract T GetValue();
 
         public T Value {
             get { return GetValue(); }
         }
 
-        protected void OnValueChanged() {
-            var handler = ValueChanged;
-            if (handler != null) {
-                handler();
-            }
+        public virtual INotifier Notifier {
+            get { return Ark.Pipes.Notifier.AlwaysUnreliable; }
         }
 
         static public implicit operator Provider<T>(T value) {
@@ -103,5 +98,13 @@ namespace Ark.Pipes {
             return new Function<T1, T2, T3, T>(function);
         }
         #endregion
+    }
+
+    public abstract class ProviderWithNotifier<T> : Provider<T> {
+        protected PrivateNotifier _notifier = new PrivateNotifier();
+
+        public override INotifier Notifier {
+            get { return _notifier; }
+        }
     }
 }

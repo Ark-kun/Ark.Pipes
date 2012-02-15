@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public class Function<TResult> : Provider<TResult> {
+    public class Function<TResult> : ProviderWithNotifier<TResult> {
         private Func<TResult> _function;
 
         public Function(Func<TResult> function) {
@@ -14,12 +14,13 @@ namespace Ark.Pipes {
 
         public Function(Func<TResult> function, ref Action changedTrigger) {
             _function = function;
-            changedTrigger += OnValueChanged;
+            _notifier.SetReliability(true);
+            changedTrigger += _notifier.OnValueChanged;
         }
 
         public Function(INotifyingOut<TResult> source) {
             _function = source.GetValue;
-            source.ValueChanged += OnValueChanged;
+            source.Notifier.ValueChanged += _notifier.OnValueChanged;
         }
 
         public override TResult GetValue() {
@@ -27,7 +28,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class Function<T, TResult> : Provider<TResult> {
+    public class Function<T, TResult> : ProviderWithNotifier<TResult> {
         private Func<T, TResult> _function;
         private Property<T> _arg;
 
@@ -38,7 +39,7 @@ namespace Ark.Pipes {
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
             _arg = new Property<T>(arg);
-            _arg.ValueChanged += OnValueChanged;
+            _notifier.SubscribeTo(_arg.Notifier);
         }
 
         public override TResult GetValue() {
@@ -55,6 +56,7 @@ namespace Ark.Pipes {
         private Func<T1, T2, TResult> _function;
         private Property<T1> _arg1;
         private Property<T2> _arg2;
+        protected ArrayNotifier _notifier = new ArrayNotifier(2);
 
         public Function(Func<T1, T2, TResult> function)
             : this(function, Constant<T1>.Default, Constant<T2>.Default) {
@@ -64,8 +66,8 @@ namespace Ark.Pipes {
             _function = function;
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
-            _arg1.ValueChanged += OnValueChanged;
-            _arg2.ValueChanged += OnValueChanged;
+            _notifier.SubscribeTo(1, _arg1.Notifier);
+            _notifier.SubscribeTo(2, _arg2.Notifier);
         }
 
         public override TResult GetValue() {
@@ -81,6 +83,10 @@ namespace Ark.Pipes {
             get { return _arg2; }
             set { _arg2.Provider = value.Provider; }
         }
+
+        public override INotifier Notifier {
+            get { return _notifier; }
+        }
     }
 
     public class Function<T1, T2, T3, TResult> : Provider<TResult> {
@@ -88,6 +94,7 @@ namespace Ark.Pipes {
         private Property<T1> _arg1;
         private Property<T2> _arg2;
         private Property<T3> _arg3;
+        protected ArrayNotifier _notifier = new ArrayNotifier(3);
 
         public Function(Func<T1, T2, T3, TResult> function)
             : this(function, Constant<T1>.Default, Constant<T2>.Default, Constant<T3>.Default) {
@@ -98,9 +105,9 @@ namespace Ark.Pipes {
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
             _arg3 = new Property<T3>(arg3);
-            _arg1.ValueChanged += OnValueChanged;
-            _arg2.ValueChanged += OnValueChanged;
-            _arg3.ValueChanged += OnValueChanged;
+            _notifier.SubscribeTo(1, _arg1.Notifier);
+            _notifier.SubscribeTo(2, _arg2.Notifier);
+            _notifier.SubscribeTo(3, _arg3.Notifier);
         }
 
         public override TResult GetValue() {
@@ -121,6 +128,9 @@ namespace Ark.Pipes {
             get { return _arg3; }
             set { _arg3.Provider = value.Provider; }
         }
-    }
 
+        public override INotifier Notifier {
+            get { return _notifier; }
+        }
+    }
 }

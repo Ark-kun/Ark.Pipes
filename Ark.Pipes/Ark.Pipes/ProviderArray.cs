@@ -1,37 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Ark.Pipes {
+    //TODO:Fix event unsubscribing
     //public class PropertyArray<T> : Provider<T[]>, IIn<T[]>, IIn<Provider<T>[]>, IOut<Provider<T>[]>, INotifyProviderChanged {
     public class ProviderArrayBase<T> : Provider<T[]>, INotifyingOut<Provider<T>[]>, INotifyElementChanged {
         protected Property<T>[] _properties;
+        protected ArrayNotifier _notifier;
 
         public event Action<int> ElementChanged;
 
-        public ProviderArrayBase(int size) {
-            _properties = new Property<T>[size];
-            for (int i = 0; i < size; i++) {
-                _properties[i] = new Property<T>();
-                _properties[i].ValueChanged += () => OnElementChanged(i);
-            }
+        public ProviderArrayBase(int size)
+            : this(new Constant<T>[size]) {
         }
 
-        public ProviderArrayBase(IList<T> values) {
-            int size = values.Count;
-            _properties = new Property<T>[size];
-            for (int i = 0; i < size; i++) {
-                _properties[i] = new Property<T>(values[i]);
-                _properties[i].ValueChanged += () => OnElementChanged(i);
-            }
+        public ProviderArrayBase(IList<T> values)
+            : this(values.Select((value) => Provider<T>.Create(value)).ToArray()) {
         }
 
         public ProviderArrayBase(IList<Provider<T>> providers) {
             int size = providers.Count;
+            _notifier = new ArrayNotifier(size);
             _properties = new Property<T>[size];
             for (int i = 0; i < size; i++) {
                 _properties[i] = new Property<T>(providers[i]);
-                _properties[i].ValueChanged += () => OnElementChanged(i);
+                _properties[i].Notifier.ValueChanged += () => OnElementChanged(i);
+                _notifier.SubscribeTo(i, _properties[i].Notifier);
             }
         }
 
@@ -76,6 +72,10 @@ namespace Ark.Pipes {
 
         Provider<T>[] IOut<Provider<T>[]>.GetValue() {
             return Providers;
+        }
+
+        public override INotifier Notifier {
+            get { return _notifier; }
         }
     }
 

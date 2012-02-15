@@ -2,14 +2,14 @@
 
 namespace Ark.Pipes {
     //ReadableProperty<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
-    public class ReadableProvider<T> : Provider<T> {
+    public class ReadableProvider<T> : ProviderWithNotifier<T> {
         protected Provider<T> _provider;
 
         public event Action ProviderChanged;
 
         public ReadableProvider(Provider<T> provider) {
             _provider = provider;
-            _provider.ValueChanged += OnValueChanged;
+            _provider.Notifier.ValueChanged += _notifier.OnValueChanged;
         }
 
         public ReadableProvider(Provider<T> provider, out Action<Provider<T>> changer)
@@ -19,11 +19,11 @@ namespace Ark.Pipes {
 
         protected void SetProvider(Provider<T> value) {
             if (value != _provider) {
-                _provider.ValueChanged -= OnValueChanged;
+                _notifier.UnsubscribeTo(_provider.Notifier);
                 _provider = value;
-                _provider.ValueChanged += OnValueChanged;
+                _notifier.SubscribeTo(_provider.Notifier);
                 OnProviderChanged();
-                OnValueChanged();
+                _notifier.OnValueChanged();
             }
         }
 

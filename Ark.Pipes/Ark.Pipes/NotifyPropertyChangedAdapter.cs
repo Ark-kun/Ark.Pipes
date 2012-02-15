@@ -8,7 +8,7 @@ namespace Ark.Pipes.Wpf {
 
         public NotifyPropertyChangedAdapter(Provider<T> provider) {
             _value = new Property<T>(provider);
-            _value.ValueChanged += OnPropertyChanged;
+            _value.Notifier.ValueChanged += OnPropertyChanged;
             OnPropertyChanged();
         }
 
