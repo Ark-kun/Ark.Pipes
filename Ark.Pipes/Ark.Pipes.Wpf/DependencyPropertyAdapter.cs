@@ -22,7 +22,7 @@ namespace Ark.Pipes.Wpf {
 
         public DependencyPropertyAdapter(Provider<T> provider) {
             _value = new Property<T>(provider);
-            _value.ValueChanged += OnPropertyChanged;
+            _value.Notifier.ValueChanged += OnPropertyChanged;
             OnPropertyChanged();
         }
 

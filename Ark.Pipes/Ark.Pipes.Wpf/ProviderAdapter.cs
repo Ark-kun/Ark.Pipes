@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace Ark.Pipes.Wpf {
     //Provider that reads from  DP
-    public class ProviderAdapter<T> : Provider<T> {
+    public class ProviderAdapter<T> : ProviderWithNotifier<T> {
         DependencyObject _obj;
         DependencyProperty _dp;
 
@@ -18,7 +18,8 @@ namespace Ark.Pipes.Wpf {
 
             var npc = _obj as INotifyPropertyChanged;
             if (npc != null) {
-                npc.PropertyChanged += (s, e) => { if (e.PropertyName == dp.Name) OnValueChanged(); };
+                _notifier.SetReliability(true);
+                npc.PropertyChanged += (s, e) => { if (e.PropertyName == dp.Name) _notifier.OnValueChanged(); };
             }
         }
 

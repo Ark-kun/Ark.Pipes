@@ -134,14 +134,15 @@ namespace Ark.Pipes.Wpf.Testing {
         }
     }
 
-    public class MyTimer : Provider<float> {
+    public class MyTimer : ProviderWithNotifier<float> {
         System.Timers.Timer _t1 = new System.Timers.Timer(1000 / 100);
         DateTime _firstTime;
         DateTime _lastTime;
-        Dispatcher _disp;
+        Dispatcher _dispatcher;
 
-        public MyTimer(Dispatcher disp) {
-            _disp = disp;
+        public MyTimer(Dispatcher dispatcher) {
+            _notifier.SetReliability(true);
+            _dispatcher = dispatcher;
             _firstTime = DateTime.Now;
             _t1.Elapsed += Callback;
             _t1.Start();
@@ -153,7 +154,7 @@ namespace Ark.Pipes.Wpf.Testing {
 
         void Callback(object sender, System.Timers.ElapsedEventArgs e) {
             _lastTime = e.SignalTime;
-            _disp.Invoke((Action)OnValueChanged);
+            _dispatcher.Invoke((Action)_notifier.OnValueChanged);
         }
     }
 
