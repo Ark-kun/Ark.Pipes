@@ -68,7 +68,7 @@ namespace Ark.Pipes {
         public Property(Provider<T> provider) : base(provider) { }
 
         public new T Value {
-            get { return _provider.GetValue(); }
+            get { return base.GetValue(); }
             set { Provider = new Constant<T>(value); }
         }
 
