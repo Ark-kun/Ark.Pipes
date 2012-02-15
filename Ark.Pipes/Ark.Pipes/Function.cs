@@ -20,7 +20,7 @@ namespace Ark.Pipes {
 
         public Function(INotifyingOut<TResult> source) {
             _function = source.GetValue;
-            source.Notifier.ValueChanged += _notifier.OnValueChanged;
+            _notifier.SubscribeTo(source.Notifier);
         }
 
         public override TResult GetValue() {
