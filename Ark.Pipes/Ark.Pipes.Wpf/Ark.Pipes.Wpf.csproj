@@ -34,8 +34,10 @@
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +50,10 @@
     <Compile Include="WpfMouse.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ark.Borrowed.Net.Microsoft.Xna.Framework\Ark.Borrowed.Net.Microsoft.Xna.Framework.csproj">
+      <Project>{1DB3795A-1257-4955-AD9D-548F6DC13F56}</Project>
+      <Name>Ark.Borrowed.Net.Microsoft.Xna.Framework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes.Animation\Ark.Pipes.Animation.csproj">
       <Project>{EC0C8E84-487E-423C-99F9-1FC405A05861}</Project>
       <Name>Ark.Pipes.Animation</Name>
