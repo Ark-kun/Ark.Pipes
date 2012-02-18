@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
+using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 
 namespace Ark.Pipes.Testing {
     public class Tests {
@@ -38,7 +38,7 @@ namespace Ark.Pipes.Testing {
             Provider<string> p22 = Provider<string>.op_Implicit(ff2);
 
             //Vector2D
-            var v2d1 = new Vector2Components (7, 13);
+            var v2d1 = new Vector2Components(7, 13);
             //v2d1.Length.ValueChanged += () => { rndInt = 666; };
             double l1 = v2d1.Length;
             v2d1.X = rndDouble.RandomValue;
@@ -47,7 +47,18 @@ namespace Ark.Pipes.Testing {
             v2d1.X = new Function<double>(() => 1);
 
             HelperProperties.Name[v2d1] = "v1";
-            
+
+            //Caching
+            Action act = Action1;
+            Property<double> p1 = rndDouble.RandomValue;
+            Property<double> p2 = p1.AddChangeTrigger(ref act);
+            double v11 = p1;
+            double v12 = p1;
+            double v21 = p2;
+            double v22 = p2;
+            act();
+            double v23 = p2;
+
 
             //ReadOnlyProperty
             //ReadOnlyProperty<int> rop = rndInt;
@@ -59,11 +70,14 @@ namespace Ark.Pipes.Testing {
             //Property<int> prop = rndInt;
             ////rop = prop;
             //prop = rop;
-            
+
             //Interface conversion
             //Provider<int> pr2 = (Provider<int>)(IOut<int>)(new Const<int>(13));
             //IOut<int> iout1 = 13;
             //ReadOnlyProperty<int> rop2 = (IOut<int>)null;
+        }
+
+        static void Action1() { 
         }
     }
 

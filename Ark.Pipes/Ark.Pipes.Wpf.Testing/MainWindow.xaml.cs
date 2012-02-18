@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 using Ark.Pipes.Animation;
 using Ark.Pipes.Input;
 using Ark.Pipes.Physics;
@@ -46,8 +46,8 @@ namespace Ark.Pipes.Wpf.Testing {
             //var mouseComponents = new Vector2Components(mouse.Position);
             //var mouseComponents =  Vector2Components.From<Point>(mouse.Position);
             //var invertedY = new Function<double, double>((y) => MyGrid.ActualHeight - y, components.Y);
-            var modifiedX = new Function<double, double>((x) => x - cursor.Width * 0.5, mouseComponents.X);
-            var modifiedY = new Function<double, double>((y) => y - cursor.Height * 0.5, mouseComponents.Y);
+            var modifiedX = Provider<double>.Create((x) => x - cursor.Width * 0.5, mouseComponents.X);
+            var modifiedY = Provider<double>.Create((y) => y - cursor.Height * 0.5, mouseComponents.Y);
             var adaptedX = new ManualUpdateAdapter<double>(modifiedX, clock);
             //var adaptedY = new ManualUpdateAdapter<double>(invertedY, clock);
             var adaptedY = new ManualUpdateAdapter<double>(modifiedY, clock);
@@ -56,14 +56,14 @@ namespace Ark.Pipes.Wpf.Testing {
             cursor.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = adaptedY, Mode = BindingMode.OneWay });
 
 
-            var mouse3d = new Function<Point, Vector3>((p) => new Vector3(p.X * scale, 0, (MyGrid.ActualHeight - p.Y) * scale), mouse.Position);
+            var mouse3d = Provider<Vector3>.Create((p) => new Vector3(p.X * scale, 0, (MyGrid.ActualHeight - p.Y) * scale), mouse.Position);
             var ball = new ForcesDrivenMaterialPoint(clock, 1.0, new Vector3(((double)Ball.GetValue(Canvas.LeftProperty) - Ball.Height * 0.5) * scale, 0, (MyGrid.ActualHeight - (double)Ball.GetValue(Canvas.TopProperty) - Ball.Height * 0.5)) * scale);
             var attraction = new PointAttractionForce(mouse3d, 10);
             ball.Forces.Add(attraction.GetForceOnObject(ball));
 
             var ballPositionComponents = new Vector3Components(ball.Position);
-            var modifiedBallX = new Function<double, double>((x) => x * invScale - Ball.Width * 0.5, ballPositionComponents.X);
-            var modifiedBallY = new Function<double, double>((z) => MyGrid.ActualHeight - z * invScale - Ball.Height * 0.5, ballPositionComponents.Z);
+            var modifiedBallX = Provider<double>.Create((x) => x * invScale - Ball.Width * 0.5, ballPositionComponents.X);
+            var modifiedBallY = Provider<double>.Create((z) => MyGrid.ActualHeight - z * invScale - Ball.Height * 0.5, ballPositionComponents.Z);
             var adaptedBallX = new ManualUpdateAdapter<double>(modifiedBallX, clock);
             var adaptedBallY = new ManualUpdateAdapter<double>(modifiedBallY, clock);
 
@@ -85,16 +85,16 @@ namespace Ark.Pipes.Wpf.Testing {
             ball2.Forces.Add(friction2.GetForceOnObject(ball2));
 
             var ball2PositionComponents = new Vector3Components(ball2.Position);
-            var modifiedBall2X = new Function<double, double>((x) => x * invScale - Ball2.Width * 0.5, ball2PositionComponents.X);
-            var modifiedBall2Y = new Function<double, double>((z) => MyGrid.ActualHeight - z * invScale - Ball2.Height * 0.5, ball2PositionComponents.Z);
+            var modifiedBall2X = Provider<double>.Create((x) => x * invScale - Ball2.Width * 0.5, ball2PositionComponents.X);
+            var modifiedBall2Y = Provider<double>.Create((z) => MyGrid.ActualHeight - z * invScale - Ball2.Height * 0.5, ball2PositionComponents.Z);
             var adaptedBall2X = new ManualUpdateAdapter<double>(modifiedBall2X, clock);
             var adaptedBall2Y = new ManualUpdateAdapter<double>(modifiedBall2Y, clock);
 
             Ball2.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = adaptedBall2X, Mode = BindingMode.OneWay });
             Ball2.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = adaptedBall2Y, Mode = BindingMode.OneWay });
 
-            
-            var modifiedSpring = new Function<double, double>((f) => 1 + 20 * 1.0 / (1.0 + Math.Exp(-f * -0.1 )), spring);
+
+            var modifiedSpring = Provider<double>.Create((f) => 1 + 20 * 1.0 / (1.0 + Math.Exp(-f * -0.1)), spring);
             var adaptedSpring = new ManualUpdateAdapter<double>(modifiedSpring, clock);
             SpringLine.SetBinding(Line.StrokeThicknessProperty, new Binding("Value") { Source = adaptedSpring, Mode = BindingMode.OneWay });
         }

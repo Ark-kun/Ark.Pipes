@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 
 namespace Ark.Pipes.Physics {
     public class MaterialPoint {

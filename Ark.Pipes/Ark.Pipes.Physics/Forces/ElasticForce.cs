@@ -5,7 +5,7 @@ namespace Ark.Pipes.Physics.Forces {
         double _length;
 
         public ElasticForce(double elasticity, MaterialPoint obj1, MaterialPoint obj2)
-            : this(elasticity, obj1, obj2, (obj1.Position.Value - obj2.Position.Value).Length) {
+            : this(elasticity, obj1, obj2, (obj1.Position.Value - obj2.Position.Value).Length()) {
         }
 
         public ElasticForce(double springConstant, MaterialPoint obj1, MaterialPoint obj2, double length)
@@ -15,7 +15,7 @@ namespace Ark.Pipes.Physics.Forces {
         }
 
         protected override double GetMagnitude() {
-            return _springConstant * ((_obj1.Position.Value - _obj2.Position.Value).Length - _length);
+            return _springConstant * ((_obj1.Position.Value - _obj2.Position.Value).Length() - _length);
         }
     }
 }

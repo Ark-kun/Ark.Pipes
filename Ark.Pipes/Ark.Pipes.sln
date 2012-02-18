@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation", "Ark.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics", "Ark.Pipes.Physics\Ark.Pipes.Physics.csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Borrowed.Net.Microsoft.Xna.Framework", "Ark.Borrowed.Net.Microsoft.Xna.Framework\Ark.Borrowed.Net.Microsoft.Xna.Framework.csproj", "{1DB3795A-1257-4955-AD9D-548F6DC13F56}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -129,6 +131,18 @@ Global
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|Windows Phone.ActiveCfg = Release|Any CPU
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Windows Phone.ActiveCfg = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|x86.ActiveCfg = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|x86.Build.0 = Debug|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Any CPU.ActiveCfg = Release|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Mixed Platforms.Build.0 = Release|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Windows Phone.ActiveCfg = Release|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|x86.ActiveCfg = Release|x86
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

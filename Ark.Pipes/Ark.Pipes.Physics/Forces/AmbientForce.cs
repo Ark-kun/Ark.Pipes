@@ -1,4 +1,4 @@
-﻿using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+﻿using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 
 namespace Ark.Pipes.Physics.Forces {
     public abstract class AmbientForce {

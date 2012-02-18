@@ -1,5 +1,5 @@
 ﻿using System;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 
 namespace Ark.Pipes.Physics.Forces {
     public class GravityForce : TwoBodyForce {
@@ -10,7 +10,7 @@ namespace Ark.Pipes.Physics.Forces {
 
         protected override double GetMagnitude() {
             Vector3 r = _obj2.Position.Value - _obj1.Position.Value;
-            return G * _obj1.Mass * _obj2.Mass / r.LengthSquared;
+            return G * _obj1.Mass * _obj2.Mass / r.LengthSquared();
         }
     }
 }

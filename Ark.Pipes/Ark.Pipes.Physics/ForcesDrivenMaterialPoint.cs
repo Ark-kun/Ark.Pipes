@@ -1,6 +1,6 @@
 ﻿using System;
 using Ark.Pipes.Animation;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
 
 namespace Ark.Pipes.Physics {
     public class ForcesDrivenMaterialPoint : MaterialPoint {

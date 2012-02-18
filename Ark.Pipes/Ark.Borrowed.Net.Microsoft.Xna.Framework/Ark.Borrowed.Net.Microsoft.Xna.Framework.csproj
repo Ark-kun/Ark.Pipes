@@ -5,18 +5,14 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C5633165-EEA6-4768-99FE-75B7123AED17}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{1DB3795A-1257-4955-AD9D-548F6DC13F56}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ark.Pipes.Testing</RootNamespace>
-    <AssemblyName>Ark.Pipes.Testing</AssemblyName>
+    <RootNamespace>Ark.Borrowed.Net.Microsoft.Xna.Framework</RootNamespace>
+    <AssemblyName>Ark.Borrowed.Net.Microsoft.Xna.Framework</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>Svn</SccProjectName>
-    <SccLocalPath>Svn</SccLocalPath>
-    <SccAuxPath>Svn</SccAuxPath>
-    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -27,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -38,33 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Ark.Pipes.Testing.Tests</StartupObject>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Ark.Pipes.Tests.cs" />
-    <Compile Include="HelperProperties.cs" />
-    <Compile Include="PropertyConverter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ark.Borrowed.Net.Microsoft.Xna.Framework\Ark.Borrowed.Net.Microsoft.Xna.Framework.csproj">
-      <Project>{1DB3795A-1257-4955-AD9D-548F6DC13F56}</Project>
-      <Name>Ark.Borrowed.Net.Microsoft.Xna.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ark.Pipes.Animation\Ark.Pipes.Animation.csproj">
-      <Project>{EC0C8E84-487E-423C-99F9-1FC405A05861}</Project>
-      <Name>Ark.Pipes.Animation</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj">
-      <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
-      <Name>Ark.Pipes.Xna</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">
-      <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
-      <Name>Ark.Pipes</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="System" />
+    <Compile Include="_Double\Matrix.cs" />
+    <Compile Include="_Double\Quaternion.cs" />
+    <Compile Include="_Double\Vector2.cs" />
+    <Compile Include="_Double\Vector3.cs" />
+    <Compile Include="Matrix.cs" />
+    <Compile Include="Quaternion.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="Vector3.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

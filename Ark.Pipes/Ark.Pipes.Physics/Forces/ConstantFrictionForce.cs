@@ -1,5 +1,5 @@
-﻿
-using Ark.Borrowed.Net.Microsoft.Xna.Framework;
+﻿using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
+
 namespace Ark.Pipes.Physics.Forces {
     public class ConstantFrictionForce : AmbientForce {
         double _coeff;
@@ -10,7 +10,7 @@ namespace Ark.Pipes.Physics.Forces {
 
         public override Vector3 CalculateForceOnObject(MaterialPoint obj) {
             Vector3 res = obj.Velocity.Value;
-            if (res.LengthSquared > 0) {
+            if (res.LengthSquared() > 0) {
                 res.Normalize();
                 res *= -_coeff;
             }
