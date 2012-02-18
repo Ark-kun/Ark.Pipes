@@ -79,7 +79,7 @@ namespace Ark.Pipes {
         }
 
         public static Function<T1, T> Create<T1>(Func<T1, T> function, Provider<T1> arg) {
-            return new Function<T1, T>(function);
+            return new Function<T1, T>(function, arg);
         }
 
         public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function) {
@@ -87,7 +87,7 @@ namespace Ark.Pipes {
         }
 
         public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function, Provider<T1> arg1, Provider<T2> arg2) {
-            return new Function<T1, T2, T>(function);
+            return new Function<T1, T2, T>(function, arg1, arg2);
         }
 
         public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function) {
@@ -95,7 +95,7 @@ namespace Ark.Pipes {
         }
 
         public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3) {
-            return new Function<T1, T2, T3, T>(function);
+            return new Function<T1, T2, T3, T>(function, arg1, arg2, arg3);
         }
         #endregion
     }
