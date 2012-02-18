@@ -1,49 +1,57 @@
-﻿using Ark.Pipes.Input;
+﻿using System;
+using Ark.Pipes.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Ark.Pipes.Xna {
-    public class XnaMouse : IMouse<Vector2> {
-        static Provider<Vector2> _position = new Function<Vector2>(GetPosition);
-        static Provider<bool> _leftButton = new Function<bool>(() => Mouse.GetState().LeftButton == ButtonState.Pressed);
-        static Provider<bool> _middleButton = new Function<bool>(() => Mouse.GetState().MiddleButton == ButtonState.Pressed);
-        static Provider<bool> _rightButton = new Function<bool>(() => Mouse.GetState().RightButton == ButtonState.Pressed);
+    public sealed class XnaMouse : IMouse<Vector2> {
+        static Provider<Vector2> _staticPosition = Provider<Vector2>.Create(GetPosition);
+        static Provider<bool> _staticLeftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed);
+        static Provider<bool> _staticMiddleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed);
+        static Provider<bool> _staticRightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed);
+        static XnaMouse _default = new XnaMouse();
+
+        Provider<Vector2> _position;
+        Provider<bool> _leftButton;
+        Provider<bool> _middleButton;
+        Provider<bool> _rightButton;
+
+        XnaMouse() {
+            _position = _staticPosition;
+            _leftButton = _staticLeftButton;
+            _middleButton = _staticMiddleButton;
+            _rightButton = _staticRightButton;
+        }
+
+        public XnaMouse(Action<Action> trigger) {
+            _position = Provider<Vector2>.Create(GetPosition, trigger);
+            _leftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed, trigger);
+            _middleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed, trigger);
+            _rightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed, trigger);
+        }
 
         static Vector2 GetPosition() {
             var mouseState = Mouse.GetState();
             return new Vector2(mouseState.X, mouseState.Y);
         }
 
-        public static Provider<Vector2> Position {
+        public static XnaMouse Default {
+            get { return _default; }
+        }
+
+        public Provider<Vector2> Position {
             get { return _position; }
         }
 
-        public static Provider<bool> IsLeftButtonPressed {
+        public Provider<bool> IsLeftButtonPressed {
             get { return _leftButton; }
         }
 
-        public static Provider<bool> IsMiddleButtonPressed {
+        public Provider<bool> IsMiddleButtonPressed {
             get { return _middleButton; }
         }
 
-        public static Provider<bool> IsRightButtonPressed {
-            get { return _rightButton; }
-        }
-
-
-        Provider<Vector2> IMouse<Vector2>.Position {
-            get { return _position; }
-        }
-
-        Provider<bool> IMouse<Vector2>.IsLeftButtonPressed {
-            get { return _leftButton; }
-        }
-
-        Provider<bool> IMouse<Vector2>.IsMiddleButtonPressed {
-            get { return _middleButton; }
-        }
-
-        Provider<bool> IMouse<Vector2>.IsRightButtonPressed {
+        public Provider<bool> IsRightButtonPressed {
             get { return _rightButton; }
         }
     }
