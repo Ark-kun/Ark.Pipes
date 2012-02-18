@@ -12,7 +12,11 @@ namespace Ark.Pipes.Wpf {
             OnPropertyChanged();
         }
 
-        public Property<T> Value {
+        public T Value {
+            get { return _value.Value; }
+        }
+
+        public Property<T> Provider {
             get { return _value; }
             set { _value.Provider = value; }
         }
