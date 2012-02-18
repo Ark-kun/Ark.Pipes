@@ -13,14 +13,21 @@ namespace Ark.Pipes {
         Property<TType> _x;
         Property<TType> _y;
         Property<TType> _z;
-        Provider<TType> _length;
 
         public Vector3Components()
-            : this(0, 0, 0) {
+            : this(Constant<TType>.Default, Constant<TType>.Default, Constant<TType>.Default) {
         }
 
-        public Vector3Components(Provider<TVector3> point)
-            : this(new Function<TType>(() => point.Value.X), new Function<TType>(() => point.Value.Y), new Function<TType>(() => point.Value.Z)) {
+        public Vector3Components(Provider<TType> x, Provider<TType> y, Provider<TType> z) {
+            _x = x;
+            _y = y;
+            _z = z;
+        }
+
+        public Vector3Components(Provider<TVector3> vectors) {
+            _x = Provider<TType>.Create((v) => v.X, vectors);
+            _y = Provider<TType>.Create((v) => v.Y, vectors);
+            _z = Provider<TType>.Create((v) => v.Z, vectors);
         }
 
         public static Vector3Components From<TPoint>(Provider<TPoint> point) {
@@ -30,16 +37,8 @@ namespace Ark.Pipes {
             return new Vector3Components(x, y, z);
         }
 
-        public Vector3Components(Provider<TType> x, Provider<TType> y, Provider<TType> z) {
-            _x = x;
-            _y = y;
-            _z = z;
-
-            _length = new Function<TType, TType, TType, TType>((X, Y, Z) => (TType)Math.Sqrt(X * X + Y * Y + Z * Z), _x, _y, _z);
-        }
-
-        public Provider<TType> Length {
-            get { return _length; }
+        public Provider<TVector3> ToVectors3() {
+            return Provider<TVector3>.Create((x, y, z) => new TVector3(x, y, z), _x, _x, _x);
         }
 
         public Property<TType> X {
