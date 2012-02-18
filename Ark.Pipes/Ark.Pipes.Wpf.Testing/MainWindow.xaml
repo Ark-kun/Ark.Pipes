@@ -1,9 +1,9 @@
 ﻿<Window x:Class="Ark.Pipes.Wpf.Testing.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"        
-        xmlns:ap="clr-namespace:Ark.Pipes;assembly=Ark.Pipes"
-        xmlns:apwt="clr-namespace:Ark.Pipes.Wpf.Testing"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="530" Width="720" x:Name="MyWindow">
+    <!--xmlns:apwt="clr-namespace:Ark.Pipes.Wpf.Testing"-->
+    <!--xmlns:ap="clr-namespace:Ark.Pipes;assembly=Ark.Pipes"-->
     <Canvas>
         <Button Content="Test animation" Height="23" HorizontalAlignment="Left" Margin="12,103,0,0" Name="button1" VerticalAlignment="Top" Width="100" Click="button1_Click" />
         <Rectangle Height="10" HorizontalAlignment="Left" Margin="45,50,0,0" Name="rectangle1" Stroke="Black" VerticalAlignment="Top" Width="{Binding Path=Adapter.Value}" Fill="DodgerBlue" />

@@ -1,48 +1,59 @@
-﻿using System;
-
-#if FLOAT_GEOMETRY
-using TType = System.Single;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework.Vector2;
+﻿#if FLOAT_TYPE_DOUBLE
+using TFloat = System.Double;
 #else
-using TType = System.Double;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Vector2;
+using TFloat = System.Single;
+#endif
+
+#if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
+using Ark.Geometry.Primitives.Double;
+#elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
+using Ark.Geometry.Primitives.Single;
+#elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
+using Microsoft.Xna.Framework;
+#elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
+using System.Windows;
+using System.Windows.Media.Media3D;
+using Vector2 = System.Windows.Vector;
+using Vector3 = System.Windows.Media.Media3D.Vector3D;
+#else
+#error Bad geometry framework
 #endif
 
 namespace Ark.Pipes {
     public class Vector2Components {
-        Property<TType> _x;
-        Property<TType> _y;
+        Property<TFloat> _x;
+        Property<TFloat> _y;
 
         public Vector2Components()
-            : this(Constant<TType>.Default, Constant<TType>.Default) {
+            : this(Constant<TFloat>.Default, Constant<TFloat>.Default) {
         }
 
-        public Vector2Components(Provider<TType> x, Provider<TType> y) {
+        public Vector2Components(Provider<TFloat> x, Provider<TFloat> y) {
             _x = x;
             _y = y;
         }
 
-        public Vector2Components(Provider<TVector2> vectors) {
-            _x = Provider<TType>.Create((v) => v.X, vectors);
-            _y = Provider<TType>.Create((v) => v.Y, vectors);
+        public Vector2Components(Provider<Vector2> vectors) {
+            _x = Provider<TFloat>.Create((v) => v.X, vectors);
+            _y = Provider<TFloat>.Create((v) => v.Y, vectors);
         }
 
         public static Vector2Components From<TPoint>(Provider<TPoint> point) {
-            var x = Provider<TType>.Create(p => (TType)(((dynamic)p).X), point);
-            var y = Provider<TType>.Create(p => (TType)(((dynamic)p).Y), point);
+            var x = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).X), point);
+            var y = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).Y), point);
             return new Vector2Components(x, y);
         }
 
-        public Provider<TVector2> ToVectors2() {
-            return Provider<TVector2>.Create((x, y) => new TVector2(x, y), _x, _y);
+        public Provider<Vector2> ToVectors2() {
+            return Provider<Vector2>.Create((x, y) => new Vector2(x, y), _x, _y);
         }
 
-        public Property<TType> X {
+        public Property<TFloat> X {
             get { return _x; }
             set { _x.Provider = value.Provider; }
         }
 
-        public Property<TType> Y {
+        public Property<TFloat> Y {
             get { return _y; }
             set { _y.Provider = value.Provider; }
         }

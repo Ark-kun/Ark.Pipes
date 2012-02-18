@@ -3,22 +3,23 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4AB376C4-2096-4854-9871-A3455A46DBBE}</ProjectGuid>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F764CF2-A1D3-4216-A0C6-B6F1D4854033}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ark.Pipes</RootNamespace>
-    <AssemblyName>Ark.Pipes portable</AssemblyName>
+    <RootNamespace>Ark.Pipes.Animation</RootNamespace>
+    <AssemblyName>Ark.Pipes.Animation %28WPF - double%29</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;FRAMEWORK_WPF FLOAT_TYPE_DOUBLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,32 +27,34 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;FRAMEWORK_WPF FLOAT_TYPE_DOUBLE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
-    <Reference Include="System.Core" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttachedProperty.cs" />
-    <Compile Include="Constant.cs" />
-    <Compile Include="Function.cs" />
-    <Compile Include="HomogenousFunction.cs" />
+    <Compile Include="Clock.cs" />
+    <Compile Include="OrientedPosition2.cs" />
+    <Compile Include="OrientedPosition3.cs" />
+    <Compile Include="OrientedPositionComponents.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
-    <Compile Include="Notifiers.cs" />
-    <Compile Include="NotifyPropertyChangedAdapter.cs" />
-    <Compile Include="PortableHacks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Property.cs" />
-    <Compile Include="Provider.cs" />
-    <Compile Include="ProviderArray.cs" />
-    <Compile Include="ReadableVariable.cs" />
-    <Compile Include="TwoWayBinding.cs" />
-    <Compile Include="Variable.cs" />
+    <Compile Include="Vector2Components.cs" />
+    <Compile Include="Vector3Components.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">
+      <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
+      <Name>Ark.Pipes</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

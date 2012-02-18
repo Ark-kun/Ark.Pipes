@@ -1,7 +1,28 @@
-﻿using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
+﻿using Ark.Pipes.Animation;
+
+#if FLOAT_TYPE_DOUBLE
+using TFloat = System.Double;
+#else
+using TFloat = System.Single;
+#endif
+
+#if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
+using Ark.Geometry.Primitives.Double;
+#elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
+using Ark.Geometry.Primitives.Single;
+#elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
+using Microsoft.Xna.Framework;
+#elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
+using System.Windows;
+using System.Windows.Media.Media3D;
+using Vector2 = System.Windows.Vector;
+using Vector3 = System.Windows.Media.Media3D.Vector3D;
+#else
+#error Bad geometry framework
+#endif
 
 namespace Ark.Pipes.Physics.Forces {
-    public abstract class TwoBodyForce : Provider<double> {
+    public abstract class TwoBodyForce : Provider<TFloat> {
         protected MaterialPoint _obj1;
         protected MaterialPoint _obj2;
         Provider<Vector3> _forceOnObj1;
@@ -12,7 +33,7 @@ namespace Ark.Pipes.Physics.Forces {
             _obj2 = obj2;
             _forceOnObj1 = new Function<Vector3, Vector3, Vector3>((p1, p2) => {
                 Vector3 _delta = p2 - p1;
-                if (_delta == Vector3.Zero) {
+                if (_delta.IsZero()) {
                     return new Vector3();
                 }
                 _delta.Normalize();
@@ -20,7 +41,7 @@ namespace Ark.Pipes.Physics.Forces {
             }, _obj1.Position, _obj2.Position);
             _forceOnObj2 = new Function<Vector3, Vector3, Vector3>((p1, p2) => {
                 Vector3 _delta = p1 - p2;
-                if (_delta == Vector3.Zero) {
+                if (_delta.IsZero()) {
                     return new Vector3();
                 }
                 _delta.Normalize();
@@ -29,9 +50,9 @@ namespace Ark.Pipes.Physics.Forces {
         }
 
         //positive = attraction, negative - detraction
-        protected abstract double GetMagnitude();
+        protected abstract TFloat GetMagnitude();
 
-        public override double GetValue() {
+        public override TFloat GetValue() {
             return GetMagnitude();
         }
 
@@ -43,7 +64,7 @@ namespace Ark.Pipes.Physics.Forces {
             get { return _forceOnObj2; }
         }
 
-        public double Magnitude {
+        public TFloat Magnitude {
             get {
                 return GetMagnitude();
             }

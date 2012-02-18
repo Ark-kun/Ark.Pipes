@@ -1,11 +1,31 @@
-﻿using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
+﻿
+#if FLOAT_TYPE_DOUBLE
+using TFloat = System.Double;
+#else
+using TFloat = System.Single;
+#endif
+
+#if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
+using Ark.Geometry.Primitives.Double;
+#elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
+using Ark.Geometry.Primitives.Single;
+#elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
+using Microsoft.Xna.Framework;
+#elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
+using System.Windows;
+using System.Windows.Media.Media3D;
+using Vector2 = System.Windows.Vector;
+using Vector3 = System.Windows.Media.Media3D.Vector3D;
+#else
+#error Bad geometry framework
+#endif
 
 namespace Ark.Pipes.Physics.Forces {
     public class PointAttractionForce : AmbientForce {
         Property<Vector3> _attractionPoint;
-        double _coeff;
+        TFloat _coeff;
 
-        public PointAttractionForce(Provider<Vector3> attractionPoint, double coeff = 1.0) {
+        public PointAttractionForce(Provider<Vector3> attractionPoint, TFloat coeff = (TFloat)1.0) {
             _attractionPoint = new Property<Vector3>(attractionPoint);
             _coeff = coeff;
         }
@@ -16,7 +36,7 @@ namespace Ark.Pipes.Physics.Forces {
             Vector3 v = obj.Velocity.Value;
             Vector3 delta = p - o;
             //Vector3 delta = new Vector3(100,0,100) - o;
-            Vector3 res = Vector3.Zero;
+            Vector3 res = new Vector3();
             //return _coeff * delta * delta.Length;
             //return _coeff * delta;
             //return _coeff * delta / delta.Length;

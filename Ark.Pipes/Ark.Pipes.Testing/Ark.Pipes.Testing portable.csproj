@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Ark.Pipes.Tests.cs" />
+    <Compile Include="HelperProperties.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes portable.csproj">
@@ -48,6 +49,7 @@
       <HintPath>C:\Program Files (x86)\Microsoft XNA\XNA Game Studio\v4.0\References\Windows\x86\Microsoft.Xna.Framework.Game.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

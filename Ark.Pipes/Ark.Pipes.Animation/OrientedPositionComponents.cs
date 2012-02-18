@@ -1,17 +1,4 @@
-﻿
-#if FLOAT_GEOMETRY
-using TType = System.Single;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework.Vector2;
-using TVector3 = Ark.Borrowed.Net.Microsoft.Xna.Framework.Vector3;
-using TQuaternion = Ark.Borrowed.Net.Microsoft.Xna.Framework.Quaternion;    
-#else
-using TQuaternion = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Quaternion;
-using TType = System.Double;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Vector2;
-using TVector3 = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Vector3;
-#endif
-
-namespace Ark.Pipes.Animation {
+﻿namespace Ark.Pipes.Animation {
     //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
     //using OrientedPosition3ComponentsEx = OrientedPositionComponents<TVector3, TQuaternion, OrientedPosition3>;
     public class OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition> where TOrientedPosition : IHasPosition<TPosition>, IHasOrientation<TOrientation>, new() {

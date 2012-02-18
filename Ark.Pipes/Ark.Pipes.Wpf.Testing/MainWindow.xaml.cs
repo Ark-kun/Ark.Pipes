@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Threading;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
+using Ark.Geometry.Primitives.Double;
 using Ark.Pipes.Animation;
 using Ark.Pipes.Input;
 using Ark.Pipes.Physics;

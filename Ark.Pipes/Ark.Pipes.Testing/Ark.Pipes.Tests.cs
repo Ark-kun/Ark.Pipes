@@ -1,5 +1,6 @@
 ﻿using System;
-using Ark.Borrowed.Net.Microsoft.Xna.Framework._Double;
+using Ark.Pipes.Animation;
+using Ark.Geometry.Primitives.Double;
 
 namespace Ark.Pipes.Testing {
     public class Tests {
@@ -40,18 +41,18 @@ namespace Ark.Pipes.Testing {
             //Vector2D
             var v2d1 = new Vector2Components(7, 13);
             //v2d1.Length.ValueChanged += () => { rndInt = 666; };
-            double l1 = v2d1.Length;
-            v2d1.X = rndDouble.RandomValue;
-            double l2 = v2d1.Length;
+            //double l1 = v2d1.Length;
+            //v2d1.X = rndDouble.RandomValue;
+            //double l2 = v2d1.Length;
 
             v2d1.X = new Function<double>(() => 1);
 
             HelperProperties.Name[v2d1] = "v1";
 
             //Caching
-            Action act = Action1;
+            Action act = null;
             Property<double> p1 = rndDouble.RandomValue;
-            Property<double> p2 = p1.AddChangeTrigger(ref act);
+            Property<double> p2 = p1.AddChangeTrigger((callback) => act += callback);
             double v11 = p1;
             double v12 = p1;
             double v21 = p2;

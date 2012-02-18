@@ -1,42 +1,50 @@
-﻿
-#if FLOAT_GEOMETRY
-using TType = System.Single;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework.Vector2;
-using TVector3 = Ark.Borrowed.Net.Microsoft.Xna.Framework.Vector3;
-using TQuaternion = Ark.Borrowed.Net.Microsoft.Xna.Framework.Quaternion;    
+﻿#if FLOAT_TYPE_DOUBLE
+using TFloat = System.Double;
 #else
-using TType = System.Double;
-using TVector2 = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Vector2;
-using TVector3 = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Vector3;
-using TQuaternion = Ark.Borrowed.Net.Microsoft.Xna.Framework._Double.Quaternion;
+using TFloat = System.Single;
+#endif
+
+#if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
+using Ark.Geometry.Primitives.Double;
+#elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
+using Ark.Geometry.Primitives.Single;
+#elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
+using Microsoft.Xna.Framework;
+#elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
+using System.Windows;
+using System.Windows.Media.Media3D;
+using Vector2 = System.Windows.Vector;
+using Vector3 = System.Windows.Media.Media3D.Vector3D;
+#else
+#error Bad geometry framework
 #endif
 
 namespace Ark.Pipes.Animation {
     //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
 
-    public struct OrientedPosition2 : IHasPosition<TVector2>, IHasOrientation<TType> {
-        public TVector2 Position;
-        public TType Orientation;
+    public struct OrientedPosition2 : IHasPosition<Vector2>, IHasOrientation<TFloat> {
+        public Vector2 Position;
+        public TFloat Orientation;
 
-        TVector2 IHasPosition<TVector2>.Position {
+        Vector2 IHasPosition<Vector2>.Position {
             get { return Position; }
             set { Position = value; }
         }
 
-        TType IHasOrientation<TType>.Orientation {
+        TFloat IHasOrientation<TFloat>.Orientation {
             get { return Orientation; }
             set { Orientation = value; }
         }
     }
 
     public sealed class OrientedPosition2Components {
-        public Provider<TVector2> Position;
-        public Provider<TType> Orientation;
+        public Provider<Vector2> Position;
+        public Provider<TFloat> Orientation;
 
         public static OrientedPosition2Components FromOrientedPositions2(Provider<OrientedPosition2> orientedPositions) {
             return new OrientedPosition2Components() {
-                Position = Provider<TVector2>.Create((op) => op.Position, orientedPositions),
-                Orientation = Provider<TType>.Create((op) => op.Orientation, orientedPositions)
+                Position = Provider<Vector2>.Create((op) => op.Position, orientedPositions),
+                Orientation = Provider<TFloat>.Create((op) => op.Orientation, orientedPositions)
             };
         }
 
