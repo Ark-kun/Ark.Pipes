@@ -11,6 +11,7 @@ using Ark.Pipes.Physics;
 using Ark.Pipes.Physics.Forces;
 using Ark.Pipes.Wpf;
 using System.Windows.Shapes;
+using System.Windows.Media;
 
 namespace Ark.Pipes.Wpf.Testing {
     /// <summary>
@@ -39,75 +40,56 @@ namespace Ark.Pipes.Wpf.Testing {
             //const double invScale = 4000;
             const double invScale = 10;
             const double scale = 1.0 / invScale;
-            
+
             var mouse = new WpfMouse(MyGrid);
             var clock = new WpfClock();
-            var mouseComponents = mouse.Position.ToVector2Components();
-            //var mouseComponents = new Vector2Components(mouse.Position);
-            //var mouseComponents =  Vector2Components.From<Point>(mouse.Position);
-            //var invertedY = new Function<double, double>((y) => MyGrid.ActualHeight - y, components.Y);
-            var modifiedX = Provider<double>.Create((x) => x - cursor.Width * 0.5, mouseComponents.X);
-            var modifiedY = Provider<double>.Create((y) => y - cursor.Height * 0.5, mouseComponents.Y);
-            var adaptedX = new ManualUpdateAdapter<double>(modifiedX, clock);
-            //var adaptedY = new ManualUpdateAdapter<double>(invertedY, clock);
-            var adaptedY = new ManualUpdateAdapter<double>(modifiedY, clock);
 
-            cursor.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = adaptedX, Mode = BindingMode.OneWay });
-            cursor.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = adaptedY, Mode = BindingMode.OneWay });
+            var mousePosition = mouse.Position.ToVectors2();            
+            mousePosition = mousePosition.AddChangeTrigger((callback) => clock.Tick += callback);
+            var mouse3d = mousePosition.ToVectors3XZ().Multiply(scale);
 
+            //Mouse "cursor"
+            var cursorImageCenter = new Point(cursor.Width / 2, cursor.Height / 2).ToVector2();
+            var cursorImagePosition = mousePosition.Subtract(cursorImageCenter);
+            cursor.SetCanvasPosition(cursorImagePosition);
 
-            var mouse3d = Provider<Vector3>.Create((p) => new Vector3(p.X * scale, 0, (MyGrid.ActualHeight - p.Y) * scale), mouse.Position);
-            var ball = new ForcesDrivenMaterialPoint(clock, 1.0, new Vector3(((double)Ball.GetValue(Canvas.LeftProperty) - Ball.Height * 0.5) * scale, 0, (MyGrid.ActualHeight - (double)Ball.GetValue(Canvas.TopProperty) - Ball.Height * 0.5)) * scale);
+            //Ball1
+            var ballImageCenter = new Point(Ball.Width / 2, Ball.Height / 2).ToVector2();            
+            var ball1StartingPosition = ((Ball.GetCanvasPosition() - ballImageCenter) * scale).ToVector3XZ();
+            var ball = new ForcesDrivenMaterialPoint(clock, 1.0, ball1StartingPosition);
+            var ballImagePosition = ball.Position.ToVectors2XZ().Divide(scale).Subtract(ballImageCenter);
+            Ball.SetCanvasPosition(ballImagePosition);
+
+            //Ball2
+            var ball2ImageCenter = new Point(Ball2.Width / 2, Ball2.Height / 2).ToVector2();
+            var ball2StartingPosition = ((Ball2.GetCanvasPosition() - ball2ImageCenter) * scale).ToVector3XZ();
+            var ball2 = new ForcesDrivenMaterialPoint(clock, 1.0, ball2StartingPosition);
+            var ball2ImagePosition = ball2.Position.ToVectors2XZ().Divide(scale).Subtract(ballImageCenter);
+            Ball2.SetCanvasPosition(ball2ImagePosition);
+
+            //Forces
             var attraction = new PointAttractionForce(mouse3d, 10);
-            ball.Forces.Add(attraction.GetForceOnObject(ball));
-
-            var ballPositionComponents = new Vector3Components(ball.Position);
-            var modifiedBallX = Provider<double>.Create((x) => x * invScale - Ball.Width * 0.5, ballPositionComponents.X);
-            var modifiedBallY = Provider<double>.Create((z) => MyGrid.ActualHeight - z * invScale - Ball.Height * 0.5, ballPositionComponents.Z);
-            var adaptedBallX = new ManualUpdateAdapter<double>(modifiedBallX, clock);
-            var adaptedBallY = new ManualUpdateAdapter<double>(modifiedBallY, clock);
-
-            Ball.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = adaptedBallX, Mode = BindingMode.OneWay });
-            Ball.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = adaptedBallY, Mode = BindingMode.OneWay });
-
-
-            var ball2 = new ForcesDrivenMaterialPoint(clock, 1.0, new Vector3(((double)Ball2.GetValue(Canvas.LeftProperty) - Ball2.Height * 0.5) * scale, 0, (MyGrid.ActualHeight - (double)Ball2.GetValue(Canvas.TopProperty) - Ball2.Height * 0.5) * scale));
-            var spring = new ElasticForce(4.0, ball, ball2);            
-            ball.Forces.Add(spring.ForceOnObject1);
-            ball2.Forces.Add(spring.ForceOnObject2);
-
+            var spring = new ElasticForce(4.0, ball, ball2);
             var gravity = new EarthGravityForce();
-            ball2.Forces.Add(gravity.GetForceOnObject(ball2));
-            ball.Forces.Add(gravity.GetForceOnObject(ball));
-
             var friction1 = new ViscousFrictionForce(4);
             var friction2 = new ConstantFrictionForce(2);
+
+            ball.Forces.Add(attraction.GetForceOnObject(ball));
+            ball.Forces.Add(spring.ForceOnObject1);
+            ball.Forces.Add(gravity.GetForceOnObject(ball));
+
+            ball2.Forces.Add(spring.ForceOnObject2);
+            ball2.Forces.Add(gravity.GetForceOnObject(ball2));
             ball2.Forces.Add(friction2.GetForceOnObject(ball2));
 
-            var ball2PositionComponents = new Vector3Components(ball2.Position);
-            var modifiedBall2X = Provider<double>.Create((x) => x * invScale - Ball2.Width * 0.5, ball2PositionComponents.X);
-            var modifiedBall2Y = Provider<double>.Create((z) => MyGrid.ActualHeight - z * invScale - Ball2.Height * 0.5, ball2PositionComponents.Z);
-            var adaptedBall2X = new ManualUpdateAdapter<double>(modifiedBall2X, clock);
-            var adaptedBall2Y = new ManualUpdateAdapter<double>(modifiedBall2Y, clock);
-
-            Ball2.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = adaptedBall2X, Mode = BindingMode.OneWay });
-            Ball2.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = adaptedBall2Y, Mode = BindingMode.OneWay });
-
-
+            //Spring visualization
             var modifiedSpring = Provider<double>.Create((f) => 1 + 20 * 1.0 / (1.0 + Math.Exp(-f * -0.1)), spring);
-            var adaptedSpring = new ManualUpdateAdapter<double>(modifiedSpring, clock);
-            SpringLine.SetBinding(Line.StrokeThicknessProperty, new Binding("Value") { Source = adaptedSpring, Mode = BindingMode.OneWay });
+            SpringLine.SetBinding(Line.StrokeThicknessProperty, modifiedSpring);
         }
 
         private void button1_Click(object sender, RoutedEventArgs e) {
-            _prop.Provider = new Function<float, float>((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
+            _prop.Provider = Provider<float>.Create((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
         }
-
-        private void Grid_Loaded(object sender, RoutedEventArgs e) {
-
-        }
-
-
     }
 
     public class ManualUpdateAdapter<T> : Provider<T>, INotifyPropertyChanged {
