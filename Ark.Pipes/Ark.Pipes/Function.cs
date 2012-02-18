@@ -12,10 +12,10 @@ namespace Ark.Pipes {
             : this(source.GetValue) {
         }
 
-        public Function(Func<TResult> function, ref Action changedTrigger) {
+        public Function(Func<TResult> function, Action<Action> changedTriggerSetter) {
             _function = function;
             _notifier.SetReliability(true);
-            changedTrigger += _notifier.OnValueChanged;
+            changedTriggerSetter(_notifier.OnValueChanged);
         }
 
         public Function(INotifyingOut<TResult> source) {
