@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.XNA.Bullets {
+namespace Ark.Xna.Bullets {
     class StraitLineBullet<TBullet> : DrawableGameComponent where TBullet : IUpdateable, IDrawable, IHasChangeablePosition {
         TBullet _bullet;
         Vector2 _origin;

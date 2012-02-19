@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ark.XNA.Components {
+namespace Ark.Xna.Components {
     public class KeyboardControlledObject : GameComponent {
         Game _game;
         IHasChangeablePosition _object;

@@ -2,7 +2,7 @@
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.XNA.Geometry {
+namespace Ark.Xna.Geometry {
     public class RandomVectorInsideRectangle : Provider<Vector2> {
         private Random _rnd = new Random();
         private Rectangle _rect;

@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Ark.Pipes;
 
-namespace Ark.XNA.Bullets {
+namespace Ark.Xna.Bullets {
     public class BulletBase<T> : DrawableGameComponent, IBullet<T> {
         private IBulletFactory<T> _parent;
 

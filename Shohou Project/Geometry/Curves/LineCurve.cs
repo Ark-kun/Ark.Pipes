@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace Ark.XNA.Geometry.Curves {
+namespace Ark.Xna.Geometry.Curves {
     public interface ICurve<TVector> {
         TVector Evaluate(float param);
     }

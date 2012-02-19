@@ -4,7 +4,7 @@ using Ark.Pipes;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Ark.XNA.Transforms {
+namespace Ark.Xna.Transforms {
     public sealed class FunctionTransform<T> : ITransform<T> {
         Func<T, T> _transform;
 

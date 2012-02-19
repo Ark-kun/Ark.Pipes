@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.Pipes;
 
-namespace Ark.XNA.Sprites {
+namespace Ark.Xna.Sprites {
     public class RotatingSprite : DrawableGameComponent, IHasChangeablePosition {
         double angle;
         SpriteBatch spriteBatch;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.XNA.Components {
+namespace Ark.Xna.Components {
     public class FpsCounter : DrawableGameComponent {
         SpriteBatch spriteBatch;
         Color fpsColor = Color.BlanchedAlmond;

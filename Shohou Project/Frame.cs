@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 using Ark.Pipes;
-using Ark.XNA;
-using Ark.XNA.Transforms;
+using Ark.Xna;
+using Ark.Xna.Transforms;
 
 namespace Ark.Shohou {
     public class Frame {

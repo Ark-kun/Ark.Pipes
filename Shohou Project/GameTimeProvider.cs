@@ -5,7 +5,7 @@ using System.Text;
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.XNA {
+namespace Ark.Xna {
     public class GameTimeProvider : ProviderGameComponent<float> {
         float _time;
 

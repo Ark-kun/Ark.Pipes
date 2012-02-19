@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ark.XNA.Sprites;
-using Ark.XNA.Transforms;
+using Ark.Xna.Sprites;
+using Ark.Xna.Transforms;
 using Microsoft.Xna.Framework;
 using Ark.Pipes;
 
-namespace Ark.XNA.Bullets.Factories {
+namespace Ark.Xna.Bullets.Factories {
     public class LevyCCurveFactory : LevyCCurveBullet {
         ITransform<Vector2> _parentTransform;
         public LevyCCurveFactory(Game game, ITransform<Vector2> transform, StaticSprite bulletSprite, double startFireTime)

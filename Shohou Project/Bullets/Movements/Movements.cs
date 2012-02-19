@@ -1,5 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-namespace Ark.XNA.Bullets {
+namespace Ark.Xna.Bullets {
     public static class Movements {
         public delegate bool TimeCondition(double t);
         public delegate double Movement1D(double t);

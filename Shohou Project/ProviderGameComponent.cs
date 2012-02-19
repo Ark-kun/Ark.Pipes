@@ -2,7 +2,7 @@
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.XNA {
+namespace Ark.Xna {
     public abstract class ProviderGameComponent<T> : Provider<T>, IUpdateable, IGameComponent /*, IDisposable*/ {
         // Fields
         private bool _enabled = true;

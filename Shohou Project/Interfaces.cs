@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.Pipes;
 
-namespace Ark.XNA {
+namespace Ark.Xna {
 
     public interface IHasPosition<T> {
         Provider<T> Position { get; }

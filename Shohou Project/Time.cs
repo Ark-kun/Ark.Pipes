@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Ark.Pipes;
 
-namespace Ark.XNA {
+namespace Ark.Xna {
     public class Time : Provider<float> {
         DateTime _startTime;
 
