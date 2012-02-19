@@ -1,4 +1,6 @@
-﻿#if FLOAT_TYPE_DOUBLE
+﻿using Ark.Physics.Pipes;
+
+#if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
 #else
 using TFloat = System.Single;
@@ -19,7 +21,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Physics.Forces {
+namespace Ark.Physics.Forces.Pipes {
     public class ViscousFrictionForce : AmbientForce {
         TFloat _coeff;
 

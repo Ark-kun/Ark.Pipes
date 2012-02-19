@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Ark.Animation.Pipes;
+using Ark.Animation.Pipes.Xna;
 using Ark.Pipes;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Sprites {
+namespace Ark.Graphics.Sprites.Pipes.Xna {
     public class DynamicSprite : DrawableGameComponent, IHasChangeablePosition, IHasChangeableAngle, IHasChangeableTexture {
         private SpriteBatch _spriteBatch;
 

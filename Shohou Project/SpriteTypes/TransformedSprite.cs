@@ -1,8 +1,10 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Ark.Animation.Pipes.Xna;
+using Ark.Geometry.Transforms;
 using Ark.Pipes;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Sprites {
+namespace Ark.Graphics.Sprites.Pipes.Xna {
     public class TransformedSprite : DrawableGameComponent, IHasChangeableTexture {
         private SpriteBatch _spriteBatch;
 
@@ -10,7 +12,7 @@ namespace Ark.Xna.Sprites {
             : base(game) {
             _spriteBatch = (SpriteBatch)Game.Services.GetService(typeof(SpriteBatch));
 
-            Transform = Ark.Xna.Transforms.Transform<Vector2>.Identity;
+            Transform = Transform<Vector2>.Identity;
             Origin = Vector2.Zero;
             Texture = Constant<Texture2D>.Default;
             Tint = Color.White;

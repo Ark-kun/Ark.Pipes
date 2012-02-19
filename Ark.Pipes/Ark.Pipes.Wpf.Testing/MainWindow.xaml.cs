@@ -3,15 +3,22 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Threading;
-using Ark.Geometry.Primitives.Double;
-using Ark.Pipes.Animation;
-using Ark.Pipes.Input;
-using Ark.Pipes.Physics;
-using Ark.Pipes.Physics.Forces;
-using Ark.Pipes.Wpf;
-using System.Windows.Shapes;
 using System.Windows.Media;
+using System.Windows.Shapes;
+using System.Windows.Threading;
+using Ark.Animation;
+using Ark.Animation.Pipes;
+using Ark.Animation.Pipes.Wpf;
+using Ark.Geometry;
+using Ark.Geometry.Pipes;
+using Ark.Geometry.Pipes.Wpf;
+using Ark.Geometry.Primitives.Double;
+using Ark.Input.Pipes;
+using Ark.Input.Pipes.Wpf;
+using Ark.Physics.Forces.Pipes;
+using Ark.Physics.Pipes;
+using Ark.Pipes.Wpf;
+using Ark.Wpf.Pipes;
 
 namespace Ark.Pipes.Wpf.Testing {
     /// <summary>

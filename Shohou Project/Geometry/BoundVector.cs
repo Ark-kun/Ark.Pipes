@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Geometry {
+namespace Ark.Geometry.Xna {
     public struct BoundVector {
         public BoundVector(Vector2 startPoint, Vector2 endPoint) {
             StartPoint = startPoint;

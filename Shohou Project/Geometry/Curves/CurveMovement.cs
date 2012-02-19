@@ -1,11 +1,12 @@
 ﻿using System;
+using Ark.Geometry.Curves.Xna;
 using Ark.Pipes;
-using Ark.Xna;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Geometry.Curves {
+namespace Ark.Animation.Pipes.Xna {
     public class CurveMovement : ITimeDependent {
         ICurve2D _curve;
+
         public CurveMovement(ICurve2D curve) {
             _position = new Func<Vector2>(GetPosition);
             _curve = curve;

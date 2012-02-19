@@ -1,6 +1,7 @@
 ﻿using System;
-using Ark.Pipes.Animation;
+using Ark.Pipes;
 using Ark.Geometry.Primitives.Double;
+using Ark.Geometry.Pipes;
 
 namespace Ark.Pipes.Testing {
     public class Tests {

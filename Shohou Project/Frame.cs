@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Ark.Pipes;
-using Ark.Xna;
-using Ark.Xna.Transforms;
 
-namespace Ark.Shohou {
+namespace Ark.Geometry.Transforms.Xna {
     public class Frame {
         public IInvertibleTransform<Vector3> Transform { get; set; }
     }

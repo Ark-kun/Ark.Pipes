@@ -1,5 +1,5 @@
 ﻿using System;
-using Ark.Pipes.Animation;
+using Ark.Animation;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Physics {
+namespace Ark.Physics.Pipes {
     public class ForcesDrivenMaterialPoint : MaterialPoint {
         Clock _clock;
         DateTime _lastTick = DateTime.MinValue;

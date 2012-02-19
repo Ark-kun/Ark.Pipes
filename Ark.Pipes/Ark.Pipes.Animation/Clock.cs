@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ark.Pipes.Animation {
+namespace Ark.Animation {
     public abstract class Clock {
         public event Action Tick;
 

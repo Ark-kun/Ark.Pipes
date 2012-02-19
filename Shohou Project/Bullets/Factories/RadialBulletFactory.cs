@@ -1,11 +1,14 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using Ark.Xna.Sprites;
-using Ark.Xna.Transforms;
+using System.Linq;
+using Ark.Animation.Bullets.Xna;
+using Ark.Geometry.Transforms;
+using Ark.Geometry.Transforms.Xna;
+using Ark.Geometry.Xna;
+using Ark.Graphics.Sprites.Xna;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Bullets.Factories {
+namespace Ark.Animation.Bullets.Pipes.Xna {
     public class RadialBulletFactory : GameComponent {
         StaticSprite bulletSprite;
 

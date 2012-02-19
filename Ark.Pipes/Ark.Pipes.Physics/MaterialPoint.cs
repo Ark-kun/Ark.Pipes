@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -21,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Physics {
+namespace Ark.Physics.Pipes {
     public class MaterialPoint {
         protected Variable<Vector3> _position;
         protected Variable<Vector3> _velocity;

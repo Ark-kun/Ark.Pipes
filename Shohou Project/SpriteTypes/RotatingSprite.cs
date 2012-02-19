@@ -1,9 +1,10 @@
 ﻿using System;
+using Ark.Animation.Pipes.Xna;
+using Ark.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Ark.Pipes;
 
-namespace Ark.Xna.Sprites {
+namespace Ark.Graphics.Sprites.Pipes.Xna {
     public class RotatingSprite : DrawableGameComponent, IHasChangeablePosition {
         double angle;
         SpriteBatch spriteBatch;
@@ -20,8 +21,6 @@ namespace Ark.Xna.Sprites {
             //angle += (RotationSpeed * Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI) * gameTime.ElapsedGameTime.TotalSeconds) % 2 * Math.PI;
         }
 
-
-
         public override void Draw(GameTime gameTime) {
             //spriteBatch.Draw(Sprite, Position, Color.White);
             if (Sprite != null) {
@@ -33,9 +32,7 @@ namespace Ark.Xna.Sprites {
                 //spriteBatch.Draw(Sprite, destRect, null, Color.White, (float)angle, origin, SpriteEffects.None, 0);
 
                 spriteBatch.Draw(Sprite, Position, null, Color.White, (float)angle, origin, 1, SpriteEffects.None, 0);
-
             }
-
         }
 
         public Provider<Vector2> Position { get; set; }

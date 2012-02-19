@@ -1,4 +1,7 @@
-﻿using Ark.Pipes.Animation;
+﻿using Ark.Animation;
+using Ark.Geometry;
+using Ark.Physics.Pipes;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -21,7 +24,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Physics.Forces {
+namespace Ark.Physics.Forces.Pipes {
     public abstract class TwoBodyForce : Provider<TFloat> {
         protected MaterialPoint _obj1;
         protected MaterialPoint _obj2;

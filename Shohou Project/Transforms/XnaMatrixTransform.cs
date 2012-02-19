@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Transforms {
+namespace Ark.Geometry.Transforms.Xna {
     //public class XnaMatrixTransform : IInvertibleTransform<Vector2>, IInvertibleTransform<Vector3> {
     public class XnaMatrixTransform : IInvertibleTransform<Vector2> {
         Matrix _matrix;

@@ -1,10 +1,10 @@
 ﻿using System;
-using Microsoft.Xna.Framework;
-using Ark.Pipes;
 using System.Collections.Generic;
 using System.Linq;
+using Ark.Pipes;
+using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Transforms {
+namespace Ark.Geometry.Transforms {
     public sealed class FunctionTransform<T> : ITransform<T> {
         Func<T, T> _transform;
 
@@ -77,7 +77,9 @@ namespace Ark.Xna.Transforms {
             }
         }
     }
+}
 
+namespace Ark.Geometry.Transforms.Xna {
     public class TranslationTransform2D : IInvertibleTransform<Vector2> {
         Provider<Vector2> _translation;
         IInvertibleTransform<Vector2> _inverseTransform;
@@ -129,8 +131,9 @@ namespace Ark.Xna.Transforms {
             get { return _inverseTransform; }
         }
     }
+}
 
-
+namespace Ark.Geometry.Transforms {
     public class TransformStack<T> : ITransform<T> {
         IEnumerable<ITransform<T>> _transforms;
 

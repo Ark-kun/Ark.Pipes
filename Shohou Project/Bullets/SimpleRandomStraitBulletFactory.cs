@@ -1,11 +1,8 @@
 ﻿using System;
-using Ark.Xna;
-using Ark.Xna.Bullets;
-using Ark.Xna.Sprites;
+using Ark.Graphics.Sprites.Pipes.Xna;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Bullets {
+namespace Ark.Animation.Bullets.Pipes.Xna {
     class SimpleRandomStraitBulletFactory {
         DynamicSprite _bulletSprite;
         Vector2 _spriteOrigin;

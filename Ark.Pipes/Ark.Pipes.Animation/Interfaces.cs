@@ -1,4 +1,4 @@
-﻿namespace Ark.Pipes.Animation {
+﻿namespace Ark.Animation {
     public interface IHasPosition<T> {
         T Position { get; set; }
     }

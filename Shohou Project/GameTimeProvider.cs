@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Ark.Pipes;
+﻿using Ark.Xna.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Xna {
+namespace Ark.Animation.Pipes.Xna {
     public class GameTimeProvider : ProviderGameComponent<float> {
         float _time;
 

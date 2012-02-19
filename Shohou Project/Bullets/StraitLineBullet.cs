@@ -1,9 +1,11 @@
 ﻿using System;
+using Ark.Animation.Pipes;
+using Ark.Animation.Pipes.Xna;
+using Ark.Geometry.Xna;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Bullets {
-    class StraitLineBullet<TBullet> : DrawableGameComponent where TBullet : IUpdateable, IDrawable, IHasChangeablePosition {
+namespace Ark.Animation.Bullets.Pipes.Xna {
+    public class StraitLineBullet<TBullet> : DrawableGameComponent where TBullet : IUpdateable, IDrawable, IHasChangeablePosition {
         TBullet _bullet;
         Vector2 _origin;
         Vector2 _velocity;

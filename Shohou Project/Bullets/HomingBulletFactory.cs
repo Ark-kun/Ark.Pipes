@@ -1,10 +1,9 @@
 ﻿using System;
-using Ark.Xna.Sprites;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using Ark.Graphics.Sprites.Pipes.Xna;
 using Ark.Pipes;
+using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Bullets {
+namespace Ark.Animation.Bullets.Pipes.Xna {
     public class HomingBulletFactory {
         DynamicSprite _bulletSprite;
         Rectangle _originsSet;

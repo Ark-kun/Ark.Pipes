@@ -107,10 +107,12 @@
     <Compile Include="Bullets\Factories\LevyCCurveFactory.cs" />
     <Compile Include="Bullets\Factories\HeighwayDragonFactory.cs" />
     <Compile Include="Bullets\Factories\RadialBulletFactory.cs" />
+    <Compile Include="Bullets\Interfaces.cs" />
     <Compile Include="Bullets\Movements\Movements.cs" />
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
     <Compile Include="Bullets\HomingBulletFactory.cs" />
     <Compile Include="Bullets\StraitLineBullet.cs" />
+    <Compile Include="Transforms\Interfaces.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Games\TestGame3.cs" />
     <Compile Include="Interfaces.cs" />
@@ -120,9 +122,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Games\TestGame1.cs" />
     <Compile Include="Time.cs" />
-    <Compile Include="TransformBase.cs" />
+    <Compile Include="Transforms\TransformBase.cs" />
     <Compile Include="WP7 hack.cs" />
-    <Compile Include="XnaMatrixTransform.cs" />
+    <Compile Include="Transforms\XnaMatrixTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -200,7 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Input\Ark.Pipes.Input.csproj">
-      <Project>{8CD63302-AE77-4BB4-B32D-4276DD29B3AA}</Project>
+      <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
       <Name>Ark.Pipes.Input</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj">

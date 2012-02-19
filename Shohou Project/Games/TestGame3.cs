@@ -1,6 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ark.Animation.Pipes.Xna;
+using Ark.Geometry.Curves.Pipes.Xna;
+using Ark.Geometry.Pipes.Xna;
+using Ark.Geometry.Xna;
+using Ark.Graphics.Sprites.Pipes.Xna;
+using Ark.Pipes;
+using Ark.Xna;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -9,16 +16,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-using Ark.Xna.Bullets;
-using Ark.Xna.Bullets.Factories;
-using Ark.Xna.Transforms;
-using Ark.Xna.Sprites;
-using Ark.Xna;
-using Ark.Pipes;
-using Ark.Xna.Components;
-using Ark.Xna.Geometry;
-using Ark.Xna.Geometry.Curves.Dynamic;
-using Ark.Xna.Geometry.Curves;
 
 namespace Ark.Shohou {
     public class TestGame3 : Microsoft.Xna.Framework.Game {

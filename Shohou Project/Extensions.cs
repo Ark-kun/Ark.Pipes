@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna {
+namespace Ark.Geometry.Xna {
     public static class Extensions {
         public static double Angle(this Vector2 v) {
             return Math.Sign(v.Y) * Math.Acos(v.X / v.Length());
@@ -27,7 +27,11 @@ namespace Ark.Xna {
         public static Vector2 CenterOrigin(this Texture2D texture) {
             return new Vector2(texture.Width / 2, texture.Height / 2);
         }
+    }
+}
 
+namespace Ark.Xna {
+    public static class Extensions {
         public static void RemoveBorder(this Game game) {
             var handle = game.Window.Handle;
             if (handle != IntPtr.Zero) {

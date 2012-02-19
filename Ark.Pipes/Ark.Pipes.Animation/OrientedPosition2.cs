@@ -1,4 +1,6 @@
-﻿#if FLOAT_TYPE_DOUBLE
+﻿using Ark.Pipes;
+
+#if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
 #else
 using TFloat = System.Single;
@@ -19,7 +21,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Animation {
+namespace Ark.Animation.Pipes {
     //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
 
     public struct OrientedPosition2 : IHasPosition<Vector2>, IHasOrientation<TFloat> {

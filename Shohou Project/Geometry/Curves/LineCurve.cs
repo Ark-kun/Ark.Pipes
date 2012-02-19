@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Ark.Geometry.Curves.Xna;
+using Ark.Geometry.Pipes.Xna;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Xna.Geometry.Curves {
+namespace Ark.Geometry.Curves {
     public interface ICurve<TVector> {
         TVector Evaluate(float param);
     }
+}
 
-    public interface ICurve2D : ICurve <Vector2> {
+namespace Ark.Geometry.Curves.Xna {
+    public interface ICurve2D : ICurve<Vector2> {
     }
 
     public class LineCurve : ICurve2D {
@@ -19,7 +19,7 @@ namespace Ark.Xna.Geometry.Curves {
         public LineCurve(Vector2 origin, Vector2 direction) {
             _origin = origin;
             _direction = direction;
-            if(_direction != Vector2.Zero){
+            if (_direction != Vector2.Zero) {
                 _direction.Normalize();
             }
         }
@@ -28,19 +28,19 @@ namespace Ark.Xna.Geometry.Curves {
             return _origin + _direction * param;
         }
     }
+}
 
-    namespace Dynamic {
-        public class LineSectionCurve : ICurve2D {
-            DynamicBoundVector _boundVector;
+namespace Ark.Geometry.Curves.Pipes.Xna {
+    public class LineSectionCurve : ICurve2D {
+        DynamicBoundVector _boundVector;
 
-            public LineSectionCurve(DynamicBoundVector boundVector) {
-                _boundVector = boundVector;
-            }
+        public LineSectionCurve(DynamicBoundVector boundVector) {
+            _boundVector = boundVector;
+        }
 
-            public Vector2 Evaluate(float param) {
-                var startPoint = _boundVector.StartPoint;
-                return startPoint + (_boundVector.EndPoint.Value - startPoint) * param;
-            }
+        public Vector2 Evaluate(float param) {
+            var startPoint = _boundVector.StartPoint;
+            return startPoint + (_boundVector.EndPoint.Value - startPoint) * param;
         }
     }
 }

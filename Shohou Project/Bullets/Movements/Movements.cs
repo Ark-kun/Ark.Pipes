@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-namespace Ark.Xna.Bullets {
+
+namespace Ark.Animation {
     public static class Movements {
         public delegate bool TimeCondition(double t);
         public delegate double Movement1D(double t);
@@ -24,7 +25,6 @@ namespace Ark.Xna.Bullets {
             return (t) => condition(t) ? thenMovement(t) : elseMovement(t);
         }
 
-        public delegate Vector2 Movement2D(double t);
-
+        public delegate TVector2 Movement2D<TVector2>(double t);
     }
 }

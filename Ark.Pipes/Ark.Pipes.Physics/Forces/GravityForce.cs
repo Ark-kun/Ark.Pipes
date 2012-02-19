@@ -1,5 +1,5 @@
-﻿using System;
-using Ark.Pipes.Animation;
+﻿using Ark.Geometry;
+using Ark.Physics.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Pipes.Physics.Forces {
+namespace Ark.Physics.Forces.Pipes {
     public class GravityForce : TwoBodyForce {
         public const TFloat G = (TFloat)6.6738480E-11; ///kg^-1 * m^3 * s^-2
         public GravityForce(MaterialPoint obj1, MaterialPoint obj2)

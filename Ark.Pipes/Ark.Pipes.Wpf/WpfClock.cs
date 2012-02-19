@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 
-namespace Ark.Pipes.Animation {
+namespace Ark.Animation.Pipes.Wpf {
     public class WpfClock : Clock, IDisposable {
         public WpfClock() {
             CompositionTarget.Rendering += RenderingHandler;

@@ -2,14 +2,15 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media.Media3D;
-
-using Ark.Pipes.Animation;
+using Ark.Geometry.Pipes;
+using Ark.Pipes;
+using Ark.Pipes.Wpf;
 
 using TFloat = System.Double;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
-namespace Ark.Pipes.Wpf {
+namespace Ark.Geometry.Pipes.Wpf {
     public static class Extensions {
         public static Vector2 ToVector2(this Point vector) {
             return new Vector2((TFloat)vector.X, (TFloat)vector.Y);
@@ -34,7 +35,10 @@ namespace Ark.Pipes.Wpf {
         public static Vector3Components ToVector3Component(this Provider<Vector3D> vectors) {
             return vectors.ToVectors3().ToComponents();
         }
-
+    }
+}
+namespace Ark.Wpf.Pipes {
+    public static class Extensions {
         public static void SetBinding<T>(this FrameworkElement element, DependencyProperty property, Provider<T> provider) {
             element.SetBinding(property, new Binding("Value") { Source = new NotifyPropertyChangedAdapter<T>(provider), Mode = BindingMode.OneWay });
         }
