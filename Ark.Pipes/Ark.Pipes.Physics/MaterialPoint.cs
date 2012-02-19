@@ -27,14 +27,14 @@ namespace Ark.Pipes.Physics {
         protected Variable<Vector3> _velocity;
         protected Variable<Vector3> _acceleraton;
         protected Constant<TFloat> _mass;
-        protected HashSet<Provider<Vector3>> _forces;
+        protected List<Provider<Vector3>> _forces;
 
         public MaterialPoint(TFloat mass, Vector3 position, Vector3 speed = new Vector3()) {
             _mass = new Constant<TFloat>(mass);
             _position = new Variable<Vector3>(position);
             _velocity = new Variable<Vector3>(speed);
             _acceleraton = new Variable<Vector3>();
-            _forces = new HashSet<Provider<Vector3>>();
+            _forces = new List<Provider<Vector3>>();
         }
 
         public Provider<Vector3> Position {
@@ -53,7 +53,7 @@ namespace Ark.Pipes.Physics {
             get { return _mass; }
         }
 
-        public HashSet<Provider<Vector3>> Forces {
+        public List<Provider<Vector3>> Forces {
             get { return _forces; }
         }
     }

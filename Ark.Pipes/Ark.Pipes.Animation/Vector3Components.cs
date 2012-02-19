@@ -41,12 +41,14 @@ namespace Ark.Pipes {
             _z = Provider<TFloat>.Create((v) => v.Z, vectors);
         }
 
+#if !PORTABLE
         public static Vector3Components From<TPoint>(Provider<TPoint> point) {
             var x = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).X), point);
             var y = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).Y), point);
             var z = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).Z), point);
             return new Vector3Components(x, y, z);
         }
+#endif
 
         public Provider<Vector3> ToVectors3() {
             return Provider<Vector3>.Create((x, y, z) => new Vector3(x, y, z), _x, _x, _x);

@@ -1,9 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{1BD2C1D6-FD34-4305-B92C-AB936814255F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Testing portable", "Ark.Pipes.Testing\Ark.Pipes.Testing portable.csproj", "{4C0A2D8A-A746-484F-A27A-F49149EAE555}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (double) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (double) portable.csproj", "{1DB3795A-1257-4955-AD9D-548F6DC13F56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (single) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (single) portable.csproj", "{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - double) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - double) portable.csproj", "{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - single) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - single) portable.csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - double) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - double) portable.csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - single) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - single) portable.csproj", "{780342FE-189A-4785-9071-28E8659B41A5}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -12,39 +24,41 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
-		Debug|Mixed Platforms = Debug|Mixed Platforms
-		Debug|Windows Phone = Debug|Windows Phone
-		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-		Release|Mixed Platforms = Release|Mixed Platforms
-		Release|Windows Phone = Release|Windows Phone
-		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|Windows Phone.ActiveCfg = Release|Any CPU
-		{4AB376C4-2096-4854-9871-A3455A46DBBE}.Release|x86.ActiveCfg = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|Windows Phone.ActiveCfg = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|Windows Phone.ActiveCfg = Release|Any CPU
-		{4C0A2D8A-A746-484F-A27A-F49149EAE555}.Release|x86.ActiveCfg = Release|Any CPU
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BD2C1D6-FD34-4305-B92C-AB936814255F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DB3795A-1257-4955-AD9D-548F6DC13F56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{780342FE-189A-4785-9071-28E8659B41A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{780342FE-189A-4785-9071-28E8659B41A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{780342FE-189A-4785-9071-28E8659B41A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{780342FE-189A-4785-9071-28E8659B41A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

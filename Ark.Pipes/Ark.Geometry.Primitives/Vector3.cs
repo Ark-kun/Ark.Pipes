@@ -12,7 +12,10 @@ using TFloat = System.Double;
     namespace Single {
 #endif
 
-        [Serializable, StructLayout(LayoutKind.Sequential)]
+#if !PORTABLE1
+        [Serializable]
+#endif
+        [StructLayout(LayoutKind.Sequential)]
         public struct Vector3 : IEquatable<Vector3> {
             [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields")]
             public TFloat X;
