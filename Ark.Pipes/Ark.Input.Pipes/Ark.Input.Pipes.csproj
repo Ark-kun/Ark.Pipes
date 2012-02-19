@@ -5,21 +5,21 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C5633165-EEA6-4768-99FE-75B7123AED17}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Ark.Pipes.Testing</RootNamespace>
-    <AssemblyName>Ark.Pipes.Testing</AssemblyName>
+    <RootNamespace>Ark.Input.Pipes</RootNamespace>
+    <AssemblyName>Ark.Input.Pipes</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -32,26 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Compile Include="Mouse.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ark.Pipes.Tests.cs" />
-    <Compile Include="HelperProperties.cs" />
-    <Compile Include="PropertyConverter.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Ark.Geometry.Primitives\Ark.Geometry.Primitives %28double%29.csproj">
-      <Project>{1DB3795A-1257-4955-AD9D-548F6DC13F56}</Project>
-      <Name>Ark.Geometry.Primitives %28double%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ark.Animation.Pipes\Ark.Animation.Pipes %28Ark - double%29.csproj">
-      <Project>{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}</Project>
-      <Name>Ark.Animation.Pipes %28Ark - double%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Ark.Xna.Pipes\Ark.Xna.Pipes.csproj">
-      <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
-      <Name>Ark.Xna.Pipes</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">
       <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
       <Name>Ark.Pipes</Name>

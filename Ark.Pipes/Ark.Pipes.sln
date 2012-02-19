@@ -7,31 +7,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (single)", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (single).csproj", "{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - double)", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - double).csproj", "{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Animation.Pipes (Ark - double)", "Ark.Animation.Pipes\Ark.Animation.Pipes (Ark - double).csproj", "{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - single)", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - single).csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Animation.Pipes (Ark - single)", "Ark.Animation.Pipes\Ark.Animation.Pipes (Ark - single).csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (WPF - double)", "Ark.Pipes.Animation\Ark.Pipes.Animation (WPF - double).csproj", "{3F764CF2-A1D3-4216-A0C6-B6F1D4854033}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Animation.Pipes (WPF - double)", "Ark.Animation.Pipes\Ark.Animation.Pipes (WPF - double).csproj", "{3F764CF2-A1D3-4216-A0C6-B6F1D4854033}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (XNA - single)", "Ark.Pipes.Animation\Ark.Pipes.Animation (XNA - single).csproj", "{B8380B28-2056-45A3-83C8-05D222B9BD33}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Animation.Pipes (XNA - single)", "Ark.Animation.Pipes\Ark.Animation.Pipes (XNA - single).csproj", "{B8380B28-2056-45A3-83C8-05D222B9BD33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input", "Ark.Pipes.Input\Ark.Pipes.Input.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Input.Pipes", "Ark.Input.Pipes\Ark.Input.Pipes.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - double)", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - double).csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Physics.Pipes (Ark - double)", "Ark.Physics.Pipes\Ark.Physics.Pipes (Ark - double).csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Testing", "Ark.Pipes.Testing\Ark.Pipes.Testing.csproj", "{C5633165-EEA6-4768-99FE-75B7123AED17}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - single)", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - single).csproj", "{780342FE-189A-4785-9071-28E8659B41A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Physics.Pipes (Ark - single)", "Ark.Physics.Pipes\Ark.Physics.Pipes (Ark - single).csproj", "{780342FE-189A-4785-9071-28E8659B41A5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (WPF - double)", "Ark.Pipes.Physics\Ark.Pipes.Physics (WPF - double).csproj", "{866B1C49-84E1-4070-B287-E20C59B27165}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Physics.Pipes (WPF - double)", "Ark.Physics.Pipes\Ark.Physics.Pipes (WPF - double).csproj", "{866B1C49-84E1-4070-B287-E20C59B27165}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (XNA - single)", "Ark.Pipes.Physics\Ark.Pipes.Physics (XNA - single).csproj", "{25EE8443-CF99-4575-83B0-7001D43F358F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Physics.Pipes (XNA - single)", "Ark.Physics.Pipes\Ark.Physics.Pipes (XNA - single).csproj", "{25EE8443-CF99-4575-83B0-7001D43F358F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Wpf", "Ark.Pipes.Wpf\Ark.Pipes.Wpf.csproj", "{6D889C09-2763-4F7F-BF78-8CAB7A626306}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Wpf.Pipes", "Ark.Wpf.Pipes\Ark.Wpf.Pipes.csproj", "{6D889C09-2763-4F7F-BF78-8CAB7A626306}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Wpf.Testing", "Ark.Pipes.Wpf.Testing\Ark.Pipes.Wpf.Testing.csproj", "{FAC14F1A-0B1D-431A-AD06-A4BC00F71D5F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Wpf.Pipes.Testing", "Ark.Wpf.Pipes.Testing\Ark.Wpf.Pipes.Testing.csproj", "{FAC14F1A-0B1D-431A-AD06-A4BC00F71D5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna", "Ark.Pipes.Xna\Ark.Pipes.Xna.csproj", "{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes", "Ark.Xna.Pipes\Ark.Xna.Pipes.csproj", "{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

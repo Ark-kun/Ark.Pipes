@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna.Wp7.Testing", "Ark.Pipes.Xna.Wp7.Testing\Ark.Pipes.Xna.Wp7.Testing\Ark.Pipes.Xna.Wp7.Testing.csproj", "{611EC9B4-EB33-42F7-B195-581E35AD3B0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes.Wp7.Testing", "Ark.Xna.Pipes.Wp7.Testing\Ark.Xna.Pipes.Wp7.Testing\Ark.Xna.Pipes.Wp7.Testing.csproj", "{611EC9B4-EB33-42F7-B195-581E35AD3B0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna.Wp7.TestingContent", "Ark.Pipes.Xna.Wp7.Testing\Ark.Pipes.Xna.Wp7.TestingContent\Ark.Pipes.Xna.Wp7.TestingContent.contentproj", "{D75675D0-82FC-4C22-BE75-D84914328B08}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes.Wp7.TestingContent", "Ark.Xna.Pipes.Wp7.Testing\Ark.Xna.Pipes.Wp7.TestingContent\Ark.Xna.Pipes.Wp7.TestingContent.contentproj", "{D75675D0-82FC-4C22-BE75-D84914328B08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (XNA - single) WP7", "Ark.Pipes.Animation\Ark.Pipes.Animation (XNA - single) WP7.csproj", "{3C5F8873-1605-4E74-B80A-2603E0D23433}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Animation.Pipes (XNA - single) WP7", "Ark.Animation.Pipes\Ark.Animation.Pipes (XNA - single) WP7.csproj", "{3C5F8873-1605-4E74-B80A-2603E0D23433}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna WP7", "Ark.Pipes.Xna\Ark.Pipes.Xna WP7.csproj", "{B101F48E-714A-4771-822C-31FEA6DADE83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes WP7", "Ark.Xna.Pipes\Ark.Xna.Pipes WP7.csproj", "{B101F48E-714A-4771-822C-31FEA6DADE83}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-0001-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Input.Pipes portable", "Ark.Input.Pipes\Ark.Input.Pipes portable.csproj", "{36469577-0001-4224-8CE6-FDDEC5C15C55}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
