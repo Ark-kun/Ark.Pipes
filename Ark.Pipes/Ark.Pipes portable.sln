@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - single) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - single) portable.csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-0001-4224-8CE6-FDDEC5C15C55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - double) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - double) portable.csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
 EndProject
@@ -47,10 +47,10 @@ Global
 		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0C8E84-487E-423C-99F9-1FC405A05861}.Release|Any CPU.Build.0 = Release|Any CPU
-		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{36469577-A33E-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36469577-0001-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36469577-0001-4224-8CE6-FDDEC5C15C55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36469577-0001-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36469577-0001-4224-8CE6-FDDEC5C15C55}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}.Release|Any CPU.ActiveCfg = Release|Any CPU

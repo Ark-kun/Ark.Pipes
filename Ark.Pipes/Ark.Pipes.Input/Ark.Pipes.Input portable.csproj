@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</ProjectGuid>
+    <ProjectGuid>{36469577-0001-4224-8CE6-FDDEC5C15C55}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ark.Pipes.Input</RootNamespace>
