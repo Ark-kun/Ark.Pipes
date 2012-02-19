@@ -5,6 +5,13 @@
         public Provider<TPosition> Position;
         public Provider<TOrientation> Orientation;
 
+        public OrientedPositionComponents() : this(Constant<TPosition>.Default, Constant<TOrientation>.Default) { }
+
+        public OrientedPositionComponents(Provider<TPosition> position, Provider<TOrientation> orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
         //public static OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition> FromOrientedPositions<T>(T orientedPositions) where T : Provider<TOrientedPosition> {
         public static OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition> FromOrientedPositions(Provider<TOrientedPosition> orientedPositions) {
             return new OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition>() {

@@ -41,6 +41,13 @@ namespace Ark.Pipes.Animation {
         public Provider<Vector2> Position;
         public Provider<TFloat> Orientation;
 
+        public OrientedPosition2Components() : this(Constant<Vector2>.Default, Constant<TFloat>.Default) { }
+
+        public OrientedPosition2Components(Provider<Vector2> position, Provider<TFloat> orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
         public static OrientedPosition2Components FromOrientedPositions2(Provider<OrientedPosition2> orientedPositions) {
             return new OrientedPosition2Components() {
                 Position = Provider<Vector2>.Create((op) => op.Position, orientedPositions),

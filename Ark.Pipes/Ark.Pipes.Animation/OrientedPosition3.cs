@@ -41,6 +41,13 @@ namespace Ark.Pipes.Animation {
         public Provider<Vector3> Position;
         public Provider<Quaternion> Orientation;
 
+        public OrientedPosition3Components() : this(Constant<Vector3>.Default, Constant<Quaternion>.Default) { }
+
+        public OrientedPosition3Components(Provider<Vector3> position, Provider<Quaternion> orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
         public static OrientedPosition3Components FromOrientedPositions3(Provider<OrientedPosition3> orientedPositions) {
             return new OrientedPosition3Components() {
                 Position = Provider<Vector3>.Create((op) => op.Position, orientedPositions),
