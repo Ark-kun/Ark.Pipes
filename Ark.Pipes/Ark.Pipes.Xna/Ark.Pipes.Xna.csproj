@@ -16,7 +16,6 @@
     <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>3806C6EE-CC99-4767-A02F-48B4D9D2EE3C</XnaCrossPlatformGroupID>
     <XnaOutputType>Library</XnaOutputType>
-    <XnaRefreshLevel>1</XnaRefreshLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug</OutputPath>
