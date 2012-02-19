@@ -7,9 +7,8 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Input.Touch;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
 using Ark.XNA.Bullets;
 using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
@@ -74,13 +73,16 @@ namespace Ark.Shohou {
             var cannon2 = new DynamicSprite(this) { Position = cm.Position, Texture = Content.Load<Texture2D>("Bullet 2"), Tint = Color.Red };
             Components.Add(cannon2);
 
-            var cannon3 = new DynamicSprite(this) { Position = cm2.Position, Texture = Content.Load<Texture2D>("Bullet 2"), Tint = Color.Red };
+            var cannon3 = new DynamicSprite(this) { Position = cm2.Position, Texture = Content.Load<Texture2D>("Bullet 2"), Tint = Color.Blue };
             Components.Add(cannon3);
 
             base.Initialize();
         }
-
+#if !WINDOWS_PHONE || SILVERLIGHT
         public void CreateBullet1(float startTime = float.NegativeInfinity) {
+#else
+        public void CreateBullet1(float startTime) {
+#endif
             Vector2 position;
             //position = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 - 20, _screenRectangle.Top + _screenRectangle.Height - 100);
             //position = inf.Evaluate(time.Value) + new Vector2(-20, 0);
@@ -93,7 +95,11 @@ namespace Ark.Shohou {
             b.Updated += t => { if (!killer.Value) { b.Dispose(); } };
             Components.Add(b);
         }
+#if !WINDOWS_PHONE || SILVERLIGHT
         public void CreateBullet2(float startTime = float.NegativeInfinity) {
+#else
+        public void CreateBullet2(float startTime) {
+#endif
             Vector2 position;
             //position = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 + 20, _screenRectangle.Top + _screenRectangle.Height - 100);
             //position = inf.Evaluate(time.Value) + new Vector2(+20, 0);
@@ -109,7 +115,11 @@ namespace Ark.Shohou {
 
         protected override void Update(GameTime gameTime) {
             //if (ShouldFire1(gameTime)) CreateBullet1();
+#if !WINDOWS_PHONE || SILVERLIGHT
             if (ShouldFire2(gameTime)) CreateBullet1();
+#else
+            if (ShouldFire2(gameTime)) CreateBullet1(float.NegativeInfinity);
+#endif
             TryFire3();
 
             base.Update(gameTime);
@@ -134,7 +144,8 @@ namespace Ark.Shohou {
 
         bool ShouldFire2(GameTime gameTime) {
             var state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Space)) {
+            var touchState = TouchPanel.GetState();
+            if (state.IsKeyDown(Keys.Space) || touchState.Any()) {
                 if (gameTime.TotalGameTime - _lastFireTime > _fireDelay) {
                     _lastFireTime = gameTime.TotalGameTime;
                     return true;
@@ -148,7 +159,8 @@ namespace Ark.Shohou {
         float _lastFireTime3;
         void TryFire3() {
             var state = Keyboard.GetState();
-            if (state.IsKeyDown(Keys.Space)) {
+            var touchState = TouchPanel.GetState();
+            if (state.IsKeyDown(Keys.Space) || touchState.Any()) {
                 if (!_keyPressed3) {
                     _keyPressed3 = true;
                     if (_lastFireTime3 < realTime.Value - _fireDelay3) {
@@ -185,8 +197,11 @@ namespace Ark.Shohou {
     }
 
     public class Bullets {
-
+#if !WINDOWS_PHONE || SILVERLIGHT
         public static DynamicSprite CreateStraitConstantVelocityBullet(Game game, Provider<float> time, Vector2 startPosition, Vector2 velocity, Texture2D texture, float startTime = float.NegativeInfinity) {
+#else
+        public static DynamicSprite CreateStraitConstantVelocityBullet(Game game, Provider<float> time, Vector2 startPosition, Vector2 velocity, Texture2D texture, float startTime) {
+#endif
             if (float.IsNegativeInfinity(startTime)) {
                 startTime = time;
             }
@@ -208,10 +223,8 @@ namespace Ark.Shohou {
                 _startTime = startTime;
             }
 
-            public override Vector2 Value {
-                get {
-                    return _startPosition + _velocity * (_time.Value - _startTime);
-                }
+            public override Vector2 GetValue() {
+                return _startPosition + _velocity * (_time.Value - _startTime);
             }
         }
 
@@ -243,10 +256,8 @@ namespace Ark.Shohou {
 
             public Provider<Vector2> Velocity { get; set; }
 
-            public override Vector2 Value {
-                get {
-                    return _position;
-                }
+            public override Vector2 GetValue() {
+                return _position;
             }
         }
     }

@@ -27,7 +27,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaProfile>Reach</XnaProfile>
     <PublishUrl>http://localhost:265/_All_My.Creativity.Coding__Published Apps\Test.XNA/</PublishUrl>
     <Install>false</Install>
@@ -90,9 +90,6 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml">
       <Private>False</Private>
     </Reference>
@@ -124,6 +121,7 @@
     <Compile Include="Games\TestGame1.cs" />
     <Compile Include="Time.cs" />
     <Compile Include="TransformBase.cs" />
+    <Compile Include="WP7 hack.cs" />
     <Compile Include="XnaMatrixTransform.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -201,9 +199,13 @@
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Testing\Ark.Pipes.Testing.csproj">
-      <Project>{C5633165-EEA6-4768-99FE-75B7123AED17}</Project>
-      <Name>Ark.Pipes.Testing</Name>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Input\Ark.Pipes.Input.csproj">
+      <Project>{8CD63302-AE77-4BB4-B32D-4276DD29B3AA}</Project>
+      <Name>Ark.Pipes.Input</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj">
+      <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
+      <Name>Ark.Pipes.Xna</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes\Ark.Pipes.csproj">
       <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
@@ -211,7 +213,7 @@
     </ProjectReference>
     <ProjectReference Include="Content\Content_vs2010.contentproj">
       <Project>{5C03F9DC-140D-4815-BFC9-A5E21BBE4899}</Project>
-      <Name>Content_vs2010</Name>
+      <Name>Content_vs2010 %28Content%29</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>

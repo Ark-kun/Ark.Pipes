@@ -14,7 +14,7 @@
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows Phone</XnaPlatform>
     <XnaProfile>Reach</XnaProfile>
-    <XnaCrossPlatformGroupID>4c6f58f5-5227-45b9-843d-e3df174e9917</XnaCrossPlatformGroupID>
+    <XnaCrossPlatformGroupID>3806C6EE-CC99-4767-A02F-48B4D9D2EE3C</XnaCrossPlatformGroupID>
     <XnaOutputType>Library</XnaOutputType>
     <XnaRefreshLevel>1</XnaRefreshLevel>
   </PropertyGroup>
@@ -63,12 +63,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ark.Pipes.Input\Ark.Pipes.Input WP7.XNA.csproj">
-      <Project>{A22E1D69-29CD-4BA2-BB12-6C6C3C8CC71D}</Project>
-      <Name>Ark.Pipes.Input WP7.XNA</Name>
+    <ProjectReference Include="..\Ark.Pipes.Input\Ark.Pipes.Input portable.csproj">
+      <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
+      <Name>Ark.Pipes.Input portable</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes portable.csproj">
-      <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
+      <Project>{4AB376C4-2096-4854-9871-A3455A46DBBE}</Project>
       <Name>Ark.Pipes portable</Name>
     </ProjectReference>
   </ItemGroup>

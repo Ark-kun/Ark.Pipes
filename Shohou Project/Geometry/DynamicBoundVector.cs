@@ -12,10 +12,8 @@ namespace Ark.XNA.Geometry {
         public Provider<Vector2> StartPoint { get; set; }
         public Provider<Vector2> EndPoint { get; set; }
 
-        public override BoundVector Value {
-            get {
-                return new BoundVector(StartPoint, EndPoint);
-            }
+        public override BoundVector GetValue() {
+            return new BoundVector(StartPoint, EndPoint);
         }
 
         private Provider<Vector2> _center;

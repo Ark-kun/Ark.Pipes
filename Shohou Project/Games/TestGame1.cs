@@ -8,14 +8,13 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
+using Ark.Pipes;
+using Ark.Pipes.Input;
 using Ark.XNA.Bullets;
 using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
 using Ark.XNA.Sprites;
 using Ark.XNA;
-using Ark.Pipes;
 using Ark.XNA.Components;
 using Ark.XNA.Geometry;
 using Ark.XNA.Geometry.Curves.Dynamic;
@@ -145,7 +144,7 @@ namespace Ark.Shohou {
 
             var tt2D = new TranslationTransform2D();
             //Components.Add(new MouseControlledObject(this, tt2D));
-            tt2D.Translation = Ark.Pipes.Mouse.Position;
+            tt2D.Translation =  XnaMouse.Default.Position;
 
             var bulletSpriteInBatchRadial1 = new StaticSprite(spriteBatch, bulletTexture3, 1.0f, Color.Red);
             //var bulletFactoryRadial1 = new RadialBulletFactory(this, translationMatrix, 0, bulletSpriteInBatchRadial1, 20, 50, int.MaxValue, 2f, destroyer);
@@ -160,7 +159,7 @@ namespace Ark.Shohou {
             Components.Add(cursor);
             //Components.Add(new MouseControlledObject(this, cursor));
 
-            cursor.Position = Ark.Pipes.Mouse.Position;
+            cursor.Position = XnaMouse.Default.Position;
             //Components.Add(new KeyboardControlledObject(this, cursor, 1000));
 
             //var ds1 = new DynamicSprite(this, spriteBatch) { Texture = bulletTexture3 };
@@ -174,7 +173,7 @@ namespace Ark.Shohou {
             Random rnd = new Random();
             var randomVector = new RandomVectorInsideRectangle(screenRectangle);
             for (int i = 0; i < 200; i++) {
-                var line = new DynamicBoundVector() { StartPoint = randomVector.Value, EndPoint = Ark.Pipes.Mouse.Position };
+                var line = new DynamicBoundVector() { StartPoint = randomVector.Value, EndPoint = XnaMouse.Default.Position };
                 //var curve = new LineSectionCurve(line);
                 //lemniscate of Bernoulli 
                 var curve = new LemniscateOfBernoulliCurve(line);

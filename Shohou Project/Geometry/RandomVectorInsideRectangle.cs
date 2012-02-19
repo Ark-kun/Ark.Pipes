@@ -11,10 +11,8 @@ namespace Ark.XNA.Geometry {
             _rect = rect;
         }
 
-        public override Vector2 Value {
-            get {
-                return new Vector2(_rect.X + _rnd.Next(_rect.Width), _rect.Y + _rnd.Next(_rect.Height));
-            }
+        public override Vector2 GetValue() {
+            return new Vector2(_rect.X + _rnd.Next(_rect.Width), _rect.Y + _rnd.Next(_rect.Height));
         }
     }
 }

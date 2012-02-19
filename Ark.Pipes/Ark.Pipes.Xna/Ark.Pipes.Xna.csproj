@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Pipes.Input\Ark.Pipes.Input.csproj">
-      <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
+      <Project>{8CD63302-AE77-4BB4-B32D-4276DD29B3AA}</Project>
       <Name>Ark.Pipes.Input</Name>
     </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.csproj">

@@ -14,10 +14,8 @@ namespace Ark.XNA {
             _time = (float)gameTime.TotalGameTime.TotalMilliseconds;
         }
 
-        public override float Value {
-            get {
-                return _time;
-            }
+        public override float GetValue() {
+            return _time;
         }
     }
 }

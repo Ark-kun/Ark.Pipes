@@ -3,7 +3,7 @@ using Ark.Pipes.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ark.Pipes.Xna {
+namespace Ark.Pipes.Input {
     public sealed class XnaMouse : IMouse<Vector2> {
         static Provider<Vector2> _staticPosition = Provider<Vector2>.Create(GetPosition);
         static Provider<bool> _staticLeftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed);
@@ -56,7 +56,7 @@ namespace Ark.Pipes.Xna {
         }
     }
 
-    public class MousePosition : Provider<Vector2> {
+    public class XNAMousePosition : Provider<Vector2> {
         public override Vector2 GetValue() {
             var mouseState = Microsoft.Xna.Framework.Input.Mouse.GetState();
             return new Vector2(mouseState.X, mouseState.Y);

@@ -8,7 +8,7 @@ namespace Ark.XNA {
     public class Time : Provider<float> {
         DateTime _startTime;
 
-        public Time(){
+        public Time() {
             _startTime = DateTime.Now;
         }
 
@@ -16,10 +16,8 @@ namespace Ark.XNA {
             _startTime = startTime;
         }
 
-        public override float Value {
-            get {
-                return (float)((DateTime.Now - _startTime).TotalMilliseconds);
-            }
+        public override float GetValue() {
+            return (float)((DateTime.Now - _startTime).TotalMilliseconds);
         }
     }
 }

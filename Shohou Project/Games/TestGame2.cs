@@ -8,14 +8,13 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Microsoft.Xna.Framework.Net;
-using Microsoft.Xna.Framework.Storage;
+using Ark.Pipes;
+using Ark.Pipes.Input;
 using Ark.XNA.Bullets;
 using Ark.XNA.Bullets.Factories;
 using Ark.XNA.Transforms;
 using Ark.XNA.Sprites;
 using Ark.XNA;
-using Ark.Pipes;
 using Ark.XNA.Components;
 using Ark.XNA.Geometry;
 using Ark.XNA.Geometry.Curves.Dynamic;
@@ -63,12 +62,12 @@ namespace Ark.Shohou {
             var rootTransform = new XnaMatrix3Transform(Matrix.CreateTranslation(-300, -300, 0) * Matrix.CreateRotationZ(1) * Matrix.CreateTranslation(300, 300, 0));
             var rootFrame = new DynamicFrame(rootTransform);
 
-            var cursor3D = new Function<Vector2, Vector3>(v2 => v2.ToVector3(), Ark.Pipes.Mouse.Position);
+            var cursor3D = new Function<Vector2, Vector3>(v2 => v2.ToVector3(), XnaMouse.Default.Position);
             var cursorTransform = new TranslationTransform3D() { Translation = cursor3D };
             var cursorFrame = new DynamicFrame(rootFrame, cursorTransform);
 
 
-            //var cursorSprite = new DynamicSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Position = Ark.Pipes.Mouse.Position };
+            //var cursorSprite = new DynamicSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Position = XnaMouse.Default.Position };
 
             var cursorSpriteTransform = new FunctionTransform<Vector2>(v2 => cursorFrame.GetAbsoluteTransform().Transform(v2.ToVector3()).ToVector2());
             var cursorSprite = new TransformedSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Transform = cursorSpriteTransform };
