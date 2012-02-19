@@ -201,11 +201,11 @@
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Input\Ark.Pipes.Input.csproj">
+    <ProjectReference Include="..\Ark.Pipes\Ark.Input.Pipes\Ark.Input.Pipes.csproj">
       <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
       <Name>Ark.Pipes.Input</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ark.Pipes\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj">
+    <ProjectReference Include="..\Ark.Pipes\Ark.Xna.Pipes\Ark.Xna.Pipes.csproj">
       <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
       <Name>Ark.Pipes.Xna</Name>
     </ProjectReference>

@@ -9,17 +9,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes", "..\Ark.Pipes\A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "..\Ark.Pipes\Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna WP7", "..\Ark.Pipes\Ark.Pipes.Xna\Ark.Pipes.Xna WP7.csproj", "{B101F48E-714A-4771-822C-31FEA6DADE83}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes WP7", "..\Ark.Pipes\Ark.Xna.Pipes\Ark.Xna.Pipes WP7.csproj", "{B101F48E-714A-4771-822C-31FEA6DADE83}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "..\Ark.Pipes\Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-0001-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Input.Pipes portable", "..\Ark.Pipes\Ark.Input.Pipes\Ark.Input.Pipes portable.csproj", "{36469577-0001-4224-8CE6-FDDEC5C15C55}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input", "..\Ark.Pipes\Ark.Pipes.Input\Ark.Pipes.Input.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Input.Pipes", "..\Ark.Pipes\Ark.Input.Pipes\Ark.Input.Pipes.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna", "..\Ark.Xna\Ark.Xna.csproj", "{10F836B0-8C60-4F33-8CB2-C4BE7BC25628}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna WP7", "..\Ark.Xna\Ark.Xna WP7.csproj", "{BE3FF4A4-88CB-4951-A503-730598B80E78}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Xna", "..\Ark.Pipes\Ark.Pipes.Xna\Ark.Pipes.Xna.csproj", "{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Xna.Pipes", "..\Ark.Pipes\Ark.Xna.Pipes\Ark.Xna.Pipes.csproj", "{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
