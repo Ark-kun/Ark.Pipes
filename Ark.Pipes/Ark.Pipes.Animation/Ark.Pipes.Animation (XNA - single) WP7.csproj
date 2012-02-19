@@ -71,7 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes portable.csproj">
-      <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
+      <Project>{4AB376C4-2096-4854-9871-A3455A46DBBE}</Project>
       <Name>Ark.Pipes portable</Name>
     </ProjectReference>
   </ItemGroup>

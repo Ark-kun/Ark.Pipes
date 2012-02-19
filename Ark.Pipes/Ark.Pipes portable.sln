@@ -1,21 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{4AB376C4-2096-4854-9871-A3455A46DBBE}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes portable", "Ark.Pipes\Ark.Pipes portable.csproj", "{4AB376C4-2096-4854-9871-A3455A46DBBE}"
 EndProject
-Project("{1DB3795A-1257-4955-AD9D-548F6DC13F56}") = "Ark.Geometry.Primitives (double) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (double) portable.csproj", "{1DB3795A-1257-4955-AD9D-548F6DC13F56}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (double) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (double) portable.csproj", "{1DB3795A-1257-4955-AD9D-548F6DC13F56}"
 EndProject
-Project("{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}") = "Ark.Geometry.Primitives (single) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (single) portable.csproj", "{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Geometry.Primitives (single) portable", "Ark.Geometry.Primitives\Ark.Geometry.Primitives (single) portable.csproj", "{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}"
 EndProject
-Project("{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}") = "Ark.Pipes.Animation (Ark - double) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - double) portable.csproj", "{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - double) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - double) portable.csproj", "{5EB15298-B209-4AB4-8C8F-E44C7F9FCC21}"
 EndProject
-Project("{EC0C8E84-487E-423C-99F9-1FC405A05861}") = "Ark.Pipes.Animation (Ark - single) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - single) portable.csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Animation (Ark - single) portable", "Ark.Pipes.Animation\Ark.Pipes.Animation (Ark - single) portable.csproj", "{EC0C8E84-487E-423C-99F9-1FC405A05861}"
 EndProject
-Project("{36469577-A33E-4224-8CE6-FDDEC5C15C55}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Input portable", "Ark.Pipes.Input\Ark.Pipes.Input portable.csproj", "{36469577-A33E-4224-8CE6-FDDEC5C15C55}"
 EndProject
-Project("{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}") = "Ark.Pipes.Physics (Ark - double) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - double) portable.csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - double) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - double) portable.csproj", "{AEAC0349-CCAF-41AC-B524-2FB0DA3175EE}"
 EndProject
-Project("{780342FE-189A-4785-9071-28E8659B41A5}") = "Ark.Pipes.Physics (Ark - single) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - single) portable.csproj", "{780342FE-189A-4785-9071-28E8659B41A5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ark.Pipes.Physics (Ark - single) portable", "Ark.Pipes.Physics\Ark.Pipes.Physics (Ark - single) portable.csproj", "{780342FE-189A-4785-9071-28E8659B41A5}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
