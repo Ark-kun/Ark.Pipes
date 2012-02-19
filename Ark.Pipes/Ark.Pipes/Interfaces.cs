@@ -1,15 +1,15 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public interface IIn<in T> {
+    public interface IIn<T> {
         void SetValue(T value);
     }
 
-    public interface IOut<out T> {
+    public interface IOut<T> {
         T GetValue();
     }
 
-    public interface INotifyingOut<out T> : IOut<T>, IHasNotifier {
+    public interface INotifyingOut<T> : IOut<T>, IHasNotifier {
     }
 
     public interface INotifyElementChanged {
