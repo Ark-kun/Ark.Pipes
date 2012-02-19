@@ -5,7 +5,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8CD63302-AE77-4BB4-B32D-4276DD29B3AA}</ProjectGuid>
+    <ProjectGuid>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Ark.Pipes.Input</RootNamespace>
