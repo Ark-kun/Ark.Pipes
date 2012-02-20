@@ -1,9 +1,9 @@
 ﻿namespace Ark.Animation {
-    public interface IHasPosition<T> {
+    public interface IHasChangeablePosition<T> {
         T Position { get; set; }
     }
 
-    public interface IHasOrientation<T> {
+    public interface IHasChangeableOrientation<T> {
         T Orientation { get; set; }
     }
 }

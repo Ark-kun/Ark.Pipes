@@ -24,16 +24,21 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 namespace Ark.Animation.Pipes {
     //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
 
-    public struct OrientedPosition2 : IHasPosition<Vector2>, IHasOrientation<TFloat> {
+    public struct OrientedPosition2 : IHasChangeablePosition<Vector2>, IHasChangeableOrientation<TFloat> {
         public Vector2 Position;
         public TFloat Orientation;
 
-        Vector2 IHasPosition<Vector2>.Position {
+        public OrientedPosition2(Vector2 position, TFloat orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
+        Vector2 IHasChangeablePosition<Vector2>.Position {
             get { return Position; }
             set { Position = value; }
         }
 
-        TFloat IHasOrientation<TFloat>.Orientation {
+        TFloat IHasChangeableOrientation<TFloat>.Orientation {
             get { return Orientation; }
             set { Orientation = value; }
         }

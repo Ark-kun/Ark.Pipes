@@ -1,6 +1,9 @@
 ﻿using System;
-using Ark.Graphics.Sprites.Pipes.Xna;
+using Ark.Animation.Xna;
+using Ark.Geometry;
+using Ark.Graphics.Pipes.Xna;
 using Ark.Pipes;
+using Ark.Xna;
 using Microsoft.Xna.Framework;
 
 namespace Ark.Animation.Bullets.Pipes.Xna {
@@ -26,9 +29,12 @@ namespace Ark.Animation.Bullets.Pipes.Xna {
             Vector2 direction = _target - origin;
             direction.Normalize();
             float speed = (float)(rnd.NextDouble() * _maxSpeed);
-            direction *= speed;
-
-            return new StraitLineBullet<DynamicSprite>(_game, _bulletSprite, origin, direction);
+            Vector2 velocity = direction * speed;
+            
+            Func<float, Vector2> movement = Ark.Animation.Xna.Movements.StraightLineConstantSpeed(origin, velocity);
+            _bulletSprite.Position = new Function<float, Vector2>(movement, new Time());
+            _bulletSprite.Angle = (float)direction.Angle();
+            return _bulletSprite;
         }
 
         public Provider<Vector2> Target {

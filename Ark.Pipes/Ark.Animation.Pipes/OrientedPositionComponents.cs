@@ -3,7 +3,7 @@
 namespace Ark.Animation.Pipes {
     //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
     //using OrientedPosition3ComponentsEx = OrientedPositionComponents<TVector3, TQuaternion, OrientedPosition3>;
-    public class OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition> where TOrientedPosition : IHasPosition<TPosition>, IHasOrientation<TOrientation>, new() {
+    public class OrientedPositionComponents<TPosition, TOrientation, TOrientedPosition> where TOrientedPosition : IHasChangeablePosition<TPosition>, IHasChangeableOrientation<TOrientation>, new() {
         public Provider<TPosition> Position;
         public Provider<TOrientation> Orientation;
 

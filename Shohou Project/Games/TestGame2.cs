@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ark.Animation.Pipes.Xna;
+using Ark.Geometry;
 using Ark.Geometry.Transforms;
 using Ark.Geometry.Transforms.Xna;
-using Ark.Geometry.Xna;
-using Ark.Graphics.Sprites.Pipes.Xna;
+using Ark.Graphics.Pipes.Xna;
 using Ark.Input.Pipes.Xna;
 using Ark.Pipes;
 using Ark.Xna;
@@ -58,11 +58,11 @@ namespace Ark.Shohou {
             //Components.Add(cursor);
 
             var rootTransform = new XnaMatrix3Transform(Matrix.CreateTranslation(-300, -300, 0) * Matrix.CreateRotationZ(1) * Matrix.CreateTranslation(300, 300, 0));
-            var rootFrame = new DynamicFrame(rootTransform);
+            var rootFrame = new ReferenceFrame<Vector3>(rootTransform);
 
             var cursor3D = new Function<Vector2, Vector3>(v2 => v2.ToVector3(), XnaMouse.Default.Position);
             var cursorTransform = new TranslationTransform3D() { Translation = cursor3D };
-            var cursorFrame = new DynamicFrame(rootFrame, cursorTransform);
+            var cursorFrame = new ReferenceFrame<Vector3>(rootFrame, cursorTransform);
 
 
             //var cursorSprite = new DynamicSprite(this) { Texture = Content.Load<Texture2D>("Bullet 2"), Position = XnaMouse.Default.Position };

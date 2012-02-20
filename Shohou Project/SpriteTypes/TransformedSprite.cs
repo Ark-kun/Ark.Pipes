@@ -4,8 +4,8 @@ using Ark.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Graphics.Sprites.Pipes.Xna {
-    public class TransformedSprite : DrawableGameComponent, IHasChangeableTexture {
+namespace Ark.Graphics.Pipes.Xna {
+    public class TransformedSprite : DrawableGameComponent {
         private SpriteBatch _spriteBatch;
 
         public TransformedSprite(Game game)

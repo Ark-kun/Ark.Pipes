@@ -4,7 +4,7 @@ using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
 namespace Ark.Animation.Pipes.Xna {
-    public class CurveMovement : ITimeDependent {
+    public class CurveMovement {
         ICurve2D _curve;
 
         public CurveMovement(ICurve2D curve) {

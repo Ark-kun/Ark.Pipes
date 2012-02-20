@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Ark.Animation.Pipes;
 using Ark.Animation.Bullets.Xna;
 using Ark.Geometry.Transforms;
 using Ark.Pipes;
@@ -14,12 +15,13 @@ namespace Ark.Animation.Bullets.Pipes.Xna {
             _parent = parent;
         }
 
-        Provider<T> _position = Constant<T>.Default;
-        public Provider<T> Position { get {
+        Property<T> _position = new Property<T>();
+        public Provider<T> Position {
+            get {
                 return _position;
             }
             set {
-                _position = value;
+                _position.Provider = value;
             }
         }
 

@@ -5,7 +5,7 @@ using Ark.Animation.Pipes.Xna;
 using Ark.Geometry.Curves.Pipes.Xna;
 using Ark.Geometry.Pipes.Xna;
 using Ark.Geometry.Xna;
-using Ark.Graphics.Sprites.Pipes.Xna;
+using Ark.Graphics.Pipes.Xna;
 using Ark.Pipes;
 using Ark.Xna;
 using Microsoft.Xna.Framework;

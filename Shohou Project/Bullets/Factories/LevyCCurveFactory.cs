@@ -4,7 +4,7 @@ using System.Linq;
 using Ark.Animation.Bullets.Xna;
 using Ark.Geometry.Transforms;
 using Ark.Geometry.Transforms.Xna;
-using Ark.Graphics.Sprites.Xna;
+using Ark.Graphics.Xna;
 using Microsoft.Xna.Framework;
 using Ark.Pipes;
 

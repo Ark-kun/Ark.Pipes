@@ -1,4 +1,5 @@
-﻿using Ark.Pipes;
+﻿using System;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -131,13 +132,20 @@ namespace Ark.Geometry {
             return vector.LengthSquared;
         }
 #endif
+        public static Vector2 ToVector2(this Vector3 v) {
+            return new Vector2(v.X, v.Y);
+        }
 
-        public static Vector2 ToVectors2XY(this Vector3 v) {
+        public static Vector2 ToVector2XY(this Vector3 v) {
             return new Vector2(v.X, v.Y);
         }
 
         public static Vector2 ToVector2XZ(this Vector3 v) {
             return new Vector2(v.X, v.Z);
+        }
+
+        public static Vector3 ToVector3(this Vector2 v) {
+            return new Vector3(v.X, v.Y, 0);
         }
 
         public static Vector3 ToVector3XY(this Vector2 v) {
@@ -146,6 +154,10 @@ namespace Ark.Geometry {
 
         public static Vector3 ToVector3XZ(this Vector2 v) {
             return new Vector3(v.X, 0, v.Y);
+        }
+
+        public static double Angle(this Vector2 v) {
+            return Math.Atan2(v.X, v.Y);
         }
     }
 }

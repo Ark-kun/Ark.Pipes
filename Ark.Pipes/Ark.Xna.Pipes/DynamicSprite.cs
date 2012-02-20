@@ -1,11 +1,9 @@
-﻿using Ark.Animation.Pipes;
-using Ark.Animation.Pipes.Xna;
-using Ark.Pipes;
+﻿using Ark.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Graphics.Sprites.Pipes.Xna {
-    public class DynamicSprite : DrawableGameComponent, IHasChangeablePosition, IHasChangeableAngle, IHasChangeableTexture {
+namespace Ark.Graphics.Pipes.Xna {
+    public class DynamicSprite : DrawableGameComponent {
         private SpriteBatch _spriteBatch;
 
         public DynamicSprite(Game game)
@@ -23,22 +21,6 @@ namespace Ark.Graphics.Sprites.Pipes.Xna {
         public void Draw() {
             _spriteBatch.Draw(Texture, Position, null, Tint, Angle, Origin, Scale, SpriteEffects.None, 0);
         }
-
-        //public void Draw(Vector2 position) {
-        //    _spriteBatch.Draw(Texture, position, null, Tint, Angle, Origin, Scale, SpriteEffects.None, 0);
-        //}
-
-        //public void Draw(Vector2 position, float angle) {
-        //    _spriteBatch.Draw(Texture, position, null, Tint, angle, Origin, Scale, SpriteEffects.None, 0);
-        //}
-
-        //public void Draw(Vector2 position, float angle, float scale) {
-        //    _spriteBatch.Draw(Texture, position, null, Tint, angle, Origin, scale, SpriteEffects.None, 0);
-        //}
-
-        //public void Draw(Vector2 position, float angle, float scale, Color tint) {
-        //    _spriteBatch.Draw(Texture, position, null, tint, angle, Origin, scale, SpriteEffects.None, 0);
-        //}
 
         public Provider<Vector2> Position { get; set; }
         public Provider<Vector2> Origin { get; set; }

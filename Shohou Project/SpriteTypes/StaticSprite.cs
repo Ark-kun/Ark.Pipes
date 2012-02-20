@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Graphics.Sprites.Xna {
+namespace Ark.Graphics.Xna {
     public class StaticSprite {
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;

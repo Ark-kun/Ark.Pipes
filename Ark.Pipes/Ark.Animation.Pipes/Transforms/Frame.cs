@@ -1,61 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework;
 
-namespace Ark.Geometry.Transforms.Xna {
-    public class Frame {
-        public IInvertibleTransform<Vector3> Transform { get; set; }
-    }
+namespace Ark.Geometry.Transforms {
+    public class ReferenceFrame<T> {
+        private IInvertibleTransform<T> _transform;
+        private ReferenceFrame<T> _parent;
 
-    public class DynamicFrame {
-        private IInvertibleTransform<Vector3> _transform;
-        private DynamicFrame _parent;
-
-        public DynamicFrame Parent {
+        public ReferenceFrame<T> Parent {
             get { return _parent; }
             set { _parent = value; }
         }
 
-        public DynamicFrame()
-            : this(null, Transform<Vector3>.Identity) {
+        public ReferenceFrame()
+            : this(null, Transform<T>.Identity) {
         }
 
-        public DynamicFrame(DynamicFrame parent)
-            : this(parent, Transform<Vector3>.Identity) {
+        public ReferenceFrame(ReferenceFrame<T> parent)
+            : this(parent, Transform<T>.Identity) {
         }
 
-        public DynamicFrame(IInvertibleTransform<Vector3> transform)
+        public ReferenceFrame(IInvertibleTransform<T> transform)
             : this(null, transform) {
         }
 
-        public DynamicFrame(DynamicFrame parent, IInvertibleTransform<Vector3> transform) {
+        public ReferenceFrame(ReferenceFrame<T> parent, IInvertibleTransform<T> transform) {
             _parent = parent;
             _transform = transform;
         }
 
-        public IInvertibleTransform<Vector3> Transform {
+        public IInvertibleTransform<T> Transform {
             get { return _transform; }
             set { _transform = value; }
         }
 
-        public IInvertibleTransform<Vector3> GetAbsoluteTransform() {
-            DynamicFrame frame = this;
-            var transforms = new List<IInvertibleTransform<Vector3>>();
+        public IInvertibleTransform<T> GetAbsoluteTransform() {
+            ReferenceFrame<T> frame = this;
+            var transforms = new List<IInvertibleTransform<T>>();
             transforms.Add(_transform);
             while (frame._parent != null) {
                 frame = frame._parent;
                 transforms.Add(frame._transform);
             }
-            return new InvertibleTransformStack<Vector3>(transforms);
+            return new InvertibleTransformStack<T>(transforms);
         }
 
-        public static DynamicFrame FindCommonAncestor(DynamicFrame src, DynamicFrame dst) {
+        public static ReferenceFrame<T> FindCommonAncestor(ReferenceFrame<T> src, ReferenceFrame<T> dst) {
             if (src == dst)
                 return src;
-            var srcFrames = new HashSet<DynamicFrame>();
+            var srcFrames = new HashSet<ReferenceFrame<T>>();
             srcFrames.Add(src);
-            var dstFrames = new HashSet<DynamicFrame>();
+            var dstFrames = new HashSet<ReferenceFrame<T>>();
             dstFrames.Add(dst);
             while (src != null || dst != null) {
                 if (src != null && (src = src.Parent) != null) {
@@ -73,7 +68,7 @@ namespace Ark.Geometry.Transforms.Xna {
         }
 
 
-        public static IInvertibleTransform<Vector3> CreateRelativeTransform(DynamicFrame src, DynamicFrame dst) {
+        public static IInvertibleTransform<T> CreateRelativeTransform(ReferenceFrame<T> src, ReferenceFrame<T> dst) {
             var ancestor = FindCommonAncestor(src, dst);
             if (ancestor == null)
                 throw new ArgumentException("Frames have no common ancestor");
@@ -81,7 +76,7 @@ namespace Ark.Geometry.Transforms.Xna {
             var srcPath = Functional.For(src, f => f != ancestor, f => f.Parent).Select(f => f.Transform.Inverse);
             var dstPath = Functional.For(dst, f => f != ancestor, f => f.Parent).Select(f => f.Transform);
 
-            return new InvertibleTransformStack<Vector3>(srcPath.Concat(dstPath.Reverse()));
+            return new InvertibleTransformStack<T>(srcPath.Concat(dstPath.Reverse()));
         }
     }
 }

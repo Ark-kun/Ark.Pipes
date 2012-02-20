@@ -24,16 +24,21 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 namespace Ark.Animation.Pipes {
     //using OrientedPosition3ComponentsEx = OrientedPositionComponents<TVector3, TQuaternion, OrientedPosition3>;
 
-    public struct OrientedPosition3 : IHasPosition<Vector3>, IHasOrientation<Quaternion> {
+    public struct OrientedPosition3 : IHasChangeablePosition<Vector3>, IHasChangeableOrientation<Quaternion> {
         public Vector3 Position;
         public Quaternion Orientation;
 
-        Vector3 IHasPosition<Vector3>.Position {
+        public OrientedPosition3(Vector3 position, Quaternion orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
+        Vector3 IHasChangeablePosition<Vector3>.Position {
             get { return Position; }
             set { Position = value; }
         }
 
-        Quaternion IHasOrientation<Quaternion>.Orientation {
+        Quaternion IHasChangeableOrientation<Quaternion>.Orientation {
             get { return Orientation; }
             set { Orientation = value; }
         }

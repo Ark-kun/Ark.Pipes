@@ -1,5 +1,4 @@
-﻿#if WINDOWS_PHONE
-namespace System.Collections.Generic {
+﻿namespace System.Collections.Generic {
     public class HashSet<T> : ICollection<T> {
         private Dictionary<T, byte> _dict;
 
@@ -44,4 +43,3 @@ namespace System.Collections.Generic {
         }
     }
 }
-#endif

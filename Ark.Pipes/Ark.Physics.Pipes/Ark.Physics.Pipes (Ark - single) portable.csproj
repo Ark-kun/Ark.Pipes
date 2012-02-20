@@ -52,7 +52,7 @@
       <Project>{DDD970D5-E4A4-4AE8-AD37-868AE5C8C28E}</Project>
       <Name>Ark.Geometry.Primitives %28single%29 portable</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ark.Animation.Pipes\Ark.Pipes.Animation %28Ark - single%29 portable.csproj">
+    <ProjectReference Include="..\Ark.Animation.Pipes\Ark.Animation.Pipes %28Ark - single%29 portable.csproj">
       <Project>{EC0C8E84-487E-423C-99F9-1FC405A05861}</Project>
       <Name>Ark.Pipes.Animation %28Ark - single%29 portable</Name>
     </ProjectReference>

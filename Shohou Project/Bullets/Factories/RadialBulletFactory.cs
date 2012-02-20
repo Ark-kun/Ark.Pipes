@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Ark.Animation.Bullets.Xna;
+using Ark.Geometry;
 using Ark.Geometry.Transforms;
 using Ark.Geometry.Transforms.Xna;
-using Ark.Geometry.Xna;
-using Ark.Graphics.Sprites.Xna;
+using Ark.Graphics.Xna;
 using Microsoft.Xna.Framework;
 
 namespace Ark.Animation.Bullets.Pipes.Xna {

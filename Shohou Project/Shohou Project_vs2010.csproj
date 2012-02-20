@@ -111,20 +111,12 @@
     <Compile Include="Bullets\Movements\Movements.cs" />
     <Compile Include="Bullets\SimpleRandomStraitBulletFactory.cs" />
     <Compile Include="Bullets\HomingBulletFactory.cs" />
-    <Compile Include="Bullets\StraitLineBullet.cs" />
-    <Compile Include="Transforms\Interfaces.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Games\TestGame3.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="SpriteTypes\TransformedSprite.cs" />
-    <Compile Include="SpriteTypes\DynamicSprite.cs" />
-    <Compile Include="SpriteTypes\RotatingSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Games\TestGame1.cs" />
-    <Compile Include="Time.cs" />
-    <Compile Include="Transforms\TransformBase.cs" />
-    <Compile Include="WP7 hack.cs" />
-    <Compile Include="Transforms\XnaMatrixTransform.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />
@@ -179,11 +171,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Ark.Functional.For.cs" />
     <Compile Include="Components\CoolSprite.cs" />
     <Compile Include="Components\FpsCounter.cs" />
     <Compile Include="Components\KeyboardControlledObject.cs" />
-    <Compile Include="Frame.cs" />
     <Compile Include="Games\TestGame2.cs" />
     <Compile Include="Geometry\BoundVector.cs" />
     <Compile Include="Geometry\Curves\LemniscateOfBernoulliCurve.cs" />
@@ -192,15 +182,17 @@
     <Compile Include="Geometry\Curves\LineCurve.cs" />
     <Compile Include="Geometry\RandomVectorInsideRectangle.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ProviderGameComponent.cs" />
     <Compile Include="SpriteTypes\StaticSprite.cs" />
     <Compile Include="Geometry\Curves\CurveMovement.cs" />
-    <Compile Include="GameTimeProvider.cs" />
     <None Include="app.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Test.XNAWindowsGame_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Animation.Pipes\Ark.Animation.Pipes %28XNA - single%29.csproj">
+      <Project>{B8380B28-2056-45A3-83C8-05D222B9BD33}</Project>
+      <Name>Ark.Animation.Pipes %28XNA - single%29</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Input.Pipes\Ark.Input.Pipes.csproj">
       <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
       <Name>Ark.Pipes.Input</Name>
