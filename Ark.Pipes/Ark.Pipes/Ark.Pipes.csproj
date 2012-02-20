@@ -40,6 +40,7 @@
     <Compile Include="NotifyPropertyChangedAdapter.cs" />
     <Compile Include="ProviderArray.cs" />
     <Compile Include="Provider.cs" />
+    <Compile Include="TupleProvider.cs" />
     <Compile Include="TwoWayBinding.cs" />
     <Compile Include="Variable.cs" />
     <Compile Include="Interfaces.cs" />
