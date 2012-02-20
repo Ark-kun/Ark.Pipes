@@ -177,7 +177,7 @@ namespace Ark.Pipes {
             set { _arg3.Provider = value.Provider; }
         }
 
-        public Property<T4> Argument3 {
+        public Property<T4> Argument4 {
             get { return _arg4; }
             set { _arg4.Provider = value.Provider; }
         }
