@@ -97,6 +97,10 @@ namespace Ark.Pipes {
         public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3) {
             return new Function<T1, T2, T3, T>(function, arg1, arg2, arg3);
         }
+
+        public static Function<T1, T2, T3, T4, T> Create<T1, T2, T3, T4>(Func<T1, T2, T3, T4, T> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3, Provider<T4> arg4) {
+            return new Function<T1, T2, T3, T4, T>(function, arg1, arg2, arg3, arg4);
+        }
         #endregion
     }
 
