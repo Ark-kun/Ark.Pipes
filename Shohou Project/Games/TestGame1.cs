@@ -1,21 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ark.Animation.Bullets.Pipes.Xna;
-using Ark.Animation.Pipes.Xna;
-using Ark.Geometry.Curves.Pipes.Xna;
-using Ark.Geometry.Pipes.Xna;
+using Ark.Animation;
+using Ark.Animation.Bullets;
+using Ark.Geometry;
+using Ark.Geometry.Curves;
 using Ark.Geometry.Transforms;
-using Ark.Geometry.Transforms.Xna;
-using Ark.Geometry.Transforms.Pipes.Xna;
-using Ark.Geometry.Xna;
-using Ark.Graphics.Pipes.Xna;
-using Ark.Graphics.Xna;
-using Ark.Input.Pipes.Xna;
+using Ark.Graphics;
+using Ark.Input;
 using Ark.Pipes;
 using Ark.Xna;
 using Ark.Xna.Components;
-using Ark.Xna.Components.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
@@ -194,7 +189,7 @@ namespace Ark.Shohou {
                 float phase = (float)(rnd.NextDouble() * (2 * Math.PI)); //full delta
                 var movement = new CurveMovement(curve) { Time = new Function<float>(() => time.Value * 0.001f + phase) };
 
-                var bullet = new DynamicSprite(this) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.CenterOrigin() };
+                var bullet = new DynamicSprite(this) { Position = movement.Position, Texture = bulletTexture2, Origin = bulletTexture2.Center() };
                 Components.Add(bullet);
             }
 

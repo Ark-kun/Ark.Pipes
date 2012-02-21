@@ -2,7 +2,7 @@
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Geometry.Transforms.Xna {
+namespace Ark.Geometry.Transforms { //.Xna {
     public sealed class UpdateableFunctionTransform<T> : GameComponent, ITransform<T> {
         Func<double, Func<T, T>> _transformFactory = null;
         Func<T, T> _transform = null;
@@ -22,7 +22,7 @@ namespace Ark.Geometry.Transforms.Xna {
     }
 }
 
-namespace Ark.Geometry.Transforms.Pipes.Xna {
+namespace Ark.Geometry.Transforms { //.Pipes.Xna {
     public class TranslationTransform2D : IInvertibleTransform<Vector2> {
         Provider<Vector2> _translation;
         IInvertibleTransform<Vector2> _inverseTransform;

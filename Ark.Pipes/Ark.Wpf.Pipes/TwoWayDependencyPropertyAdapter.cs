@@ -5,7 +5,7 @@ using System.Text;
 using System.Windows;
 using System.ComponentModel;
 
-namespace Ark.Pipes.Wpf {
+namespace Ark.Wpf { //.Pipes.Wpf {
     //public class TwoWayDependencyPropertyAdapter<T> : DependencyObject, INotifyPropertyChanged, IIn<T>, IOut<T> {
     //    static string _propertyName = "Value";
     //    public event Action Changed;

@@ -1,5 +1,4 @@
-﻿using Ark.Physics.Pipes;
-using Ark.Pipes;
+﻿using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,7 +21,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Physics.Forces.Pipes {
+namespace Ark.Physics.Forces { //.Pipes {
     public abstract class AmbientForce {
         public Provider<Vector3> GetForceOnObject(MaterialPoint obj) {
             return new Function<Vector3>(() => CalculateForceOnObject(obj));

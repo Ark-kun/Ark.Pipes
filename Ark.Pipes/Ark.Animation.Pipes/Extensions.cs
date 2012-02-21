@@ -1,5 +1,6 @@
 ﻿using System;
 using Ark.Pipes;
+using Ark.Geometry;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,8 +23,8 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Geometry.Pipes {
-    public static class Extensions {
+namespace Ark.Geometry {
+    public static class Extensions_Pipes {
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
             return Provider<Vector2>.Create((v1, v2) => v1 + v2, v1s, v2s);
         }

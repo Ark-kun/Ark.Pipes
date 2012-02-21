@@ -1,8 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows;
+using Ark.Pipes;
 
-namespace Ark.Pipes.Wpf {
+namespace Ark.Wpf { //.Pipes.Wpf {
     //Provider that reads from  DP
     public class ProviderAdapter<T> : ProviderWithNotifier<T> {
         DependencyObject _obj;

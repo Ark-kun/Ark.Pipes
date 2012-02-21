@@ -1,8 +1,8 @@
 ﻿using Ark.Pipes;
-using Ark.Geometry.Xna;
+using Ark.Geometry;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Geometry.Pipes.Xna {
+namespace Ark.Geometry { //.Pipes.Xna {
     public class DynamicBoundVector : Provider<BoundVector> {
         public DynamicBoundVector() {
             StartPoint = Constant<Vector2>.Default;

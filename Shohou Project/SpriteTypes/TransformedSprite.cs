@@ -1,10 +1,10 @@
-﻿using Ark.Animation.Pipes.Xna;
+﻿using Ark.Animation;
 using Ark.Geometry.Transforms;
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Graphics.Pipes.Xna {
+namespace Ark.Graphics { //.Pipes.Xna {
     public class TransformedSprite : DrawableGameComponent {
         private SpriteBatch _spriteBatch;
 

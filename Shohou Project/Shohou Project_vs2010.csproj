@@ -197,13 +197,13 @@
       <Project>{36469577-A33E-4224-8CE6-FDDEC5C15C55}</Project>
       <Name>Ark.Pipes.Input</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Ark.Pipes\Ark.Xna.Pipes\Ark.Xna.Pipes.csproj">
-      <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
-      <Name>Ark.Pipes.Xna</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ark.Pipes\Ark.Pipes\Ark.Pipes.csproj">
       <Project>{1BD2C1D6-FD34-4305-B92C-AB936814255F}</Project>
       <Name>Ark.Pipes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ark.Pipes\Ark.Xna.Pipes\Ark.Xna.Pipes.csproj">
+      <Project>{3806C6EE-CC99-4767-A02F-48B4D9D2EE3C}</Project>
+      <Name>Ark.Xna.Pipes</Name>
     </ProjectReference>
     <ProjectReference Include="Content\Content_vs2010.contentproj">
       <Project>{5C03F9DC-140D-4815-BFC9-A5E21BBE4899}</Project>

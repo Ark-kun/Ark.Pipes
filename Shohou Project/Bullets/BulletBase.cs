@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Ark.Animation.Pipes;
-using Ark.Animation.Bullets.Xna;
+using Ark.Animation;
+using Ark.Animation.Bullets;
 using Ark.Geometry.Transforms;
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Animation.Bullets.Pipes.Xna {
+namespace Ark.Animation.Bullets { //.Pipes.Xna {
     public class BulletBase<T> : DrawableGameComponent, IBullet<T> {
         private IBulletFactory<T> _parent;
 

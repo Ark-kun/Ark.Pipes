@@ -1,9 +1,9 @@
 ﻿using System;
-using Ark.Geometry.Curves.Xna;
+using Ark.Geometry.Curves;
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Animation.Pipes.Xna {
+namespace Ark.Animation { //.Pipes.Xna {
     public class CurveMovement {
         ICurve2D _curve;
 

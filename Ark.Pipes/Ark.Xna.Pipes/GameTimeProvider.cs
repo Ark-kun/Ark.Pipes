@@ -1,7 +1,7 @@
-﻿using Ark.Xna.Pipes;
+﻿using Ark.Xna;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Animation.Pipes.Xna {
+namespace Ark.Animation { //.Pipes.Xna {
     public class GameTimeProvider : ProviderGameComponent<float> {
         float _time;
 

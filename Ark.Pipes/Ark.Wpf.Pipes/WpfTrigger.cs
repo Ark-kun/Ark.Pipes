@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Media;
 
-namespace Ark.Animation.Pipes.Wpf {
+namespace Ark.Animation { //.Pipes.Wpf {
     public class WpfTrigger : TriggerBase, IDisposable {
         public WpfTrigger() {
             CompositionTarget.Rendering += RenderingHandler;

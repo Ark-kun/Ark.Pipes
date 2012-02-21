@@ -1,11 +1,10 @@
 ﻿using System;
-using Ark.Geometry.Curves.Xna;
-using Ark.Geometry.Pipes.Xna;
-using Ark.Geometry.Xna;
+using Ark.Geometry.Curves;
+using Ark.Geometry;
 using Ark.Xna;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Geometry.Curves.Pipes.Xna {
+namespace Ark.Geometry.Curves { //.Pipes.Xna {
     public class BadLemniscateOfBernoulliCurve : ICurve2D {
         DynamicBoundVector _boundVector;
 

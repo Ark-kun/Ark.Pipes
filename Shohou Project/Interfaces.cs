@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Ark.Pipes;
 
-namespace Ark.Animation.Pipes {
+namespace Ark.Animation { //.Pipes {
     public interface IHasDynamicPosition<T> {
         Provider<T> Position { get; }
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using Ark.Pipes;
 
-namespace Ark.Xna {
+namespace Ark.Animation {
     public class Timer : Provider<float> {
         DateTime _startTime;
 

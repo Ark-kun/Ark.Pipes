@@ -1,10 +1,9 @@
 ﻿using System;
-using Ark.Geometry.Curves.Xna;
-using Ark.Geometry.Pipes.Xna;
-using Ark.Geometry.Xna;
+using Ark.Geometry;
+using Ark.Geometry.Curves;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Geometry.Curves.Pipes.Xna {
+namespace Ark.Geometry.Curves { //.Pipes.Xna {
     public class LemniscateOfBernoulliCurve : ICurve2D {
         DynamicBoundVector _boundVector;
 

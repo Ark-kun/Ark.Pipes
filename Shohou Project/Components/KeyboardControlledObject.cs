@@ -1,9 +1,9 @@
 ﻿using Ark.Pipes;
-using Ark.Animation.Pipes.Xna;
+using Ark.Animation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ark.Input.Pipes.Xna {
+namespace Ark.Input { //.Pipes.Xna {
     public class KeyboardControlledPosition : GameComponent {
         Game _game;
         float _speed;

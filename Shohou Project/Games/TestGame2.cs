@@ -1,12 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ark.Animation.Pipes.Xna;
+using Ark.Animation;
 using Ark.Geometry;
 using Ark.Geometry.Transforms;
-using Ark.Geometry.Transforms.Xna;
-using Ark.Graphics.Pipes.Xna;
-using Ark.Input.Pipes.Xna;
+using Ark.Graphics;
+using Ark.Input;
 using Ark.Pipes;
 using Ark.Xna;
 using Ark.Xna.Components;
@@ -17,7 +16,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-using Ark.Geometry.Transforms.Pipes.Xna;
+using Ark.Geometry.Transforms;
 
 namespace Ark.Shohou {
     //Testing DynamicFrame

@@ -1,6 +1,6 @@
 ﻿using System;
-using Ark.Animation.Pipes;
-using Ark.Geometry.Pipes;
+using Ark.Animation;
+using Ark.Geometry;
 using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
@@ -107,8 +107,8 @@ namespace Ark.Geometry.Curves {
     }
 }
 
-namespace Ark.Geometry.Curves.Pipes {
-    public class CurveMovement {
+namespace Ark.Animation { //.Pipes {
+    public class CurveMovementFactory {
         public static Provider<TResult> Create<TResult, T1>(Func<T1, float, TResult> curve, Provider<T1> parameters, Provider<float> time) {
             return Provider<TResult>.Create((p, t) => curve(p, t), parameters, time);
         }

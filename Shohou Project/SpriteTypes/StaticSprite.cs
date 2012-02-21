@@ -1,8 +1,8 @@
-﻿using Ark.Geometry.Xna;
+﻿using Ark.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Graphics.Xna {
+namespace Ark.Graphics { //.Xna {
     public class StaticSprite {
         private SpriteBatch _spriteBatch;
         private Texture2D _texture;
@@ -19,7 +19,7 @@ namespace Ark.Graphics.Xna {
         }
 
         public StaticSprite(SpriteBatch spriteBatch, Texture2D texture, float scale, Color tint)
-            : this(spriteBatch, texture, scale, tint, texture.CenterOrigin()) {
+            : this(spriteBatch, texture, scale, tint, texture.Center()) {
         }
 
         public StaticSprite(SpriteBatch spriteBatch, Texture2D texture, float scale, Color tint, Vector2 origin)

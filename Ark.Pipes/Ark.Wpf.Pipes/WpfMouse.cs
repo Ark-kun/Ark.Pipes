@@ -2,7 +2,7 @@
 using System.Windows.Input;
 using Ark.Pipes;
 
-namespace Ark.Input.Pipes.Wpf {
+namespace Ark.Input { //.Pipes.Wpf {
     public class WpfMouse : IMouse<Point> {
         IInputElement _canvas;
         Provider<Point> _position;

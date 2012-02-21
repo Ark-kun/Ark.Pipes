@@ -1,8 +1,8 @@
-﻿using Ark.Animation.Pipes;
+﻿using Ark.Animation;
 using Ark.Geometry.Transforms;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Animation.Bullets.Xna {
+namespace Ark.Animation.Bullets { //.Xna {
     public interface IBullet<T> : IDrawable, IUpdateable, IHasDynamicPosition<T>, IHasParent<IBulletFactory<T>> { }
 
     public interface IBulletFactory<T> : IUpdateable, IContainer<IBulletFactory<T>>, IContainer<IBullet<T>>, IHasTransform<T> { }

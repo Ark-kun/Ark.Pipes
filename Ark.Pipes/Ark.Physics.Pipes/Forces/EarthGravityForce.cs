@@ -1,6 +1,4 @@
-﻿using Ark.Physics.Pipes;
-
-#if FLOAT_TYPE_DOUBLE
+﻿#if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
 #else
 using TFloat = System.Single;
@@ -21,7 +19,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Physics.Forces.Pipes {
+namespace Ark.Physics.Forces { //.Pipes {
     public class EarthGravityForce : AmbientForce {
         const TFloat g = (TFloat)9.80665;
         public override Vector3 CalculateForceOnObject(MaterialPoint obj) {

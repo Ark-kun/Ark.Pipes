@@ -22,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Physics.Pipes {
+namespace Ark.Physics { //.Pipes {
     public class MaterialPoint {
         protected Variable<Vector3> _position;
         protected Variable<Vector3> _velocity;

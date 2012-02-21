@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Ark.Pipes.Wpf {
+namespace Ark.Pipes { //.Wpf {
     public class NotifyPropertyChangedAdapter<T> : INotifyPropertyChanged {
         const string _propertyName = "Value";
         Property<T> _value;

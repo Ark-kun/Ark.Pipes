@@ -1,11 +1,11 @@
 ﻿using System;
-using Ark.Graphics.Pipes.Xna;
-using Ark.Animation.Xna;
+using Ark.Graphics;
+using Ark.Animation;
 using Microsoft.Xna.Framework;
 using Ark.Pipes;
 using Ark.Xna;
 
-namespace Ark.Animation.Bullets.Pipes.Xna {
+namespace Ark.Animation.Bullets { //.Pipes.Xna {
     class SimpleRandomStraitBulletFactory {
         DynamicSprite _bulletSprite;
         Vector2 _spriteOrigin;
@@ -26,7 +26,7 @@ namespace Ark.Animation.Bullets.Pipes.Xna {
             float angle = (float)(rnd.NextDouble() * 2 * Math.PI);
             float speed = (float)(rnd.NextDouble() * _maxSpeed);
             
-            Func<float, Vector2> movement = Ark.Animation.Xna.Movements.StraightLineConstantSpeed(origin, angle, speed);
+            Func<float, Vector2> movement = Movements_Xna.StraightLineConstantSpeed(origin, angle, speed);
             _bulletSprite.Position = new Function<float, Vector2>(movement, new Timer());
             _bulletSprite.Angle = angle;
             return _bulletSprite;

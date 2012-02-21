@@ -1,5 +1,5 @@
-﻿using Ark.Geometry.Curves.Xna;
-using Ark.Geometry.Pipes.Xna;
+﻿using Ark.Geometry;
+using Ark.Geometry.Curves;
 using Microsoft.Xna.Framework;
 
 namespace Ark.Geometry.Curves {
@@ -8,7 +8,7 @@ namespace Ark.Geometry.Curves {
     }
 }
 
-namespace Ark.Geometry.Curves.Xna {
+namespace Ark.Geometry.Curves { //.Xna {
     public interface ICurve2D : ICurve<Vector2> {
     }
 
@@ -30,7 +30,7 @@ namespace Ark.Geometry.Curves.Xna {
     }
 }
 
-namespace Ark.Geometry.Curves.Pipes.Xna {
+namespace Ark.Geometry.Curves { //.Pipes.Xna {
     public class LineSectionCurve : ICurve2D {
         DynamicBoundVector _boundVector;
 

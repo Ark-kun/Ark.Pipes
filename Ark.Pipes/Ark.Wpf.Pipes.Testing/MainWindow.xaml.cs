@@ -7,20 +7,15 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Ark.Animation;
-using Ark.Animation.Pipes;
-using Ark.Animation.Pipes.Wpf;
 using Ark.Geometry;
-using Ark.Geometry.Pipes;
-using Ark.Geometry.Pipes.Wpf;
 using Ark.Geometry.Primitives.Double;
-using Ark.Input.Pipes;
-using Ark.Input.Pipes.Wpf;
-using Ark.Physics.Forces.Pipes;
-using Ark.Physics.Pipes;
-using Ark.Pipes.Wpf;
-using Ark.Wpf.Pipes;
+using Ark.Input;
+using Ark.Physics;
+using Ark.Physics.Forces;
+using Ark.Pipes;
+using Ark.Wpf;
 
-namespace Ark.Pipes.Wpf.Testing {
+namespace Ark.Wpf.Pipes.Testing {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>

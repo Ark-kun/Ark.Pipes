@@ -1,5 +1,5 @@
 ﻿using System;
-using Ark.Animation.Pipes;
+using Ark.Animation;
 using Ark.Geometry;
 using Microsoft.Xna.Framework;
 
@@ -39,8 +39,8 @@ namespace Ark.Animation {
         //public delegate TOrientedPosition2 OrientedMovement2D<TOrientedPosition2>(float t);
     }
 }
-namespace Ark.Animation.Xna {
-    public static class Movements {
+namespace Ark.Animation { //.Xna {
+    public static class Movements_Xna {
         public static Func<float, OrientedPosition2> OrientedStraightLineConstantSpeed(Vector2 origin, Vector2 velocity) {
             float angle = (float)velocity.Angle();
             return (t) => new OrientedPosition2(origin + velocity * t, angle);

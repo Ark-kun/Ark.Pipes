@@ -21,7 +21,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Animation.Pipes {
+namespace Ark.Animation { //.Pipes {
     //using OrientedPosition3ComponentsEx = OrientedPositionComponents<TVector3, TQuaternion, OrientedPosition3>;
 
     public struct OrientedPosition3 : IHasChangeablePosition<Vector3>, IHasChangeableOrientation<Quaternion> {

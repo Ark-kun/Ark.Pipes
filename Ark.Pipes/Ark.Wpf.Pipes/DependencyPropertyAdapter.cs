@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
 using System.Windows;
+using Ark.Pipes;
 
-namespace Ark.Pipes.Wpf {
+namespace Ark.Wpf { //.Pipes.Wpf {
     //DP that reads from Provider
     public class DependencyPropertyAdapter<T> : DependencyObject, INotifyPropertyChanged {
         const string _propertyName = "Value";

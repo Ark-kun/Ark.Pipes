@@ -2,7 +2,7 @@
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
-namespace Ark.Animation.Pipes.Xna {
+namespace Ark.Animation { //.Pipes.Xna {
     public class XnaTrigger : GameComponent, ITrigger {
         public event Action Triggered;
 

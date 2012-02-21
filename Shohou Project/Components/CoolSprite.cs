@@ -3,7 +3,7 @@ using Ark.Pipes;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Ark.Xna.Components.Pipes {
+namespace Ark.Xna.Components { //.Pipes {
     public class CoolSprite : DrawableGameComponent {
         double _angle;
         Game _game;

@@ -22,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Physics.Pipes {
+namespace Ark.Physics { //.Pipes {
     public class ForcesDrivenMaterialPoint : MaterialPoint {
         ITrigger _trigger;
         DateTime _lastTick = DateTime.MinValue;

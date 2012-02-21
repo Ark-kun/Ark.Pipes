@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ark.Animation.Pipes.Xna;
-using Ark.Geometry.Curves.Pipes.Xna;
-using Ark.Geometry.Pipes.Xna;
-using Ark.Geometry.Xna;
-using Ark.Graphics.Pipes.Xna;
+using Ark.Animation;
+using Ark.Geometry;
+using Ark.Geometry.Curves;
+using Ark.Graphics;
 using Ark.Pipes;
 using Ark.Xna;
 using Microsoft.Xna.Framework;
@@ -202,7 +201,7 @@ namespace Ark.Shohou {
             if (float.IsNegativeInfinity(startTime)) {
                 startTime = time;
             }
-            var bullet = new DynamicSprite(game) { Origin = texture.CenterOrigin(), Texture = texture };
+            var bullet = new DynamicSprite(game) { Origin = texture.Center(), Texture = texture };
             bullet.Position = CreateConstantVelocityMovement2D(time, startTime, startPosition, velocity);
             return bullet;
         }

@@ -1,10 +1,10 @@
 ﻿using System;
 using Ark.Pipes;
-using Ark.Input.Pipes;
+using Ark.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
-namespace Ark.Input.Pipes.Xna {
+namespace Ark.Input { //.Pipes.Xna {
     public sealed class XnaMouse : IMouse<Vector2> {
         static Provider<Vector2> _staticPosition = Provider<Vector2>.Create(GetPosition);
         static Provider<bool> _staticLeftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed);

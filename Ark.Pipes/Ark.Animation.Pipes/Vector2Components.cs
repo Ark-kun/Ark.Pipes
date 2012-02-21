@@ -21,7 +21,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Geometry.Pipes {
+namespace Ark.Geometry { //.Pipes {
     public class Vector2Components {
         Property<TFloat> _x;
         Property<TFloat> _y;
