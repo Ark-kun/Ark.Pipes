@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Ark.Pipes;
 using Microsoft.Xna.Framework;
 
@@ -22,7 +20,9 @@ namespace Ark.Geometry.Transforms.Xna {
             _transform = _transformFactory(gameTime.TotalGameTime.TotalSeconds);
         }
     }
+}
 
+namespace Ark.Geometry.Transforms.Pipes.Xna {
     public class TranslationTransform2D : IInvertibleTransform<Vector2> {
         Provider<Vector2> _translation;
         IInvertibleTransform<Vector2> _inverseTransform;

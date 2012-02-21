@@ -7,6 +7,7 @@ using Ark.Geometry.Curves.Pipes.Xna;
 using Ark.Geometry.Pipes.Xna;
 using Ark.Geometry.Transforms;
 using Ark.Geometry.Transforms.Xna;
+using Ark.Geometry.Transforms.Pipes.Xna;
 using Ark.Geometry.Xna;
 using Ark.Graphics.Pipes.Xna;
 using Ark.Graphics.Xna;
