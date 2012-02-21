@@ -156,8 +156,14 @@ namespace Ark.Geometry {
             return new Vector3(v.X, 0, v.Y);
         }
 
-        public static double Angle(this Vector2 v) {
-            return Math.Atan2(v.X, v.Y);
+        public static TFloat Angle(this Vector2 v) {
+            return (TFloat)Math.Atan2(v.X, v.Y);
+        }
+
+        public static Vector2 Rotate(this Vector2 v, TFloat angle) {
+            TFloat sin = (TFloat)Math.Sin(angle);
+            TFloat cos = (TFloat)Math.Cos(angle);
+            return new Vector2(v.X * cos - v.Y * sin, v.X * sin + v.Y * cos);
         }
     }
 }
