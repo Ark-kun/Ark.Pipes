@@ -67,6 +67,7 @@
     <Compile Include="ProviderGameComponent.cs" />
     <Compile Include="Transforms\TransformBase.cs" />
     <Compile Include="Transforms\XnaMatrixTransform.cs" />
+    <Compile Include="XnaTrigger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ark.Animation.Pipes\Ark.Animation.Pipes %28XNA - single%29 WP7.csproj">
