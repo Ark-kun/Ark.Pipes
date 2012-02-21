@@ -58,7 +58,10 @@ namespace Ark.Pipes {
         }
 
         public Provider<T> AddChangeTrigger(Action<Action> changedTriggerSetter) {
-            return new Function<T>(this.GetValue, changedTriggerSetter);
+            return new Function<T>(GetValue, changedTriggerSetter);
+        }
+        public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
+            return new Function<T>(GetValue, changedTrigger);
         }
 
         #region Syntax-sugar factories
@@ -72,6 +75,10 @@ namespace Ark.Pipes {
 
         static public Function<T> Create(Func<T> function, Action<Action> changedTriggerSetter) {
             return new Function<T>(function, changedTriggerSetter);
+        }
+
+        static public Function<T> Create(Func<T> function, ITrigger changedTrigger) {
+            return new Function<T>(function, changedTrigger);
         }
 
         public static Function<T1, T> Create<T1>(Func<T1, T> function) {

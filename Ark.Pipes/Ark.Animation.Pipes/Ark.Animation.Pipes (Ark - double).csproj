@@ -36,7 +36,9 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clock.cs" />
+    <Compile Include="Curves.cs" />
+    <Compile Include="Timer.cs" />
+    <Compile Include="Triggers.cs" />
     <Compile Include="OrientedPosition2.cs" />
     <Compile Include="OrientedPosition3.cs" />
     <Compile Include="OrientedPositionComponents.cs" />

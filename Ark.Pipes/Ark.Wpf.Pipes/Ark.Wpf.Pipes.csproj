@@ -46,7 +46,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DependencyPropertyAdapter.cs" />
-    <Compile Include="WpfClock.cs" />
+    <Compile Include="WpfTrigger.cs" />
     <Compile Include="WpfMouse.cs" />
   </ItemGroup>
   <ItemGroup>

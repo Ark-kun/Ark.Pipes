@@ -37,17 +37,19 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clock.cs" />
+    <Compile Include="Curves.cs" />
     <Compile Include="OrientedPosition2.cs" />
     <Compile Include="OrientedPosition3.cs" />
     <Compile Include="OrientedPositionComponents.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Timer.cs" />
     <Compile Include="Transforms\Ark.Functional.cs" />
     <Compile Include="Transforms\Frame.cs" />
     <Compile Include="Transforms\Interfaces.cs" />
     <Compile Include="Transforms\Transforms.cs" />
+    <Compile Include="Triggers.cs" />
     <Compile Include="Vector2Components.cs" />
     <Compile Include="Vector3Components.cs" />
   </ItemGroup>

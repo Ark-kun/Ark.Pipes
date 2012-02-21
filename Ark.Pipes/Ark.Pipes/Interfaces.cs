@@ -25,4 +25,8 @@ namespace Ark.Pipes {
         event Action<bool> ReliabilityChanged;
         bool IsReliable { get; }
     }
+
+    public interface ITrigger {
+        event Action Triggered;
+    }
 }

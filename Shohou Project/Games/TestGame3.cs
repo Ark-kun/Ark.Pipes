@@ -29,7 +29,7 @@ namespace Ark.Shohou {
         Rectangle _screenRectangle;
 
         GameTimeProvider time;
-        Time realTime;
+        Timer realTime;
 
         Random _rnd = new Random();
 
@@ -57,7 +57,7 @@ namespace Ark.Shohou {
 
             time = new GameTimeProvider();
             Components.Add(time);
-            realTime = new Time();
+            realTime = new Timer();
 
             var bv = new DynamicBoundVector() {
                 StartPoint = new Vector2(_screenRectangle.Left + _screenRectangle.Width / 2 - 100, _screenRectangle.Top + _screenRectangle.Height - 200),

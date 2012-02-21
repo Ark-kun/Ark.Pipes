@@ -18,6 +18,12 @@ namespace Ark.Pipes {
             changedTriggerSetter(_notifier.OnValueChanged);
         }
 
+        public Function(Func<TResult> function, ITrigger changedTrigger) {
+            _function = function;
+            _notifier.SetReliability(true);
+            changedTrigger.Triggered += _notifier.OnValueChanged;
+        }
+
         public Function(INotifyingOut<TResult> source) {
             _function = source.GetValue;
             _notifier.SubscribeTo(source.Notifier);

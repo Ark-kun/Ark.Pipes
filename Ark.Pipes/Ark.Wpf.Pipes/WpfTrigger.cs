@@ -2,13 +2,13 @@
 using System.Windows.Media;
 
 namespace Ark.Animation.Pipes.Wpf {
-    public class WpfClock : Clock, IDisposable {
-        public WpfClock() {
+    public class WpfTrigger : TriggerBase, IDisposable {
+        public WpfTrigger() {
             CompositionTarget.Rendering += RenderingHandler;
         }
 
         void RenderingHandler(object sender, EventArgs e) {
-            OnTick();
+            OnTriggered();
         }
 
         public void Dispose() {

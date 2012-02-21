@@ -1,5 +1,5 @@
 ﻿using System;
-using Ark.Animation;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -24,17 +24,17 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Physics.Pipes {
     public class ForcesDrivenMaterialPoint : MaterialPoint {
-        Clock _clock;
+        ITrigger _trigger;
         DateTime _lastTick = DateTime.MinValue;
 
-        public ForcesDrivenMaterialPoint(Clock clock, TFloat mass, Vector3 position, Vector3 velocity = new Vector3())
+        public ForcesDrivenMaterialPoint(ITrigger trigger, TFloat mass, Vector3 position, Vector3 velocity = new Vector3())
             : base(mass, position, velocity) {
-            _clock = clock;
-            _clock.Tick += HandleTick;
+            _trigger = trigger;
+            _trigger.Triggered += HandleTick;
         }
 
         void HandleTick() {
-            var newTick = DateTime.Now;
+            var newTick = DateTime.UtcNow;
             if (_lastTick != DateTime.MinValue) {
                 Update(newTick - _lastTick);
             }

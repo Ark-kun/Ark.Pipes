@@ -32,7 +32,7 @@ namespace Ark.Animation.Bullets.Pipes.Xna {
             Vector2 velocity = direction * speed;
             
             Func<float, Vector2> movement = Ark.Animation.Xna.Movements.StraightLineConstantSpeed(origin, velocity);
-            _bulletSprite.Position = new Function<float, Vector2>(movement, new Time());
+            _bulletSprite.Position = new Function<float, Vector2>(movement, new Timer());
             _bulletSprite.Angle = (float)direction.Angle();
             return _bulletSprite;
         }

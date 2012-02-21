@@ -49,10 +49,10 @@ namespace Ark.Pipes.Wpf.Testing {
             const double scale = 1.0 / invScale;
 
             var mouse = new WpfMouse(MyGrid);
-            var clock = new WpfClock();
+            var clock = new WpfTrigger();
 
             var mousePosition = mouse.Position.ToVectors2();            
-            mousePosition = mousePosition.AddChangeTrigger((callback) => clock.Tick += callback);
+            mousePosition = mousePosition.AddChangeTrigger((callback) => clock.Triggered += callback);
             var mouse3d = mousePosition.ToVectors3XZ().Multiply(scale);
 
             //Mouse "cursor"
@@ -101,14 +101,14 @@ namespace Ark.Pipes.Wpf.Testing {
 
     public class ManualUpdateAdapter<T> : Provider<T>, INotifyPropertyChanged {
         IOut<T> _source;
-        Clock _updateClock;
+        ITrigger _updateClock;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ManualUpdateAdapter(IOut<T> source, Clock updateClock) {
+        public ManualUpdateAdapter(IOut<T> source, ITrigger updateClock) {
             _source = source;
             _updateClock = updateClock;
-            _updateClock.Tick += OnPropertyChanged;
+            _updateClock.Triggered += OnPropertyChanged;
         }
 
         public override T GetValue() {
