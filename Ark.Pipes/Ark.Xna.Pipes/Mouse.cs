@@ -17,7 +17,7 @@ namespace Ark.Input { //.Pipes.Xna {
         Provider<bool> _middleButton;
         Provider<bool> _rightButton;
 
-        XnaMouse() {
+        public XnaMouse() {
             _position = _staticPosition;
             _leftButton = _staticLeftButton;
             _middleButton = _staticMiddleButton;
@@ -25,6 +25,13 @@ namespace Ark.Input { //.Pipes.Xna {
         }
 
         public XnaMouse(Action<Action> trigger) {
+            _position = Provider<Vector2>.Create(GetPosition, trigger);
+            _leftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed, trigger);
+            _middleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed, trigger);
+            _rightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed, trigger);
+        }
+
+        public XnaMouse(ITrigger trigger) {
             _position = Provider<Vector2>.Create(GetPosition, trigger);
             _leftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed, trigger);
             _middleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed, trigger);
