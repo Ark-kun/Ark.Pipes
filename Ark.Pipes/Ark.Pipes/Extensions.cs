@@ -24,5 +24,11 @@ namespace Ark.Pipes {
             provider.Notifier.ValueChanged -= onChanged;
         }
 #endif
+
+#if !PORTABLE
+        public static IObservable<T> AsObservable<T>(this INotifyingOut<T> provider) {
+            return new ObservableProvider<T>(provider);
+        }
+#endif
     }
 }
