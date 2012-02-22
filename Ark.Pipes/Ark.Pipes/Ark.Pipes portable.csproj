@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachedProperty.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Notifiers.cs" />
     <Compile Include="PortableHacks.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
