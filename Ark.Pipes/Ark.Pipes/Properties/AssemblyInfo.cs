@@ -7,4 +7,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCompany("Flying Ark havens")]
 [assembly: AssemblyProduct("Ark.Pipes")]
 [assembly: AssemblyCopyright("©Flying Ark havens 2012")]
-[assembly: AssemblyVersion("2.2.*")]
+[assembly: AssemblyVersion("2.3.*")]
