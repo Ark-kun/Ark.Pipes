@@ -59,7 +59,10 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Curves.cs" />
+    <Compile Include="Curves\CurveMovements.cs" />
+    <Compile Include="Curves\Specific\InfinitySign.cs" />
+    <Compile Include="Curves\Specific\Orbit.cs" />
+    <Compile Include="Curves\Specific\StraightLine.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces.cs" />
     <Compile Include="OrientedPosition2.cs" />
