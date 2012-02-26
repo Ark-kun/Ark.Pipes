@@ -1,5 +1,6 @@
 ﻿using System;
 
+#if !NOTIFICATIONS_DISABLE
 namespace Ark.Pipes {
     public class ObservableProvider<T> : Provider<T>, IObservable<T>, IDisposable {
         INotifyingOut<T> _provider;
@@ -52,3 +53,4 @@ namespace Ark.Pipes {
         }
     }
 }
+#endif

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
+#if !NOTIFICATIONS_DISABLE
 namespace Ark.Pipes {
     public class Notifier : INotifier {
         bool _isReliable = false;
@@ -125,3 +126,4 @@ namespace Ark.Pipes {
         }
     }
 }
+#endif

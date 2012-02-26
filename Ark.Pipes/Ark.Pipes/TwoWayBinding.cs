@@ -17,9 +17,10 @@ namespace Ark.Pipes {
         public TwoWayBindingBase(Property<TSource> source, Property<TTarget> target) {
             _source = source;
             _target = target;
-
+#if !NOTIFICATIONS_DISABLE
             _source.ProviderChanged += OnSourceProviderChanged;
-            _target.ProviderChanged += OnTargetProviderChanged;            
+            _target.ProviderChanged += OnTargetProviderChanged;
+#endif
         }
 
         protected abstract void OnSourceProviderChanged();

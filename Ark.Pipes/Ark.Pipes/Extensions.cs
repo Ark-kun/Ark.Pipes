@@ -26,9 +26,11 @@ namespace Ark.Pipes {
 #endif
 
 #if !PORTABLE
+#if !NOTIFICATIONS_DISABLE
         public static IObservable<T> AsObservable<T>(this INotifyingOut<T> provider) {
             return new ObservableProvider<T>(provider);
         }
+#endif
 #endif
     }
 }

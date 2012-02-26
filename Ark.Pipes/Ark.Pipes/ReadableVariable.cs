@@ -1,6 +1,12 @@
 ﻿using System;
 namespace Ark.Pipes {
-    public class ReadableVariable<T> : ProviderWithNotifier<T> {
+    public class ReadableVariable<T> :
+#if NOTIFICATIONS_DISABLE
+        Provider<T>
+#else
+        ProviderWithNotifier<T>
+#endif
+    {
         protected T _value;
 
         protected ReadableVariable()
@@ -9,7 +15,9 @@ namespace Ark.Pipes {
 
         protected ReadableVariable(T value) {
             _value = value;
+#if !NOTIFICATIONS_DISABLE
             _notifier.SetReliability(true);
+#endif
         }
 
         public ReadableVariable(T value, out Action<T> changer) {
@@ -23,7 +31,9 @@ namespace Ark.Pipes {
 
         protected void SetValue(T value) {
             _value = value;
+#if !NOTIFICATIONS_DISABLE
             _notifier.OnValueChanged();
+#endif
         }
     }
 }

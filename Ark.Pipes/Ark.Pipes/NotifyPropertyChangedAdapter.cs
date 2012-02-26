@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 
+#if !NOTIFICATIONS_DISABLE
 namespace Ark.Pipes { //.Wpf {
     public class NotifyPropertyChangedAdapter<T> : INotifyPropertyChanged {
         const string _propertyName = "Value";
@@ -29,3 +30,4 @@ namespace Ark.Pipes { //.Wpf {
         }
     }
 }
+#endif

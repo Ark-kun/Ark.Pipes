@@ -6,10 +6,17 @@ using System.Linq;
 namespace Ark.Pipes {
     //TODO:Fix event unsubscribing
     //public class PropertyArray<T> : Provider<T[]>, IIn<T[]>, IIn<Provider<T>[]>, IOut<Provider<T>[]>, INotifyProviderChanged {
-    public class ProviderArrayBase<T> : Provider<T[]>, INotifyingOut<Provider<T>[]>, INotifyElementChanged {
+    public class ProviderArrayBase<T> : Provider<T[]>,
+#if NOTIFICATIONS_DISABLE
+        IOut<Provider<T>[]>
+#else
+        INotifyingOut<Provider<T>[]>, INotifyElementChanged
+#endif
+    {
         protected Property<T>[] _properties;
+#if !NOTIFICATIONS_DISABLE
         protected ArrayNotifier _notifier;
-
+#endif
         public event Action<int> ElementChanged;
 
         public ProviderArrayBase(int size)
@@ -22,13 +29,17 @@ namespace Ark.Pipes {
 
         public ProviderArrayBase(IList<Provider<T>> providers) {
             int size = providers.Count;
-            _notifier = new ArrayNotifier(size);
+#if !NOTIFICATIONS_DISABLE
+           _notifier = new ArrayNotifier(size);
+#endif
             _properties = new Property<T>[size];
             for (int i = 0; i < size; i++) {
                 _properties[i] = new Property<T>(providers[i]);
+#if !NOTIFICATIONS_DISABLE
                 _properties[i].Notifier.ValueChanged += () => OnElementChanged(i);
                 _notifier.SubscribeTo(i, _properties[i].Notifier);
-            }
+#endif
+           }
         }
 
         public Provider<T>[] Providers {
@@ -48,12 +59,14 @@ namespace Ark.Pipes {
             }
         }
 
+#if !NOTIFICATIONS_DISABLE
         void OnElementChanged(int idx) {
             var handler = ElementChanged;
             if (handler != null) {
                 handler(idx);
             }
         }
+#endif
 
         public override T[] GetValue() {
             int size = _properties.Length;
@@ -74,9 +87,11 @@ namespace Ark.Pipes {
             return Providers;
         }
 
+#if !NOTIFICATIONS_DISABLE
         public override INotifier Notifier {
             get { return _notifier; }
         }
+#endif
     }
 
     public class ProviderArray<T> : ProviderArrayBase<T> {

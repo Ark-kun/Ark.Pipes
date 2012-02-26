@@ -2,17 +2,27 @@
 
 namespace Ark.Pipes {
     //ReadableProperty<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
-    public class ReadableProvider<T> : ProviderWithNotifier<T> {
+    public class ReadableProvider<T> :
+#if NOTIFICATIONS_DISABLE
+        Provider<T>
+#else
+        ProviderWithNotifier<T>
+#endif
+    {
         protected Provider<T> _provider;
+#if !NOTIFICATIONS_DISABLE
         bool _isDirty = true;
         T _cachedValue;
 
         public event Action ProviderChanged;
+#endif
 
         public ReadableProvider(Provider<T> provider) {
             _provider = provider;
+#if !NOTIFICATIONS_DISABLE
             _notifier.SubscribeTo(_provider.Notifier);
             _notifier.ValueChanged += () => { _isDirty = true; _cachedValue = default(T); };
+#endif
         }
 
         public ReadableProvider(Provider<T> provider, out Action<Provider<T>> changer)
@@ -22,35 +32,48 @@ namespace Ark.Pipes {
 
         protected void SetProvider(Provider<T> value) {
             if (value != _provider) {
+#if !NOTIFICATIONS_DISABLE
                 _notifier.UnsubscribeTo(_provider.Notifier);
+#endif
                 _provider = value;
+#if !NOTIFICATIONS_DISABLE
                 _notifier.SubscribeTo(_provider.Notifier);
                 OnProviderChanged();
                 _notifier.OnValueChanged();
+#endif
             }
         }
 
+#if !NOTIFICATIONS_DISABLE
         void OnProviderChanged() {
             var handler = ProviderChanged;
             if (handler != null) {
                 handler();
             }
         }
+#endif
 
         public override T GetValue() {
+#if !NOTIFICATIONS_DISABLE
             if (_notifier.IsReliable) {
                 if (_isDirty) {
                     _cachedValue = _provider.GetValue();
                     _isDirty = false;
                 }
                 return _cachedValue;
-            } else {
-                return _provider.GetValue();
             }
+#endif
+            return _provider.GetValue();
         }
     }
 
-    public class ReadableProperty<T> : ReadableProvider<T>, INotifyingOut<Provider<T>> {
+    public class ReadableProperty<T> : ReadableProvider<T>, 
+#if NOTIFICATIONS_DISABLE
+        IOut<Provider<T>>
+#else
+        INotifyingOut<Provider<T>>
+#endif
+    {
         public ReadableProperty(Provider<T> provider) : base(provider) { }
 
         public ReadableProperty(Provider<T> provider, out Action<Provider<T>> changer) : base(provider, out changer) { }

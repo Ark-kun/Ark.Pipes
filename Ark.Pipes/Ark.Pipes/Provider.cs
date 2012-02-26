@@ -1,17 +1,24 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public abstract class Provider<T> : INotifyingOut<T> {
+    public abstract class Provider<T> :
+#if NOTIFICATIONS_DISABLE
+        IOut<T>
+#else
+        INotifyingOut<T>
+#endif
+    {
         public abstract T GetValue();
 
         public T Value {
             get { return GetValue(); }
         }
 
+#if !NOTIFICATIONS_DISABLE
         public virtual INotifier Notifier {
             get { return Ark.Pipes.Notifier.AlwaysUnreliable; }
         }
-
+#endif
         static public implicit operator Provider<T>(T value) {
             return new Constant<T>(value);
         }
@@ -110,7 +117,7 @@ namespace Ark.Pipes {
         }
         #endregion
     }
-
+#if !NOTIFICATIONS_DISABLE
     public abstract class ProviderWithNotifier<T> : Provider<T> {
         protected PrivateNotifier _notifier = new PrivateNotifier();
 
@@ -118,4 +125,5 @@ namespace Ark.Pipes {
             get { return _notifier; }
         }
     }
+#endif
 }
