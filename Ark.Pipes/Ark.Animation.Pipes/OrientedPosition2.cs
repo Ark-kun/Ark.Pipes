@@ -1,4 +1,5 @@
-﻿using Ark.Pipes;
+﻿using Ark.Abstract;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,9 +23,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #endif
 
 namespace Ark.Animation { //.Pipes {
-    //using OrientedPosition2ComponentsEx = OrientedPositionComponents<TVector2, T, OrientedPosition2>;
-
-    public struct OrientedPosition2 : IHasChangeablePosition<Vector2>, IHasChangeableOrientation<TFloat> {
+    public struct OrientedPosition2 {
         public Vector2 Position;
         public TFloat Orientation;
 
@@ -33,14 +32,16 @@ namespace Ark.Animation { //.Pipes {
             Orientation = orientation;
         }
 
-        Vector2 IHasChangeablePosition<Vector2>.Position {
-            get { return Position; }
-            set { Position = value; }
+        public static OrientedPosition2 operator *(OrientedPosition2 op, TFloat dt) {
+            return new OrientedPosition2(op.Position * dt, op.Orientation * dt);
         }
 
-        TFloat IHasChangeableOrientation<TFloat>.Orientation {
-            get { return Orientation; }
-            set { Orientation = value; }
+        public static OrientedPosition2 operator +(OrientedPosition2 op1, OrientedPosition2 op2) {
+            return new OrientedPosition2(op1.Position + op2.Position, op1.Orientation + op2.Orientation);
+        }
+
+        public static OrientedPosition2 operator -(OrientedPosition2 op1, OrientedPosition2 op2) {
+            return new OrientedPosition2(op1.Position - op2.Position, op1.Orientation - op2.Orientation);
         }
     }
 
@@ -63,7 +64,7 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public Provider<OrientedPosition2> ToOrientedPositions2() {
-            return Provider<OrientedPosition2>.Create((p, o) => new OrientedPosition2() { Position = p, Orientation = o }, Position, Orientation);
+            return Provider<OrientedPosition2>.Create((p, o) => new OrientedPosition2(p, o), Position, Orientation);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Ark.Pipes;
+﻿using Ark.Abstract;
+using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -22,9 +23,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #endif
 
 namespace Ark.Animation { //.Pipes {
-    //using OrientedPosition3ComponentsEx = OrientedPositionComponents<TVector3, TQuaternion, OrientedPosition3>;
-
-    public struct OrientedPosition3 : IHasChangeablePosition<Vector3>, IHasChangeableOrientation<Quaternion> {
+    public struct OrientedPosition3 {
         public Vector3 Position;
         public Quaternion Orientation;
 
@@ -33,14 +32,16 @@ namespace Ark.Animation { //.Pipes {
             Orientation = orientation;
         }
 
-        Vector3 IHasChangeablePosition<Vector3>.Position {
-            get { return Position; }
-            set { Position = value; }
+        public static OrientedPosition3 operator *(OrientedPosition3 op, TFloat dt) {
+            return new OrientedPosition3(op.Position * dt, op.Orientation * dt);
         }
 
-        Quaternion IHasChangeableOrientation<Quaternion>.Orientation {
-            get { return Orientation; }
-            set { Orientation = value; }
+        public static OrientedPosition3 operator +(OrientedPosition3 op1, OrientedPosition3 op2) {
+            return new OrientedPosition3(op1.Position + op2.Position, op1.Orientation + op2.Orientation);
+        }
+
+        public static OrientedPosition3 operator -(OrientedPosition3 op1, OrientedPosition3 op2) {
+            return new OrientedPosition3(op1.Position - op2.Position, op1.Orientation - op2.Orientation);
         }
     }
 
@@ -63,7 +64,7 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public Provider<OrientedPosition3> ToOrientedPositions3() {
-            return Provider<OrientedPosition3>.Create((p, o) => new OrientedPosition3() { Position = p, Orientation = o }, Position, Orientation);
+            return Provider<OrientedPosition3>.Create((p, o) => new OrientedPosition3(p, o), Position, Orientation);
         }
     }
 }
