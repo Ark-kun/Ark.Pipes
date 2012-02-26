@@ -27,13 +27,13 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Geometry.Curves {
     public class StraightLine {
-        public static Vector2 Position(Vector2 origin, Vector2 direction, TFloat t) {
-            return origin + direction * t;
+        public static Vector2 Position(Vector2 origin, Vector2 velocity, TFloat t) {
+            return origin + velocity * t;
         }
 
-        public static OrientedPosition2 OrientedPosition(Vector2 origin, Vector2 direction, TFloat t) {
-            Vector2 position = Position(origin, direction, t);
-            TFloat orientation = (TFloat)direction.Angle();
+        public static OrientedPosition2 OrientedPosition(Vector2 origin, Vector2 velocity, TFloat t) {
+            Vector2 position = Position(origin, velocity, t);
+            TFloat orientation = (TFloat)velocity.Angle();
             return new OrientedPosition2(position, orientation);
         }
 
