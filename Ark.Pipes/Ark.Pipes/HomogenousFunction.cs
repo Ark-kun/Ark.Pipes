@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 
 namespace Ark.Pipes {
-    public class HomogenousFunction<T> : Provider<T> {
+    public sealed class HomogenousFunction<T> : Provider<T> {
         int _arity;
         Func<T[], T> _function;
         ProviderArray<T> _args;

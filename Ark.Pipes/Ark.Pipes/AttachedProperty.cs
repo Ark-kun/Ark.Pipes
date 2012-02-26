@@ -4,7 +4,7 @@ namespace Ark.Pipes {
     //Canvas.Left[button1] = 13
     //button1[Canvas.Left] = 13 //?
     //TODO:Change notification
-    public class AttachedProperty<T> {
+    public sealed class AttachedProperty<T> {
         Dictionary<object, Provider<T>> _store = new Dictionary<object, Provider<T>>();
 
         public Provider<T> this[object obj] {

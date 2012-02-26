@@ -2,7 +2,7 @@
 
 #if !NOTIFICATIONS_DISABLE
 namespace Ark.Pipes { //.Wpf {
-    public class NotifyPropertyChangedAdapter<T> : INotifyPropertyChanged {
+    public sealed class NotifyPropertyChangedAdapter<T> : INotifyPropertyChanged {
         const string _propertyName = "Value";
         Property<T> _value;
         public event PropertyChangedEventHandler PropertyChanged;

@@ -41,7 +41,7 @@ namespace Ark.Pipes {
         }
     }
 
-    class UnreliableNotifier : INotifier {
+    class sealed UnreliableNotifier : INotifier {
         private UnreliableNotifier() { }
 
         static UnreliableNotifier _instance = new UnreliableNotifier();
@@ -66,7 +66,7 @@ namespace Ark.Pipes {
     }
 
 
-    public class PrivateNotifier : Notifier {
+    public sealed class PrivateNotifier : Notifier {
         public PrivateNotifier() { }
 
         public PrivateNotifier(bool isReliable) : base(isReliable) { }
@@ -92,7 +92,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class ArrayNotifier : Notifier {
+    public sealed class ArrayNotifier : Notifier {
         bool[] _isReliable;
         int _unreliableCount;
 

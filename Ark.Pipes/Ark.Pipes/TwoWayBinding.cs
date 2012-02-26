@@ -27,7 +27,7 @@ namespace Ark.Pipes {
         protected abstract void OnTargetProviderChanged();
     }
 
-    public class TwoWayBinding<T> : TwoWayBindingBase<T, T> {
+    public sealed class TwoWayBinding<T> : TwoWayBindingBase<T, T> {
         public TwoWayBinding(Property<T> source, Property<T> target)
             : base(source, target) {
                 OnSourceProviderChanged();
@@ -42,7 +42,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class TwoWayBinding<TSource, TTarget> : TwoWayBindingBase<TSource, TTarget> {
+    public sealed class TwoWayBinding<TSource, TTarget> : TwoWayBindingBase<TSource, TTarget> {
         Provider<TSource> _lastSource;
         Provider<TTarget> _lastTarget;
         Func<TSource, TTarget> _sourceToTarget;

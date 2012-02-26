@@ -16,8 +16,8 @@ namespace Ark.Pipes {
         protected Property<T>[] _properties;
 #if !NOTIFICATIONS_DISABLE
         protected ArrayNotifier _notifier;
-#endif
         public event Action<int> ElementChanged;
+#endif
 
         public ProviderArrayBase(int size)
             : this(new Constant<T>[size]) {
@@ -131,7 +131,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public class ReadOnlyProviderArray<T> : ProviderArrayBase<T> {
+    public sealed class ReadOnlyProviderArray<T> : ProviderArrayBase<T> {
         public ReadOnlyProviderArray(int size)
             : base(size) {
         }
