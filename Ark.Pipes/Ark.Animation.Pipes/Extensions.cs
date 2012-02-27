@@ -1,4 +1,5 @@
 ﻿using System;
+using Ark.Animation;
 using Ark.Pipes;
 using Ark.Geometry;
 
@@ -25,6 +26,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Geometry {
     public static class Extensions_Pipes {
+        #region 2D
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
             return Provider<Vector2>.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
@@ -53,8 +55,16 @@ namespace Ark.Geometry {
             return Provider<Vector2>.Create((v1) => v1 - v2, v1s);
         }
 
+        public static Provider<Vector2> Lerp(this Provider<Vector2> v1s, Provider<Vector2> v2s, Provider<TFloat> amounts) {
+            return Provider<Vector2>.Create((v1, v2, amount) => Vector2.Lerp(v1, v2, amount), v1s, v2s, amounts);
+        }
+
         public static Vector2Components ToComponents(this Provider<Vector2> vectors) {
             return new Vector2Components(vectors);
+        }
+
+        public static OrientedPosition2Components ToComponents(this Provider<OrientedPosition2> ops) {
+            return OrientedPosition2Components.FromOrientedPositions2(ops);
         }
 
         public static Provider<Vector3> ToVectors3XY(this Provider<Vector2> vectors) {
@@ -64,7 +74,9 @@ namespace Ark.Geometry {
         public static Provider<Vector3> ToVectors3XZ(this Provider<Vector2> vectors) {
             return Provider<Vector3>.Create((v) => new Vector3(v.X, 0, v.Y), vectors);
         }
+        #endregion
 
+        #region 3D
         public static Provider<Vector3> Add(this Provider<Vector3> v1s, Provider<Vector3> v2s) {
             return Provider<Vector3>.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
@@ -93,16 +105,26 @@ namespace Ark.Geometry {
             return Provider<Vector3>.Create((v1) => v1 - v2, v1s);
         }
 
+        public static Provider<Vector3> Lerp(this Provider<Vector3> v1s, Provider<Vector3> v2s, Provider<TFloat> amounts) {
+            return Provider<Vector3>.Create((v1, v2, amount) => Vector3.Lerp(v1, v2, amount), v1s, v2s, amounts);
+        }
+
         public static Vector3Components ToComponents(this Provider<Vector3> vectors) {
             return new Vector3Components(vectors);
+        }
+
+        public static OrientedPosition3Components ToComponents(this Provider<OrientedPosition3> ops) {
+            return OrientedPosition3Components.FromOrientedPositions3(ops);
         }
 
         public static Provider<Vector2> ToVectors2XY(this Provider<Vector3> vectors) {
             return Provider<Vector2>.Create((v) => new Vector2(v.X, v.Y), vectors);
         }
+
         public static Provider<Vector2> ToVectors2XZ(this Provider<Vector3> vectors) {
             return Provider<Vector2>.Create((v) => new Vector2(v.X, v.Z), vectors);
         }
+        #endregion
     }
 }
 
@@ -158,7 +180,7 @@ namespace Ark.Geometry {
         }
 
         public static TFloat Angle(this Vector2 v) {
-            return (TFloat)Math.Atan2(v.X, v.Y);
+            return (TFloat)Math.Atan2(v.Y, v.X);
         }
 
         public static Vector2 Rotate(this Vector2 v, TFloat angle) {
@@ -168,3 +190,36 @@ namespace Ark.Geometry {
         }
     }
 }
+
+namespace Ark.Animation { //.Pipes
+    public static class Extensions_Pipes {
+        #region Timers
+        public static Provider<TFloat> Add(this Provider<TFloat> v1s, Provider<TFloat> v2s) {
+            return Provider<TFloat>.Create((v1, v2) => v1 + v2, v1s, v2s);
+        }
+
+        public static Provider<TFloat> Add(this Provider<TFloat> v1s, TFloat v2) {
+            return Provider<TFloat>.Create((v1) => v1 + v2, v1s);
+        }
+
+        public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, Provider<TFloat> v2s) {
+            return Provider<TFloat>.Create((v1, v2) => v1 + v2, v1s, v2s);
+        }
+
+        public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, TFloat v2) {
+            return Provider<TFloat>.Create((v1) => v1 + v2, v1s);
+        }
+
+        public static Provider<TFloat> Accelerate(this Provider<TFloat> ts, TFloat multiplier) {
+            TFloat t0 = ts.Value;
+            return Provider<TFloat>.Create((t) => t0 + (t - t0) * multiplier, ts);
+        }
+
+        public static Provider<TFloat> Reset(this Provider<TFloat> timer) {
+            TFloat initialValue = timer.Value;
+            return Provider<TFloat>.Create((t => t - initialValue), timer);
+        }
+        #endregion
+    }
+}
+
