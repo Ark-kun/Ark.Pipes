@@ -16,5 +16,11 @@
                 return _default;
             }
         }
+
+#if !NOTIFICATIONS_DISABLE
+        public override INotifier Notifier {
+            get { return Ark.Pipes.Notifier.Constant; }
+        }
+#endif
     }
 }

@@ -16,7 +16,13 @@ namespace Ark.Pipes {
             _isReliable = isReliable;
         }
 
-        public static INotifier AlwaysUnreliable { get { return UnreliableNotifier.Instance; } }
+        public static INotifier AlwaysUnreliable {
+            get { return ConstantReliabilityNotifier.UnreliableInstance; }
+        }
+
+        public static INotifier Constant {
+            get { return ConstantReliabilityNotifier.ConstantInstance; }
+        }
 
         protected void OnValueChanged() {
             var handler = ValueChanged;
@@ -41,13 +47,18 @@ namespace Ark.Pipes {
         }
     }
 
-    class sealed UnreliableNotifier : INotifier {
-        private UnreliableNotifier() { }
+    abstract class ConstantReliabilityNotifier : INotifier {
+        private ConstantReliabilityNotifier() { }
 
-        static UnreliableNotifier _instance = new UnreliableNotifier();
+        static UnreliableNotifier _unreliableInstance = new UnreliableNotifier();
+        static ConstantNotifier _constantInstance = new ConstantNotifier();
 
-        public static UnreliableNotifier Instance {
-            get { return _instance; }
+        public static ConstantReliabilityNotifier UnreliableInstance {
+            get { return _unreliableInstance; }
+        }
+
+        public static ConstantReliabilityNotifier ConstantInstance {
+            get { return _unreliableInstance; }
         }
 
         event Action INotifier.ValueChanged {
@@ -60,11 +71,21 @@ namespace Ark.Pipes {
             remove { }
         }
 
-        public bool IsReliable {
-            get { return false; }
+        sealed class UnreliableNotifier : ConstantReliabilityNotifier {
+            public override bool IsReliable {
+                get { return false; }
+            }
         }
-    }
 
+        sealed class ConstantNotifier : ConstantReliabilityNotifier {
+            public override bool IsReliable {
+                get { return true; }
+            }
+        }
+
+
+        public abstract bool IsReliable { get; }
+    }
 
     public sealed class PrivateNotifier : Notifier {
         public PrivateNotifier() { }
