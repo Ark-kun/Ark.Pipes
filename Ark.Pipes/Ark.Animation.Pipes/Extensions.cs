@@ -203,11 +203,11 @@ namespace Ark.Animation { //.Pipes
         }
 
         public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, Provider<TFloat> v2s) {
-            return Provider<TFloat>.Create((v1, v2) => v1 + v2, v1s, v2s);
+            return Provider<TFloat>.Create((v1, v2) => v1 - v2, v1s, v2s);
         }
 
         public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, TFloat v2) {
-            return Provider<TFloat>.Create((v1) => v1 + v2, v1s);
+            return Provider<TFloat>.Create((v1) => v1 - v2, v1s);
         }
 
         public static Provider<TFloat> Accelerate(this Provider<TFloat> ts, TFloat multiplier) {
@@ -216,10 +216,32 @@ namespace Ark.Animation { //.Pipes
         }
 
         public static Provider<TFloat> Reset(this Provider<TFloat> timer) {
-            TFloat initialValue = timer.Value;
-            return Provider<TFloat>.Create((t => t - initialValue), timer);
+            TFloat t0 = timer.Value;
+            return Provider<TFloat>.Create((t) => t - t0, timer);
+        }
+
+        public static Provider<DeltaT> ToDeltaTs(this Provider<TFloat> timer) {
+            TFloat time = timer.Value;
+            return Provider<DeltaT>.Create((newTime) => {
+                TFloat oldTime = time;
+                time = newTime;
+                return newTime - oldTime;
+            }, timer);
         }
         #endregion
+
+        public static Provider<OrientedPosition2> AddOrientations(this Provider<Vector2> positions) {
+            Vector2 position = positions.Value;
+            TFloat orientation = 0;
+            return Provider<OrientedPosition2>.Create((newPosition) => {
+                Vector2 delta = newPosition - position;
+                position = newPosition;
+                if (!delta.IsZero()) {
+                    orientation = delta.Angle();
+                }
+                return new OrientedPosition2(newPosition, orientation);
+            }, positions);
+        }
     }
 }
 
