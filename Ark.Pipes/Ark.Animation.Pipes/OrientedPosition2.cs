@@ -13,6 +13,7 @@ using Ark.Geometry.Primitives.Double;
 using Ark.Geometry.Primitives.Single;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
+
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows;
 using System.Windows.Media.Media3D;
@@ -23,7 +24,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #endif
 
 namespace Ark.Animation { //.Pipes {
-    public struct OrientedPosition2 {
+    public struct OrientedPosition2 : IIsDerivativeOf<OrientedPosition2, TFloat>, IIsDerivativeOfEx<OrientedPosition2, DeltaT> {
         public Vector2 Position;
         public TFloat Orientation;
 
@@ -32,7 +33,15 @@ namespace Ark.Animation { //.Pipes {
             Orientation = orientation;
         }
 
-        public static OrientedPosition2 operator *(OrientedPosition2 op, TFloat dt) {
+        public OrientedPosition2 MakeStep(ref OrientedPosition2 state, ref TFloat arg, ref TFloat newArg) {
+            return state + this * (newArg - arg);
+        }
+
+        public OrientedPosition2 MakeStep(ref OrientedPosition2 state, ref DeltaT deltaArg) {
+            return state + this * deltaArg;
+        }
+
+        public static OrientedPosition2 operator *(OrientedPosition2 op, DeltaT dt) {
             return new OrientedPosition2(op.Position * dt, op.Orientation * dt);
         }
 

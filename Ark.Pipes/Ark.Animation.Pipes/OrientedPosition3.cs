@@ -23,7 +23,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #endif
 
 namespace Ark.Animation { //.Pipes {
-    public struct OrientedPosition3 {
+    public struct OrientedPosition3 : IIsDerivativeOf<OrientedPosition3, TFloat>, IIsDerivativeOfEx<OrientedPosition3, DeltaT> {
         public Vector3 Position;
         public Quaternion Orientation;
 
@@ -32,7 +32,15 @@ namespace Ark.Animation { //.Pipes {
             Orientation = orientation;
         }
 
-        public static OrientedPosition3 operator *(OrientedPosition3 op, TFloat dt) {
+        public OrientedPosition3 MakeStep(ref OrientedPosition3 state, ref TFloat arg, ref TFloat newArg) {
+            return state + this * (newArg - arg);
+        }
+
+        public OrientedPosition3 MakeStep(ref OrientedPosition3 state, ref DeltaT deltaArg) {
+            return state + this * deltaArg;
+        }
+
+        public static OrientedPosition3 operator *(OrientedPosition3 op, DeltaT dt) {
             return new OrientedPosition3(op.Position * dt, op.Orientation * dt);
         }
 
