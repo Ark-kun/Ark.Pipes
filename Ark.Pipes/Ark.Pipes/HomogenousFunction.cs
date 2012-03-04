@@ -35,5 +35,11 @@ namespace Ark.Pipes {
         public int Arity {
             get { return _arity; }
         }
+
+#if !NOTIFICATIONS_DISABLE
+        public override INotifier Notifier {
+            get { return _args.Notifier; }
+        }
+#endif
     }
 }
