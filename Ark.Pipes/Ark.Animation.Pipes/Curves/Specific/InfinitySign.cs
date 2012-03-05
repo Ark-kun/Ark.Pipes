@@ -27,7 +27,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Geometry.Curves {
     public class InfinitySign {
-        public static Vector2 CanonicalPosition(TFloat t) {
+        public static Vector2 CanonicalPositionOld(TFloat t) {
             TFloat a = t;
             TFloat sqrt2 = (TFloat)Math.Sqrt(2);
             var sinA = Math.Sin(a);
@@ -42,6 +42,25 @@ namespace Ark.Geometry.Curves {
             return E;
         }
 
+        public static Vector2 PositionOld(Vector2 focus1, Vector2 focus2, TFloat t) {
+            Vector2 r1 = focus1;
+            Vector2 r2 = focus2;
+            var direction = r2 - r1;
+            var scale = direction.Length() / 2;
+            var center = (r1 + r2) / 2;
+            var result = CanonicalPositionOld(t);
+            result = center + result.Rotate(direction.Angle()) * scale;
+            return result;
+        }
+
+        public static Vector2 CanonicalPosition(TFloat t) {
+            TFloat a = 1;
+            var sin = Math.Sin(t);
+            var cos = Math.Cos(t);
+            TFloat k = (TFloat)(a * Math.Sqrt(2) * cos / (sin * sin + 1));
+            return new Vector2(1, (TFloat)sin) * k;
+        }
+
         public static Vector2 Position(Vector2 focus1, Vector2 focus2, TFloat t) {
             Vector2 r1 = focus1;
             Vector2 r2 = focus2;
@@ -51,10 +70,6 @@ namespace Ark.Geometry.Curves {
             var result = CanonicalPosition(t);
             result = center + result.Rotate(direction.Angle()) * scale;
             return result;
-        }
-
-        public static Vector2 Position(Tuple<Vector2, Vector2> parameters, TFloat t) {
-            return Position(parameters.Item1, parameters.Item2, t);
         }
     }
 }
