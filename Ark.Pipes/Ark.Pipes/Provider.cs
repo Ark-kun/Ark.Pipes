@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public abstract class Provider<T> : IDisposable,
+    public abstract class Provider<T> :
 #if NOTIFICATIONS_DISABLE
         IOut<T>
 #else
@@ -19,8 +19,6 @@ namespace Ark.Pipes {
             get { return Ark.Pipes.Notifier.AlwaysUnreliable; }
         }
 #endif
-        public abstract void Dispose();
-
         static public implicit operator Provider<T>(T value) {
             return new Constant<T>(value);
         }
@@ -69,10 +67,9 @@ namespace Ark.Pipes {
         public Provider<T> AddChangeTrigger(Action<Action> changedTriggerSetter) {
             return new Function<T>(GetValue, changedTriggerSetter);
         }
-
         public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
             return new Function<T>(GetValue, changedTrigger);
-        }        
+        }
 
         #region Syntax-sugar factories
         static public Constant<T> Create(T value) {
@@ -126,10 +123,6 @@ namespace Ark.Pipes {
 
         public override INotifier Notifier {
             get { return _notifier; }
-        }
-
-        public override void Dispose() {
-            _notifier.Dispose();
         }
     }
 #endif

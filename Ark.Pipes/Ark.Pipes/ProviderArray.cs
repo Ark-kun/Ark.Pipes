@@ -92,14 +92,6 @@ namespace Ark.Pipes {
             get { return _notifier; }
         }
 #endif
-
-        public override void Dispose() {
-#if !NOTIFICATIONS_DISABLE
-            _notifier.Dispose();
-            ElementChanged = null;
-#endif
-            _properties = null;
-        }
     }
 
     public class ProviderArray<T> : ProviderArrayBase<T> {

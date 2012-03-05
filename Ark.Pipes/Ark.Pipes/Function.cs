@@ -44,11 +44,6 @@ namespace Ark.Pipes {
         public override TResult GetValue() {
             return _function();
         }
-
-        public override void Dispose() {
-            base.Dispose();
-            _function = null;
-        }
     }
 
     public sealed class Function<T, TResult> : 
@@ -80,12 +75,6 @@ namespace Ark.Pipes {
         public Property<T> Argument {
             get { return _arg; }
             set { _arg.Provider = value.Provider; }
-        }
-
-        public override void Dispose() {
-            base.Dispose();
-            _function = null;
-            _arg = null;
         }
     }
 
@@ -130,15 +119,6 @@ namespace Ark.Pipes {
             get { return _notifier; }
         }
 #endif 
-
-        public override void Dispose() {
-#if !NOTIFICATIONS_DISABLE
-            _notifier.Dispose();
-#endif 
-            _function = null;
-            _arg1 = null;
-            _arg2 = null;
-        }
     }
 
     public sealed class Function<T1, T2, T3, TResult> : Provider<TResult> {
@@ -190,16 +170,6 @@ namespace Ark.Pipes {
             get { return _notifier; }
         }
 #endif 
-
-        public override void Dispose() {
-#if !NOTIFICATIONS_DISABLE
-            _notifier.Dispose();
-#endif 
-            _function = null;
-            _arg1 = null;
-            _arg2 = null;
-            _arg3 = null;
-        }
     }
 
     public sealed class Function<T1, T2, T3, T4, TResult> : Provider<TResult> {
@@ -258,17 +228,6 @@ namespace Ark.Pipes {
         public override INotifier Notifier {
             get { return _notifier; }
         }
-#endif
-
-        public override void Dispose() {
-#if !NOTIFICATIONS_DISABLE
-            _notifier.Dispose();
-#endif
-            _function = null;
-            _arg1 = null;
-            _arg2 = null;
-            _arg3 = null;
-            _arg4 = null;
-        }
+#endif 
     }
 }
