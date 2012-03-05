@@ -22,7 +22,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #endif
 
 namespace Ark.Animation {
-    public struct PositionWithVelocity2 : IIsDerivativeOf<PositionWithVelocity2, TFloat>, IIsDerivativeOfEx<PositionWithVelocity2, DeltaT> {
+    public struct PositionWithVelocity2 : IIsDerivativeOf<PositionWithVelocity2, TFloat>, IIsDerivativeOfEx<PositionWithVelocity2, DeltaT>, IAdditive<PositionWithVelocity2>, IMultiplicative<DeltaT, PositionWithVelocity2> {
         public Vector2 Position;
         public Vector2 Velocity;
 
@@ -39,6 +39,14 @@ namespace Ark.Animation {
             return state + this * deltaArg;
         }
 
+        public PositionWithVelocity2 Plus(ref PositionWithVelocity2 value) {
+            return this + value;
+        }
+
+        public PositionWithVelocity2 MultipliedBy(ref DeltaT multiplier) {
+            return this * multiplier;
+        }
+
         public static PositionWithVelocity2 operator *(PositionWithVelocity2 op, DeltaT dt) {
             return new PositionWithVelocity2(op.Position * dt, op.Velocity * dt);
         }
@@ -52,7 +60,7 @@ namespace Ark.Animation {
         }
     }
 
-    public struct OrientedPosition2WithVelocities : IIsDerivativeOf<OrientedPosition2WithVelocities, TFloat>, IIsDerivativeOfEx<OrientedPosition2WithVelocities, DeltaT> {
+    public struct OrientedPosition2WithVelocities : IIsDerivativeOf<OrientedPosition2WithVelocities, TFloat>, IIsDerivativeOfEx<OrientedPosition2WithVelocities, DeltaT>, IAdditive<OrientedPosition2WithVelocities>, IMultiplicative<DeltaT, OrientedPosition2WithVelocities> {
         public OrientedPosition2 Value;
         public OrientedPosition2 D;
 
@@ -67,6 +75,14 @@ namespace Ark.Animation {
 
         public OrientedPosition2WithVelocities MakeStep(ref OrientedPosition2WithVelocities state, ref DeltaT deltaArg) {
             return state + this * deltaArg;
+        }
+
+        public OrientedPosition2WithVelocities Plus(ref OrientedPosition2WithVelocities value) {
+            return this + value;
+        }
+
+        public OrientedPosition2WithVelocities MultipliedBy(ref DeltaT multiplier) {
+            return this * multiplier;
         }
 
         public static OrientedPosition2WithVelocities operator *(OrientedPosition2WithVelocities op, DeltaT dt) {

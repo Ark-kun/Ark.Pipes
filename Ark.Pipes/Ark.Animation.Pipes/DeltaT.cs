@@ -8,7 +8,7 @@ using TFloat = System.Single;
 #endif
 
 namespace Ark.Animation {
-    public struct DeltaT : IDelta<TFloat> {
+    public struct DeltaT : IDelta<TFloat>, IMultiplicative<TFloat, DeltaT> {
         TFloat _value;
 
         private DeltaT(TFloat dt) {
@@ -32,6 +32,10 @@ namespace Ark.Animation {
 
         public TFloat Plus(ref TFloat value) {
             return value + _value;
+        }
+
+        public DeltaT MultipliedBy(ref TFloat multiplier) {
+            return _value * multiplier;
         }
     }
 }
