@@ -37,7 +37,7 @@ namespace Ark.Pipes {
 #if !NOTIFICATIONS_DISABLE
         public Function(INotifyingOut<TResult> source) {
             _function = source.GetValue;
-            _notifier.SubscribeTo(source.Notifier);
+            _notifier.Source = source.Notifier;
         }
 #endif
 
@@ -64,7 +64,7 @@ namespace Ark.Pipes {
             _function = function;
             _arg = new Property<T>(arg);
 #if !NOTIFICATIONS_DISABLE
-            _notifier.SubscribeTo(_arg.Notifier);
+            _notifier.Source = _arg.Notifier;
 #endif 
         }
 
@@ -95,8 +95,8 @@ namespace Ark.Pipes {
             _arg1 = new Property<T1>(arg1);
             _arg2 = new Property<T2>(arg2);
 #if !NOTIFICATIONS_DISABLE
-            _notifier.SubscribeTo(0, _arg1.Notifier);
-            _notifier.SubscribeTo(1, _arg2.Notifier);
+            _notifier[0] = _arg1.Notifier;
+            _notifier[1] = _arg2.Notifier;
 #endif 
         }
 
@@ -140,9 +140,9 @@ namespace Ark.Pipes {
             _arg2 = new Property<T2>(arg2);
             _arg3 = new Property<T3>(arg3);
 #if !NOTIFICATIONS_DISABLE
-            _notifier.SubscribeTo(0, _arg1.Notifier);
-            _notifier.SubscribeTo(1, _arg2.Notifier);
-            _notifier.SubscribeTo(2, _arg3.Notifier);
+            _notifier[0] = _arg1.Notifier;
+            _notifier[1] = _arg2.Notifier;
+            _notifier[2] = _arg3.Notifier;
 #endif 
         }
 
@@ -193,10 +193,10 @@ namespace Ark.Pipes {
             _arg3 = new Property<T3>(arg3);
             _arg4 = new Property<T4>(arg4);
 #if !NOTIFICATIONS_DISABLE
-            _notifier.SubscribeTo(0, _arg1.Notifier);
-            _notifier.SubscribeTo(1, _arg2.Notifier);
-            _notifier.SubscribeTo(2, _arg3.Notifier);
-            _notifier.SubscribeTo(3, _arg4.Notifier);
+            _notifier[0] = _arg1.Notifier;
+            _notifier[1] = _arg2.Notifier;
+            _notifier[2] = _arg3.Notifier;
+            _notifier[3] = _arg4.Notifier;
 #endif 
         }
 

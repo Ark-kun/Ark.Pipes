@@ -37,7 +37,7 @@ namespace Ark.Pipes {
                 _properties[i] = new Property<T>(providers[i]);
 #if !NOTIFICATIONS_DISABLE
                 _properties[i].Notifier.ValueChanged += () => OnElementChanged(i);
-                _notifier.SubscribeTo(i, _properties[i].Notifier);
+                _notifier[i] = _properties[i].Notifier;
 #endif
            }
         }
