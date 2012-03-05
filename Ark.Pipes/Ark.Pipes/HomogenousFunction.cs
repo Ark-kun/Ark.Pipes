@@ -41,5 +41,11 @@ namespace Ark.Pipes {
             get { return _args.Notifier; }
         }
 #endif
+
+        public override void Dispose() {
+            _function = null;
+            _args.Dispose(); //Is it ok to dispose?
+            _args = null;
+        }
     }
 }

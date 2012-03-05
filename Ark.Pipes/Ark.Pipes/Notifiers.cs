@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #if !NOTIFICATIONS_DISABLE
 namespace Ark.Pipes {
-    public abstract class Notifier : INotifier {
+    public abstract class Notifier : INotifier, IDisposable {
         bool _isReliable = false;
         Action _valueChanged;
         Action<bool> _reliabilityChanged;
@@ -84,6 +84,13 @@ namespace Ark.Pipes {
                     DisconnectFromSources();
                 }
             }
+        }
+
+        public virtual void Dispose() {
+            DisconnectFromSources();
+            _isReliable = false;
+            _valueChanged = null;
+            _reliabilityChanged = null;
         }
     }
 
@@ -170,6 +177,11 @@ namespace Ark.Pipes {
                 IsReliable = false;
             }
         }
+
+        public override void Dispose() {
+            base.Dispose();
+            _source = null;
+        }
     }
 
     public sealed class ArrayNotifier : Notifier {
@@ -253,6 +265,13 @@ namespace Ark.Pipes {
                 DisconnectFromSource(i);
             }
             IsReliable = false;
+        }
+
+        public override void Dispose() {
+            base.Dispose();
+            _isReliable = null;
+            _sources = null;
+            _reliabilityListeners = null;
         }
     }
 }

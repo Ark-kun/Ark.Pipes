@@ -22,5 +22,8 @@
             get { return Ark.Pipes.Notifier.Constant; }
         }
 #endif
+
+        public override void Dispose() {
+        }
     }
 }
