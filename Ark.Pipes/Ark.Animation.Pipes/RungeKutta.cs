@@ -1,48 +1,45 @@
 using System;
 using Ark.Abstract;
 
+#if FLOAT_TYPE_DOUBLE
+using TFloat = System.Double;
+#else
+using TFloat = System.Single;
+#endif
+
 namespace Ark.Animation {
     public class RungeKutta {
-        public static T Integrate<T, TDerivative, TVar, TDeltaVar>(Func<T, TDerivative> derivative, T state, TVar time, TDeltaVar deltaT)
-            where TDerivative : IIsDerivativeOfEx<T, TDeltaVar>
-            where TDeltaVar : IMultiplicative<float, TDeltaVar>, IAdditive<TVar> {
+        public static T Integrate<T, TDerivative>(Func<T, TDerivative> derivative, T state, TFloat time, DeltaT deltaT)
+            where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             return Integrate((s, t) => derivative(s), state, time, deltaT);
         }
 
-        public static T Integrate<T, TDerivative, TVar, TDeltaVar>(Func<T, TVar, TDerivative> derivative, T state, TVar time, TDeltaVar deltaT)
-            where TDerivative : IIsDerivativeOfEx<T, TDeltaVar>
-            where TDeltaVar : IMultiplicative<float, TDeltaVar>, IAdditive<TVar> {
+        public static T Integrate<T, TDerivative>(Func<T, TFloat, TDerivative> derivative, T state, TFloat time, DeltaT deltaT)
+            where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T result;
             Integrate(derivative, ref state, time, deltaT, out result);
             return result;
         }
 
-        public static void Integrate<T, TDerivative, TVar, TDeltaVar>(Func<T, TVar, TDerivative> derivative, ref T state, TVar time, TDeltaVar deltaT, out T result)
-            where TDerivative : IIsDerivativeOfEx<T, TDeltaVar>
-            where TDeltaVar : IMultiplicative<float, TDeltaVar>, IAdditive<TVar> {
-            float ratio1_2 = 0.5f;
-            float ratio1_6 = 1.0f / 6;
-            float ratio2_6 = 2.0f / 6;
-            TDeltaVar dt_1_2;
-            TDeltaVar dt_1_6;
-            TDeltaVar dt_2_6;
-            deltaT.MultipliedBy(ref ratio1_2, out dt_1_2);
-            deltaT.MultipliedBy(ref ratio1_6, out dt_1_6);
-            deltaT.MultipliedBy(ref ratio2_6, out dt_2_6);
+        public static void Integrate<T, TDerivative>(Func<T, TFloat, TDerivative> derivative, ref T state, TFloat time, DeltaT deltaT, out T result)
+            where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
+            DeltaT dt_1_2 = deltaT * 0.5f;
+            DeltaT dt_1_6 = deltaT * 1.0f / 6;
+            DeltaT dt_2_6 = deltaT * 2.0f / 6;
 
             T curState;
-            TVar curTime = time;
+            TFloat curTime = time;
 
             TDerivative d0 = derivative(state, curTime);
 
-            dt_1_2.Plus(ref curTime, out curTime);
+            curTime +=  dt_1_2;
             d0.MakeStep(ref state, ref dt_1_2, out curState);
             TDerivative d1 = derivative(curState, curTime);
 
             d1.MakeStep(ref state, ref dt_1_2, out curState);
             TDerivative d2 = derivative(curState, curTime);
 
-            dt_1_2.Plus(ref curTime, out curTime);
+            curTime += dt_1_2;
             d2.MakeStep(ref state, ref deltaT, out curState);
             TDerivative d3 = derivative(curState, curTime);
 
