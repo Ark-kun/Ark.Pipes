@@ -51,24 +51,20 @@ namespace Ark.Pipes {
             return new Function<T>(value);
         }
 
-        [System.Runtime.CompilerServices.SpecialName]
-        static public Provider<T> op_Implicit<T1>(Func<T1, T> value) {
-            return new Function<T1, T>(value);
-        }
-
-        static public implicit operator Provider<T>(Func<T, T> value) {
-            return new Function<T, T>(value);
-        }
-
         static public implicit operator T(Provider<T> provider) {
             return provider.Value;
         }
 
-        public Provider<T> AddChangeTrigger(Action<Action> changedTriggerSetter) {
-            return new Function<T>(GetValue, changedTriggerSetter);
-        }
         public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
             return new Function<T>(GetValue, changedTrigger);
+        }
+
+        public CachingProvider<T> AddCache() {
+            return new CachingProvider<T>(this);
+        }
+
+        public CachingProvider<T> AddCache(ITrigger changedTrigger, bool autoRefresh = false) {
+            return new CachingProvider<T>(this, changedTrigger, autoRefresh);
         }
 
         #region Syntax-sugar factories
@@ -80,32 +76,16 @@ namespace Ark.Pipes {
             return new Function<T>(function);
         }
 
-        static public Function<T> Create(Func<T> function, Action<Action> changedTriggerSetter) {
-            return new Function<T>(function, changedTriggerSetter);
-        }
-
         static public Function<T> Create(Func<T> function, ITrigger changedTrigger) {
             return new Function<T>(function, changedTrigger);
-        }
-
-        public static Function<T1, T> Create<T1>(Func<T1, T> function) {
-            return new Function<T1, T>(function);
         }
 
         public static Function<T1, T> Create<T1>(Func<T1, T> function, Provider<T1> arg) {
             return new Function<T1, T>(function, arg);
         }
 
-        public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function) {
-            return new Function<T1, T2, T>(function);
-        }
-
         public static Function<T1, T2, T> Create<T1, T2>(Func<T1, T2, T> function, Provider<T1> arg1, Provider<T2> arg2) {
             return new Function<T1, T2, T>(function, arg1, arg2);
-        }
-
-        public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function) {
-            return new Function<T1, T2, T3, T>(function);
         }
 
         public static Function<T1, T2, T3, T> Create<T1, T2, T3>(Func<T1, T2, T3, T> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3) {
