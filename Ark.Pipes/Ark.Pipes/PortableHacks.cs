@@ -2,6 +2,7 @@
     public class SpecialNameAttribute : Attribute { }
 }
 
+#if NET_LT_4
 namespace System {
     public static class Tuple {
         public static Tuple<T1, T2> Create<T1, T2>(T1 item1, T2 item2) {
@@ -65,3 +66,4 @@ namespace System {
         public T4 Item4 { get { return _item4; } }
     }
 }
+#endif
