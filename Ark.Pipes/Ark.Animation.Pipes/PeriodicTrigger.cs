@@ -14,7 +14,7 @@ namespace Ark.Animation {
         Provider<TFloat> _timer;
 
 #if !NOTIFICATIONS_DISABLE
-        public PeriodicTrigger(float interval, Provider<float> timer) {
+        public PeriodicTrigger(TFloat interval, Provider<TFloat> timer) {
             _interval = interval;
             _timer = timer;
             _lastTime = _timer.Value;
