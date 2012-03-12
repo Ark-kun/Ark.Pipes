@@ -22,7 +22,7 @@ namespace Ark.Pipes { //.Wpf {
             set { _value.Provider = value; }
         }
 
-        protected void OnPropertyChanged() {
+        void OnPropertyChanged() {
             var handler = PropertyChanged;
             if (handler != null) {
                 handler(this, new PropertyChangedEventArgs(_propertyName));

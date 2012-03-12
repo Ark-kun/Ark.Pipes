@@ -8,7 +8,7 @@ namespace Ark.Pipes {
         ProviderWithNotifier<TResult> 
 #endif
     {
-        private Func<TResult> _function;
+        Func<TResult> _function;
 
         public Function(Func<TResult> function) {
             _function = function;
@@ -45,8 +45,8 @@ namespace Ark.Pipes {
         ProviderWithNotifier<TResult> 
 #endif 
     {
-        private Func<T, TResult> _function;
-        private Provider<T> _arg;
+        Func<T, TResult> _function;
+        Provider<T> _arg;
 
         public Function(Func<T, TResult> function, Provider<T> arg) {
             _function = function;
@@ -62,11 +62,11 @@ namespace Ark.Pipes {
     }
 
     public sealed class Function<T1, T2, TResult> : Provider<TResult> {
-        private Func<T1, T2, TResult> _function;
-        private Provider<T1> _arg1;
-        private Provider<T2> _arg2;
+        Func<T1, T2, TResult> _function;
+        Provider<T1> _arg1;
+        Provider<T2> _arg2;
 #if !NOTIFICATIONS_DISABLE
-        protected ArrayNotifier _notifier = new ArrayNotifier(2);
+        ArrayNotifier _notifier = new ArrayNotifier(2);
 #endif 
 
         public Function(Func<T1, T2, TResult> function, Provider<T1> arg1, Provider<T2> arg2) {
@@ -91,12 +91,12 @@ namespace Ark.Pipes {
     }
 
     public sealed class Function<T1, T2, T3, TResult> : Provider<TResult> {
-        private Func<T1, T2, T3, TResult> _function;
-        private Provider<T1> _arg1;
-        private Provider<T2> _arg2;
-        private Provider<T3> _arg3;
+        Func<T1, T2, T3, TResult> _function;
+        Provider<T1> _arg1;
+        Provider<T2> _arg2;
+        Provider<T3> _arg3;
 #if !NOTIFICATIONS_DISABLE
-        protected ArrayNotifier _notifier = new ArrayNotifier(3);
+        ArrayNotifier _notifier = new ArrayNotifier(3);
 #endif 
 
         public Function(Func<T1, T2, T3, TResult> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3) {
@@ -123,13 +123,13 @@ namespace Ark.Pipes {
     }
 
     public sealed class Function<T1, T2, T3, T4, TResult> : Provider<TResult> {
-        private Func<T1, T2, T3, T4, TResult> _function;
-        private Provider<T1> _arg1;
-        private Provider<T2> _arg2;
-        private Provider<T3> _arg3;
-        private Provider<T4> _arg4;
+        Func<T1, T2, T3, T4, TResult> _function;
+        Provider<T1> _arg1;
+        Provider<T2> _arg2;
+        Provider<T3> _arg3;
+        Provider<T4> _arg4;
 #if !NOTIFICATIONS_DISABLE
-        protected ArrayNotifier _notifier = new ArrayNotifier(4);
+        ArrayNotifier _notifier = new ArrayNotifier(4);
 #endif 
 
         public Function(Func<T1, T2, T3, T4, TResult> function, Provider<T1> arg1, Provider<T2> arg2, Provider<T3> arg3, Provider<T4> arg4) {
