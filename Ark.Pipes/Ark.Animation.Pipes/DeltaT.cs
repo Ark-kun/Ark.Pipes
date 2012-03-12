@@ -26,16 +26,28 @@ namespace Ark.Animation {
             return new DeltaT(dt);
         }
 
-        public void ConstructFromDifference(ref TFloat value1, ref TFloat value2) {
-            _value = value1 - value2;
+        public void AddDelta(TFloat value1, TFloat value2) {
+            _value += value1 - value2;
         }
 
-        public TFloat Plus(ref TFloat value) {
+        public void AddDelta(ref TFloat value1, ref TFloat value2) {
+            _value += value1 - value2;
+        }
+
+        public TFloat Plus(TFloat value) {
             return value + _value;
         }
 
-        public DeltaT MultipliedBy(ref TFloat multiplier) {
+        public void Plus(ref TFloat value, out TFloat result) {
+            result = value + _value;
+        }
+
+        public DeltaT MultipliedBy(TFloat multiplier) {
             return _value * multiplier;
+        }
+
+        public void MultipliedBy(ref TFloat multiplier, out DeltaT result) {
+            result = _value * multiplier;
         }
     }
 }

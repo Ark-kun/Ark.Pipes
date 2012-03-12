@@ -33,20 +33,54 @@ namespace Ark.Animation { //.Pipes {
             Orientation = orientation;
         }
 
-        public OrientedPosition2 MakeStep(ref OrientedPosition2 state, ref TFloat arg, ref TFloat newArg) {
+        public OrientedPosition2(ref Vector2 position, ref TFloat orientation) {
+            Position = position;
+            Orientation = orientation;
+        }
+
+        public OrientedPosition2 MakeStep(OrientedPosition2 state, TFloat arg, TFloat newArg) {
             return state + this * (newArg - arg);
         }
 
-        public OrientedPosition2 MakeStep(ref OrientedPosition2 state, ref DeltaT deltaArg) {
+        public void MakeStep(ref OrientedPosition2 state, ref TFloat arg, ref TFloat newArg, out OrientedPosition2 result) {
+            DeltaT deltaArg = newArg - arg;
+            MakeStep(ref state, ref deltaArg, out result);
+        }
+
+        public OrientedPosition2 MakeStep(OrientedPosition2 state, DeltaT deltaArg) {
             return state + this * deltaArg;
         }
 
-        public OrientedPosition2 Plus(ref OrientedPosition2 value) {
+        public void MakeStep(ref OrientedPosition2 state, ref DeltaT deltaArg, out OrientedPosition2 result) {
+            Vector2.Multiply(ref Position, deltaArg, out result.Position);
+            Vector2.Add(ref result.Position, ref state.Position, out result.Position);
+            result.Orientation = Orientation + state.Orientation;
+        }
+
+        public OrientedPosition2 Plus(OrientedPosition2 value) {
             return this + value;
         }
 
-        public OrientedPosition2 MultipliedBy(ref DeltaT multiplier) {
+        public void Plus(ref OrientedPosition2 value, out OrientedPosition2 result) {
+            Add(ref this, ref value, out result);
+        }
+
+        public OrientedPosition2 MultipliedBy(DeltaT multiplier) {
             return this * multiplier;
+        }
+
+        public void MultipliedBy(ref DeltaT multiplier, out OrientedPosition2 result) {
+            Multiply(ref this, multiplier, out result);
+        }
+
+        public static void Add(ref OrientedPosition2 value1, ref OrientedPosition2 value2, out OrientedPosition2 result) {
+            Vector2.Add(ref value1.Position, ref value2.Position, out result.Position);
+            result.Orientation = value1.Orientation + value2.Orientation;
+        }
+
+        public static void Multiply(ref OrientedPosition2 value, DeltaT multiplier, out OrientedPosition2 result) {
+            Vector2.Multiply(ref value.Position, multiplier, out result.Position);
+            result.Orientation = value.Orientation * multiplier;
         }
 
         public static OrientedPosition2 operator *(OrientedPosition2 op, DeltaT dt) {

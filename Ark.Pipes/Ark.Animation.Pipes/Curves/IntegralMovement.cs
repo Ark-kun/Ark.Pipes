@@ -36,7 +36,7 @@ namespace Ark.Geometry.Curves {
                 T state = initialState;
                 TFloat varValue = timer.Value;
                 return Provider<T>.Create((t) => {
-                    state = curve(state).MakeStep(ref state, ref varValue, ref t);
+                    curve(state).MakeStep(ref state, ref varValue, ref t, out state);
                     varValue = t;
                     return state;
                 }, timer);
@@ -47,7 +47,7 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             return (deltas) => {
                 T state = initialState;
-                return Provider<T>.Create((dt) => curve(state).MakeStep(ref state, ref dt), deltas);
+                return Provider<T>.Create((dt) => curve(state).MakeStep(state, dt), deltas);
             };
         }
 
@@ -83,7 +83,7 @@ namespace Ark.Geometry.Curves {
             T state = initialState;
             TVar value = variable.Value;
             return Provider<T>.Create((newValue) => {
-                state = curve(state).MakeStep(ref state, ref value, ref newValue);
+                curve(state).MakeStep(ref state, ref value, ref newValue, out state);
                 value = newValue;
                 return state;
             }, variable);
@@ -94,7 +94,7 @@ namespace Ark.Geometry.Curves {
             T state = initialState;
             TVar value = variable.Value;
             return Provider<T>.Create((newValue) => {
-                state = curve(state, value).MakeStep(ref state, ref value, ref newValue);
+                curve(state, value).MakeStep(ref state, ref value, ref newValue, out state);
                 value = newValue;
                 return state;
             }, variable);
@@ -107,7 +107,7 @@ namespace Ark.Geometry.Curves {
             where TDeltaVar : IDelta<TVar> {
             T state = initialState;
             return Provider<T>.Create((dt) => {
-                state = curve(state).MakeStep(ref state, ref dt);
+                curve(state).MakeStep(ref state, ref dt, out state);
                 return state;
             }, deltas);
         }
@@ -117,7 +117,7 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
             return Provider<T>.Create((dt) => {
-                state = curve(state).MakeStep(ref state, ref dt);
+                curve(state).MakeStep(ref state, ref dt, out state);
                 return state;
             }, deltas);
         }
@@ -127,7 +127,7 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
             return Provider<T>.Create((dt) => {
-                state = curve(state).MakeStep(ref state, ref dt);
+                curve(state).MakeStep(ref state, ref dt, out state);
                 return state;
             }, timer.ToDeltaTs());
         }

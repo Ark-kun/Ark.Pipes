@@ -31,20 +31,55 @@ namespace Ark.Animation {
             Velocity = velocity;
         }
 
-        public PositionWithVelocity3 MakeStep(ref PositionWithVelocity3 state, ref TFloat arg, ref TFloat newArg) {
+        public PositionWithVelocity3(ref Vector3 position, ref Vector3 velocity) {
+            Position = position;
+            Velocity = velocity;
+        }
+
+        public PositionWithVelocity3 MakeStep(PositionWithVelocity3 state, TFloat arg, TFloat newArg) {
             return state + this * (newArg - arg);
         }
 
-        public PositionWithVelocity3 MakeStep(ref PositionWithVelocity3 state, ref DeltaT deltaArg) {
+        public void MakeStep(ref PositionWithVelocity3 state, ref TFloat arg, ref TFloat newArg, out PositionWithVelocity3 result) {
+            DeltaT deltaArg = newArg - arg;
+            MakeStep(ref state, ref deltaArg, out result);
+        }
+
+        public PositionWithVelocity3 MakeStep(PositionWithVelocity3 state, DeltaT deltaArg) {
             return state + this * deltaArg;
         }
 
-        public PositionWithVelocity3 Plus(ref PositionWithVelocity3 value) {
+        public void MakeStep(ref PositionWithVelocity3 state, ref DeltaT deltaArg, out PositionWithVelocity3 result) {
+            Vector3.Multiply(ref Position, deltaArg, out result.Position);
+            Vector3.Add(ref result.Position, ref state.Position, out result.Position);
+            Vector3.Multiply(ref Velocity, deltaArg, out result.Velocity);
+            Vector3.Add(ref result.Velocity, ref state.Velocity, out result.Velocity);
+        }
+
+        public PositionWithVelocity3 Plus(PositionWithVelocity3 value) {
             return this + value;
         }
 
-        public PositionWithVelocity3 MultipliedBy(ref DeltaT multiplier) {
+        public void Plus(ref PositionWithVelocity3 value, out PositionWithVelocity3 result) {
+            Add(ref this, ref value, out result);
+        }
+
+        public PositionWithVelocity3 MultipliedBy(DeltaT multiplier) {
             return this * multiplier;
+        }
+
+        public void MultipliedBy(ref DeltaT multiplier, out PositionWithVelocity3 result) {
+            Multiply(ref this, multiplier, out result);
+        }
+
+        public static void Add(ref PositionWithVelocity3 value1, ref PositionWithVelocity3 value2, out PositionWithVelocity3 result) {
+            Vector3.Add(ref value1.Position, ref value2.Position, out result.Position);
+            Vector3.Add(ref value1.Velocity, ref value2.Velocity, out result.Velocity);
+        }
+
+        public static void Multiply(ref PositionWithVelocity3 value, DeltaT multiplier, out PositionWithVelocity3 result) {
+            Vector3.Multiply(ref value.Position, multiplier, out result.Position);
+            Vector3.Multiply(ref value.Velocity, multiplier, out result.Velocity);
         }
 
         public static PositionWithVelocity3 operator *(PositionWithVelocity3 op, DeltaT dt) {
@@ -69,20 +104,55 @@ namespace Ark.Animation {
             D = d;
         }
 
-        public OrientedPosition3WithVelocities MakeStep(ref OrientedPosition3WithVelocities state, ref TFloat arg, ref TFloat newArg) {
+        public OrientedPosition3WithVelocities(ref OrientedPosition3 value, ref OrientedPosition3 d) {
+            Value = value;
+            D = d;
+        }
+
+        public OrientedPosition3WithVelocities MakeStep(OrientedPosition3WithVelocities state, TFloat arg, TFloat newArg) {
             return state + this * (newArg - arg);
         }
 
-        public OrientedPosition3WithVelocities MakeStep(ref OrientedPosition3WithVelocities state, ref DeltaT deltaArg) {
+        public void MakeStep(ref OrientedPosition3WithVelocities state, ref TFloat arg, ref TFloat newArg, out OrientedPosition3WithVelocities result) {
+            DeltaT deltaArg = newArg - arg;
+            MakeStep(ref state, ref deltaArg, out result);
+        }
+
+        public OrientedPosition3WithVelocities MakeStep(OrientedPosition3WithVelocities state, DeltaT deltaArg) {
             return state + this * deltaArg;
         }
 
-        public OrientedPosition3WithVelocities Plus(ref OrientedPosition3WithVelocities value) {
+        public void MakeStep(ref OrientedPosition3WithVelocities state, ref DeltaT deltaArg, out OrientedPosition3WithVelocities result) {
+            OrientedPosition3.Multiply(ref Value, deltaArg, out result.Value);
+            OrientedPosition3.Add(ref result.Value, ref state.Value, out result.Value);
+            OrientedPosition3.Multiply(ref D, deltaArg, out result.D);
+            OrientedPosition3.Add(ref result.D, ref state.D, out result.D);
+        }
+
+        public OrientedPosition3WithVelocities Plus(OrientedPosition3WithVelocities value) {
             return this + value;
         }
 
-        public OrientedPosition3WithVelocities MultipliedBy(ref DeltaT multiplier) {
+        public void Plus(ref OrientedPosition3WithVelocities value, out OrientedPosition3WithVelocities result) {
+            Add(ref this, ref value, out result);
+        }
+
+        public OrientedPosition3WithVelocities MultipliedBy(DeltaT multiplier) {
             return this * multiplier;
+        }
+
+        public void MultipliedBy(ref DeltaT multiplier, out OrientedPosition3WithVelocities result) {
+            Multiply(ref this, multiplier, out result);
+        }
+
+        public static void Add(ref OrientedPosition3WithVelocities value1, ref OrientedPosition3WithVelocities value2, out OrientedPosition3WithVelocities result) {
+            OrientedPosition3.Add(ref value1.Value, ref value2.Value, out result.Value);
+            OrientedPosition3.Add(ref value1.D, ref value2.D, out result.D);
+        }
+
+        public static void Multiply(ref OrientedPosition3WithVelocities value, DeltaT multiplier, out OrientedPosition3WithVelocities result) {
+            OrientedPosition3.Multiply(ref value.Value, multiplier, out result.Value);
+            OrientedPosition3.Multiply(ref value.D, multiplier, out result.D);
         }
 
         public static OrientedPosition3WithVelocities operator *(OrientedPosition3WithVelocities op, DeltaT dt) {
