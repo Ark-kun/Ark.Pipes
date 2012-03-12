@@ -26,28 +26,28 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Geometry.Curves {
     public static class Extensions_IntegralCurves {
-        public static Func<T, TDerivative> AsTimeCurve<T, TDerivative, T1, T2>(this Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2) {
-            return (state) => curve(state, arg1, arg2);
+        public static Func<T, TDerivative> AsTimeCurve<T, TDerivative, T1, T2>(this Func<T, TDerivative> curve, T initialState) {
+            return (state) => curve(state);
         }
 
-        public static Func<Provider<TFloat>, Provider<T>> AsTimerCurve<T, TDerivative, T1, T2>(this Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2)
+        public static Func<Provider<TFloat>, Provider<T>> AsTimerCurve<T, TDerivative>(this Func<T, TDerivative> curve, T initialState)
             where TDerivative : IIsDerivativeOf<T, TFloat> {
             return (timer) => {
                 T state = initialState;
                 TFloat varValue = timer.Value;
-                return Provider<T>.Create((p1, p2, t) => {
-                    state = curve(state, p1, p2).MakeStep(ref state, ref varValue, ref t);
+                return Provider<T>.Create((t) => {
+                    state = curve(state).MakeStep(ref state, ref varValue, ref t);
                     varValue = t;
                     return state;
-                }, arg1, arg2, timer);
+                }, timer);
             };
         }
 
-        public static Func<Provider<DeltaT>, Provider<T>> AsDeltaTimerCurve<T, TDerivative, T1, T2>(this Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2)
+        public static Func<Provider<DeltaT>, Provider<T>> AsDeltaTimerCurve<T, TDerivative>(this Func<T, TDerivative> curve, T initialState)
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             return (deltas) => {
                 T state = initialState;
-                return Provider<T>.Create((p1, p2, dt) => curve(state, p1, p2).MakeStep(ref state, ref dt), arg1, arg2, deltas);
+                return Provider<T>.Create((dt) => curve(state).MakeStep(ref state, ref dt), deltas);
             };
         }
 
@@ -55,86 +55,97 @@ namespace Ark.Geometry.Curves {
 
     public class IntegralMovement {
         //Cannot infer TDelta
-        //public static Provider<T> Create<T, TDerivative, TDelta, TDeltaVar, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TDeltaVar> dparam)
+        //public static Provider<T> Create<T, TDerivative, TDelta, TDeltaVar>(Func<T, TDerivative> curve, T initialState, Provider<TDeltaVar> dparam)
         //    where TDelta : IInstanceDelta<T>
         //    where TDerivative : IInstanceMultiplicative<TDeltaVar, TDelta> {
         //    T state = initialState;
-        //    return Provider<T>.Create((p1, p2, dt) => {
-        //        return state = curve(state, p1, p2).MultipliedBy(ref dt).Plus(ref state);
-        //    }, arg1, arg2, dparam);
+        //    return Provider<T>.Create((dt) => {
+        //        return state = curve(state).MultipliedBy(ref dt).Plus(ref state);
+        //    }, dparam);
         //}
 
         //Cannot infer TDeltaVar
-        //public static Provider<T> Create<T, TVar, TDerivative, TDeltaVar, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TVar> variable)
+        //public static Provider<T> Create<T, TVar, TDerivative, TDeltaVar>(Func<T, TDerivative> curve, T initialState, Provider<TVar> variable)
         //    where TDeltaVar : IInstanceDelta<TVar>, new()
         //    where TDerivative : IIsDerivativeOf2<T, TVar, TDeltaVar> {
         //    T state = initialState;
         //    TVar varValue = variable.Value;
-        //    return Provider<T>.Create((p1, p2, t) => {
+        //    return Provider<T>.Create((t) => {
         //        var dt = new TDeltaVar();
         //        dt.ConstructFromDifference(ref varValue, ref t);
         //        varValue = t;
-        //        return state = curve(state, p1, p2).MultiplyByAndAdd(ref dt, ref state);
-        //    }, arg1, arg2, variable);
+        //        return state = curve(state).MultiplyByAndAdd(ref dt, ref state);
+        //    }, variable);
         //}
 
-        public static Provider<T> Create<T, TVar, TDerivative, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TVar> variable)
+        public static Provider<T> Create<T, TVar, TDerivative>(Func<T, TDerivative> curve, T initialState, Provider<TVar> variable)
             where TDerivative : IIsDerivativeOf<T, TVar> {
             T state = initialState;
-            TVar varValue = variable.Value;
-            return Provider<T>.Create((p1, p2, t) => {
-                state = curve(state, p1, p2).MakeStep(ref state, ref varValue, ref t);
-                varValue = t;
+            TVar value = variable.Value;
+            return Provider<T>.Create((newValue) => {
+                state = curve(state).MakeStep(ref state, ref value, ref newValue);
+                value = newValue;
                 return state;
-            }, arg1, arg2, variable);
+            }, variable);
+        }
+
+        public static Provider<T> Create<T, TVar, TDerivative>(Func<T, TVar, TDerivative> curve, T initialState, Provider<TVar> variable)
+            where TDerivative : IIsDerivativeOf<T, TVar> {
+            T state = initialState;
+            TVar value = variable.Value;
+            return Provider<T>.Create((newValue) => {
+                state = curve(state, value).MakeStep(ref state, ref value, ref newValue);
+                value = newValue;
+                return state;
+            }, variable);
         }
 
         //Cannot infer TVar?
         //Provider<TVar> -> Provider<TDeltaVar>
-        public static Provider<T> Create<T, TVar, TDerivative, TDeltaVar, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TDeltaVar> deltas)
+        public static Provider<T> Create<T, TVar, TDerivative, TDeltaVar>(Func<T, TDerivative> curve, T initialState, Provider<TDeltaVar> deltas)
             where TDerivative : IIsDerivativeOfEx<T, TDeltaVar>
             where TDeltaVar : IDelta<TVar> {
             T state = initialState;
-            return Provider<T>.Create((p1, p2, dt) => {
-                state = curve(state, p1, p2).MakeStep(ref state, ref dt);
+            return Provider<T>.Create((dt) => {
+                state = curve(state).MakeStep(ref state, ref dt);
                 return state;
-            }, arg1, arg2, deltas);
+            }, deltas);
         }
 
         //TDeltaVar = DeltaT
-        public static Provider<T> Create<T, TDerivative, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<DeltaT> deltas)
+        public static Provider<T> Create<T, TDerivative>(Func<T, TDerivative> curve, T initialState, Provider<DeltaT> deltas)
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
-            return Provider<T>.Create((p1, p2, dt) => {
-                state = curve(state, p1, p2).MakeStep(ref state, ref dt);
+            return Provider<T>.Create((dt) => {
+                state = curve(state).MakeStep(ref state, ref dt);
                 return state;
-            }, arg1, arg2, deltas);
+            }, deltas);
         }
 
         //TVar = TFloat
-        public static Provider<T> Create<T, TDerivative, T1, T2>(Func<T, T1, T2, TDerivative> curve, T initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TFloat> timer)
+        public static Provider<T> Create<T, TDerivative>(Func<T, TDerivative> curve, T initialState, Provider<TFloat> timer)
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
-            return Provider<T>.Create((p1, p2, dt) => {
-                state = curve(state, p1, p2).MakeStep(ref state, ref dt);
+            return Provider<T>.Create((dt) => {
+                state = curve(state).MakeStep(ref state, ref dt);
                 return state;
-            }, arg1, arg2, timer.ToDeltaTs());
+            }, timer.ToDeltaTs());
         }
 
         //T = Vector2
-        public static Provider<Vector2> Create<T1, T2>(Func<Vector2, T1, T2, Vector2> curve, Vector2 initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TFloat> timer) {
+        public static Provider<Vector2> Create(Func<Vector2, Vector2> curve, Vector2 initialState, Provider<TFloat> timer) {
             Vector2 state = initialState;
-            return Provider<Vector2>.Create((p1, p2, dt) => {
-                return state += curve(state, p1, p2) * dt;
-            }, arg1, arg2, timer.ToDeltaTs());
+            return Provider<Vector2>.Create((dt) => {
+                return state += curve(state) * dt;
+            }, timer.ToDeltaTs());
         }
 
         //T = Vector3
-        public static Provider<Vector3> Create<T1, T2>(Func<Vector3, T1, T2, Vector3> curve, Vector3 initialState, Provider<T1> arg1, Provider<T2> arg2, Provider<TFloat> timer) {
+        public static Provider<Vector3> Create(Func<Vector3, Vector3> curve, Vector3 initialState, Provider<TFloat> timer) {
             Vector3 state = initialState;
-            return Provider<Vector3>.Create((p1, p2, dt) => {
-                return state += curve(state, p1, p2) * dt;
-            }, arg1, arg2, timer.ToDeltaTs());
+            return Provider<Vector3>.Create((dt) => {
+                return state += curve(state) * dt;
+            }, timer.ToDeltaTs());
         }
     }
 }
