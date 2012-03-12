@@ -58,14 +58,14 @@ namespace Ark.Pipes {
 
         protected override void OnSourceProviderChanged() {
             if (_lastSource == null || _source.Provider != _lastSource) {
-                _lastTarget = new Function<TSource, TTarget>(_sourceToTarget, _source.Provider);
+                _lastTarget = Provider<TTarget>.Create(_sourceToTarget, _source.Provider);
                 _target.Provider = _lastTarget;
             }
         }
 
         protected override void OnTargetProviderChanged() {
             if (_lastTarget == null || _target.Provider != _lastTarget) {
-                _lastSource = new Function<TTarget, TSource>(_targetToSource, _target.Provider);
+                _lastSource = Provider<TSource>.Create(_targetToSource, _target.Provider);
                 _source.Provider = _lastSource;
             }
         }
