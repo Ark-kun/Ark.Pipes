@@ -24,7 +24,7 @@ namespace Ark.Pipes {
         }
 
         public ProviderArrayBase(IList<T> values)
-            : this(values.Select((value) => Provider<T>.Create(value)).ToArray()) {
+            : this(values.Select((value) => Provider.Create(value)).ToArray()) {
         }
 
         public ProviderArrayBase(IList<Provider<T>> providers) {

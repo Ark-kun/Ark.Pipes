@@ -109,13 +109,13 @@ namespace Ark.Animation { //.Pipes {
 
         public static OrientedPosition3Components FromOrientedPositions3(Provider<OrientedPosition3> orientedPositions) {
             return new OrientedPosition3Components() {
-                Position = Provider<Vector3>.Create((op) => op.Position, orientedPositions),
-                Orientation = Provider<Quaternion>.Create((op) => op.Orientation, orientedPositions)
+                Position = Provider.Create((op) => op.Position, orientedPositions),
+                Orientation = Provider.Create((op) => op.Orientation, orientedPositions)
             };
         }
 
         public Provider<OrientedPosition3> ToOrientedPositions3() {
-            return Provider<OrientedPosition3>.Create((p, o) => new OrientedPosition3(p, o), Position, Orientation);
+            return Provider.Create((p, o) => new OrientedPosition3(p, o), Position, Orientation);
         }
     }
 }

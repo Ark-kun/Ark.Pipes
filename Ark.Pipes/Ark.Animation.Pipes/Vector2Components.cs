@@ -36,8 +36,8 @@ namespace Ark.Geometry { //.Pipes {
         }
 
         public Vector2Components(Provider<Vector2> vectors) {
-            _x = Provider<TFloat>.Create((v) => v.X, vectors);
-            _y = Provider<TFloat>.Create((v) => v.Y, vectors);
+            _x = Provider.Create((v) => v.X, vectors);
+            _y = Provider.Create((v) => v.Y, vectors);
         }
 
 #if !PORTABLE
@@ -49,7 +49,7 @@ namespace Ark.Geometry { //.Pipes {
 #endif
 
         public Provider<Vector2> ToVectors2() {
-            return Provider<Vector2>.Create((x, y) => new Vector2(x, y), _x, _y);
+            return Provider.Create((x, y) => new Vector2(x, y), _x, _y);
         }
 
         public Property<TFloat> X {

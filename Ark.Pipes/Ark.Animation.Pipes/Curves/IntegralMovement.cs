@@ -35,7 +35,7 @@ namespace Ark.Geometry.Curves {
             return (timer) => {
                 T state = initialState;
                 TFloat varValue = timer.Value;
-                return Provider<T>.Create((t) => {
+                return Provider.Create((t) => {
                     curve(state).MakeStep(ref state, ref varValue, ref t, out state);
                     varValue = t;
                     return state;
@@ -47,7 +47,7 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             return (deltas) => {
                 T state = initialState;
-                return Provider<T>.Create((dt) => curve(state).MakeStep(state, dt), deltas);
+                return Provider.Create((dt) => curve(state).MakeStep(state, dt), deltas);
             };
         }
 
@@ -58,7 +58,7 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOf<T, TFloat> {
             T state = initialState;
             TFloat time = timer.Value;
-            return Provider<T>.Create((newTime) => {
+            return Provider.Create((newTime) => {
                 curve(state, time).MakeStep(ref state, ref time, ref newTime, out state);
                 return state;
             }, timer);
@@ -72,7 +72,7 @@ namespace Ark.Geometry.Curves {
         public static Provider<T> Create<T, TDerivative>(Func<T, TDerivative> curve, T initialState, Provider<DeltaT> deltas)
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
-            return Provider<T>.Create((dt) => {
+            return Provider.Create((dt) => {
                 curve(state).MakeStep(ref state, ref dt, out state);
                 return state;
             }, deltas);
@@ -84,7 +84,7 @@ namespace Ark.Geometry.Curves {
 
         public static Provider<Vector2> Create(Func<Vector2, Vector2> curve, Vector2 initialState, Provider<DeltaT> deltas) {
             Vector2 state = initialState;
-            return Provider<Vector2>.Create((dt) => {
+            return Provider.Create((dt) => {
                 return state += curve(state) * dt;
             }, deltas);
         }
@@ -95,7 +95,7 @@ namespace Ark.Geometry.Curves {
 
         public static Provider<Vector3> Create(Func<Vector3, Vector3> curve, Vector3 initialState, Provider<DeltaT> deltas) {
             Vector3 state = initialState;
-            return Provider<Vector3>.Create((dt) => {
+            return Provider.Create((dt) => {
                 return state += curve(state) * dt;
             }, deltas);
         }

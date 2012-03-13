@@ -28,15 +28,15 @@ namespace Ark.Geometry {
     public static class Extensions_Pipes {
         #region 2D
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
-            return Provider<Vector2>.Create((v1, v2) => v1 + v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
 
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Vector2 v2) {
-            return Provider<Vector2>.Create((v1) => v1 + v2, v1s);
+            return Provider.Create((v1) => v1 + v2, v1s);
         }
 
         public static Provider<Vector2> Multiply(this Provider<Vector2> vs, TFloat multiplier) {
-            return Provider<Vector2>.Create((v) => v * multiplier, vs);
+            return Provider.Create((v) => v * multiplier, vs);
         }
 
         public static Provider<Vector2> Divide(this Provider<Vector2> vs, TFloat divider) {
@@ -44,19 +44,19 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector2> Negate(this Provider<Vector2> vs) {
-            return Provider<Vector2>.Create((v) => -v, vs);
+            return Provider.Create((v) => -v, vs);
         }
 
         public static Provider<Vector2> Subtract(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
-            return Provider<Vector2>.Create((v1, v2) => v1 - v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 - v2, v1s, v2s);
         }
 
         public static Provider<Vector2> Subtract(this Provider<Vector2> v1s, Vector2 v2) {
-            return Provider<Vector2>.Create((v1) => v1 - v2, v1s);
+            return Provider.Create((v1) => v1 - v2, v1s);
         }
 
         public static Provider<Vector2> Lerp(this Provider<Vector2> v1s, Provider<Vector2> v2s, Provider<TFloat> amounts) {
-            return Provider<Vector2>.Create((v1, v2, amount) => Vector2.Lerp(v1, v2, amount), v1s, v2s, amounts);
+            return Provider.Create((v1, v2, amount) => Vector2.Lerp(v1, v2, amount), v1s, v2s, amounts);
         }
 
         public static Vector2Components ToComponents(this Provider<Vector2> vectors) {
@@ -68,25 +68,25 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector3> ToVectors3XY(this Provider<Vector2> vectors) {
-            return Provider<Vector3>.Create((v) => new Vector3(v.X, v.Y, 0), vectors);
+            return Provider.Create((v) => new Vector3(v.X, v.Y, 0), vectors);
         }
 
         public static Provider<Vector3> ToVectors3XZ(this Provider<Vector2> vectors) {
-            return Provider<Vector3>.Create((v) => new Vector3(v.X, 0, v.Y), vectors);
+            return Provider.Create((v) => new Vector3(v.X, 0, v.Y), vectors);
         }
         #endregion
 
         #region 3D
         public static Provider<Vector3> Add(this Provider<Vector3> v1s, Provider<Vector3> v2s) {
-            return Provider<Vector3>.Create((v1, v2) => v1 + v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
 
         public static Provider<Vector3> Add(this Provider<Vector3> v1s, Vector3 v2) {
-            return Provider<Vector3>.Create((v1) => v1 + v2, v1s);
+            return Provider.Create((v1) => v1 + v2, v1s);
         }
 
         public static Provider<Vector3> Multiply(this Provider<Vector3> vs, TFloat multiplier) {
-            return Provider<Vector3>.Create((v) => v * multiplier, vs);
+            return Provider.Create((v) => v * multiplier, vs);
         }
 
         public static Provider<Vector3> Divide(this Provider<Vector3> vs, TFloat divider) {
@@ -94,19 +94,19 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector3> Negate(this Provider<Vector3> vs) {
-            return Provider<Vector3>.Create((v) => -v, vs);
+            return Provider.Create((v) => -v, vs);
         }
 
         public static Provider<Vector3> Subtract(this Provider<Vector3> v1s, Provider<Vector3> v2s) {
-            return Provider<Vector3>.Create((v1, v2) => v1 - v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 - v2, v1s, v2s);
         }
 
         public static Provider<Vector3> Subtract(this Provider<Vector3> v1s, Vector3 v2) {
-            return Provider<Vector3>.Create((v1) => v1 - v2, v1s);
+            return Provider.Create((v1) => v1 - v2, v1s);
         }
 
         public static Provider<Vector3> Lerp(this Provider<Vector3> v1s, Provider<Vector3> v2s, Provider<TFloat> amounts) {
-            return Provider<Vector3>.Create((v1, v2, amount) => Vector3.Lerp(v1, v2, amount), v1s, v2s, amounts);
+            return Provider.Create((v1, v2, amount) => Vector3.Lerp(v1, v2, amount), v1s, v2s, amounts);
         }
 
         public static Vector3Components ToComponents(this Provider<Vector3> vectors) {
@@ -118,11 +118,11 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector2> ToVectors2XY(this Provider<Vector3> vectors) {
-            return Provider<Vector2>.Create((v) => new Vector2(v.X, v.Y), vectors);
+            return Provider.Create((v) => new Vector2(v.X, v.Y), vectors);
         }
 
         public static Provider<Vector2> ToVectors2XZ(this Provider<Vector3> vectors) {
-            return Provider<Vector2>.Create((v) => new Vector2(v.X, v.Z), vectors);
+            return Provider.Create((v) => new Vector2(v.X, v.Z), vectors);
         }
         #endregion
     }
@@ -195,37 +195,37 @@ namespace Ark.Animation { //.Pipes
     public static class Extensions_Pipes {
         #region Timers
         public static Provider<TFloat> Add(this Provider<TFloat> v1s, Provider<TFloat> v2s) {
-            return Provider<TFloat>.Create((v1, v2) => v1 + v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
 
         public static Provider<TFloat> Add(this Provider<TFloat> v1s, TFloat v2) {
-            return Provider<TFloat>.Create((v1) => v1 + v2, v1s);
+            return Provider.Create((v1) => v1 + v2, v1s);
         }
 
         public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, Provider<TFloat> v2s) {
-            return Provider<TFloat>.Create((v1, v2) => v1 - v2, v1s, v2s);
+            return Provider.Create((v1, v2) => v1 - v2, v1s, v2s);
         }
 
         public static Provider<TFloat> Subtract(this Provider<TFloat> v1s, TFloat v2) {
-            return Provider<TFloat>.Create((v1) => v1 - v2, v1s);
+            return Provider.Create((v1) => v1 - v2, v1s);
         }
 
         public static Provider<TFloat> Accelerate(this Provider<TFloat> ts, TFloat multiplier) {
             TFloat t0 = ts.Value;
-            return Provider<TFloat>.Create((t) => t0 + (t - t0) * multiplier, ts);
+            return Provider.Create((t) => t0 + (t - t0) * multiplier, ts);
         }
 
         public static Provider<TFloat> Reset(this Provider<TFloat> timer) {
             TFloat t0 = timer.Value;
-            return Provider<TFloat>.Create((t) => t - t0, timer);
+            return Provider.Create((t) => t - t0, timer);
         }
 
         public static Provider<DeltaT> ToDeltaTs(this Provider<TFloat> timer) {
             TFloat time = timer.Value;
-            return Provider<DeltaT>.Create((newTime) => {
+            return Provider.Create<TFloat, DeltaT>((newTime) => {
                 TFloat oldTime = time;
                 time = newTime;
-                return newTime - oldTime;
+                return (DeltaT)(newTime - oldTime);
             }, timer);
         }
         #endregion
@@ -233,7 +233,7 @@ namespace Ark.Animation { //.Pipes
         public static Provider<OrientedPosition2> AddOrientations(this Provider<Vector2> positions) {
             Vector2 position = positions.Value;
             TFloat orientation = 0;
-            return Provider<OrientedPosition2>.Create((newPosition) => {
+            return Provider.Create((newPosition) => {
                 Vector2 delta = newPosition - position;
                 position = newPosition;
                 if (!delta.IsZero()) {
