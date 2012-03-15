@@ -1,4 +1,14 @@
 ﻿namespace Ark.Pipes {
+    public static sealed class Variable {
+        public Variable<T> Create<T>() {
+            return new Variable<T>();
+        }
+
+        public Variable<T> Create<T>(T value) {
+            return new Variable<T>(value);
+        }
+    }
+
     public sealed class Variable<T> : ReadableVariable<T>, IIn<T> {
         public Variable() { }
 
