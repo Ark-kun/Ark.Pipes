@@ -36,7 +36,9 @@ namespace Ark.Geometry.Curves {
                 T state = initialState;
                 TFloat varValue = timer.Value;
                 return Provider.Create((t) => {
-                    curve(state).MakeStep(ref state, ref varValue, ref t, out state);
+                    T newState;
+                    curve(state).MakeStep(ref state, ref varValue, ref t, out newState); //State is cleaned when passed as out. TODO: investigate
+                    state = newState;
                     varValue = t;
                     return state;
                 }, timer);
@@ -59,7 +61,9 @@ namespace Ark.Geometry.Curves {
             T state = initialState;
             TFloat time = timer.Value;
             return Provider.Create((newTime) => {
-                curve(state, time).MakeStep(ref state, ref time, ref newTime, out state);
+                T newState;
+                curve(state, time).MakeStep(ref state, ref time, ref newTime, out newState);
+                state = newState;
                 return state;
             }, timer);
         }
@@ -73,7 +77,9 @@ namespace Ark.Geometry.Curves {
             where TDerivative : IIsDerivativeOfEx<T, DeltaT> {
             T state = initialState;
             return Provider.Create((dt) => {
-                curve(state).MakeStep(ref state, ref dt, out state);
+                T newState;
+                curve(state).MakeStep(ref state, ref dt, out newState);
+                state = newState;
                 return state;
             }, deltas);
         }
