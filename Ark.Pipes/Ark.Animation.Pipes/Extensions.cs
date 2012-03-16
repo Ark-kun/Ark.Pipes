@@ -27,6 +27,22 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 namespace Ark.Geometry {
     public static class Extensions_Pipes {
         #region 2D
+        public static Provider<TFloat> Length(this Provider<Vector2> vectors) {
+            return Provider.Create((v) => v.Length(), vectors);
+        }
+
+        public static Provider<TFloat> LengthSquared(this Provider<Vector2> vectors) {
+            return Provider.Create((v) => v.LengthSquared(), vectors);
+        }
+
+        public static Provider<TFloat> DistanceTo(this Provider<Vector2> vectors1, Provider<Vector2> vectors2) {
+            return Provider.Create((v1, v2) => Vector2.Distance(v1, v2), vectors1, vectors2);
+        }
+
+        public static Provider<TFloat> DistanceToSquared(this Provider<Vector2> vectors1, Provider<Vector2> vectors2) {
+            return Provider.Create((v1, v2) => Vector2.DistanceSquared(v1, v2), vectors1, vectors2);
+        }
+
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
             return Provider.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
@@ -55,6 +71,42 @@ namespace Ark.Geometry {
             return Provider.Create((v1) => v1 - v2, v1s);
         }
 
+        public static Provider<Vector2> Scale(this Provider<Vector2> vectors, TFloat scaleFactor) {
+            return Provider.Create((v) => v * scaleFactor, vectors);
+        }
+
+        public static Provider<Vector2> Scale(this Provider<Vector2> vectors, Provider<TFloat> scaleFactors) {
+            return Provider.Create((v, scaleFactor) => v * scaleFactor, vectors, scaleFactors);
+        }
+
+        public static Provider<Vector2> Scale(this Provider<Vector2> vectors, Vector2 scale) {
+            return Provider.Create((v) => Vector2.Multiply(v, scale), vectors);
+        }
+
+        public static Provider<Vector2> Scale(this Provider<Vector2> vectors, Provider<Vector2> scales) {
+            return Provider.Create((v, scale) => Vector2.Multiply(v, scale), vectors, scales);
+        }
+
+        public static Provider<Vector2> Normalize(this Provider<Vector2> vectors) {
+            return Provider.Create((v) => Vector2.Normalize(v), vectors);
+        }
+
+        public static Provider<Vector2> Transform(this Provider<Vector2> vectors, Quaternion rotation) {
+            return Provider.Create((v) => Vector2.Transform(v, rotation), vectors);
+        }
+
+        public static Provider<Vector2> Transform(this Provider<Vector2> vectors, Matrix matrix) {
+            return Provider.Create((v) => Vector2.Transform(v, matrix), vectors);
+        }
+
+        public static Provider<Vector2> Transform(this Provider<Vector2> vectors, Provider<Quaternion> rotations) {
+            return Provider.Create((v, rotation) => Vector2.Transform(v, rotation), vectors, rotations);
+        }
+
+        public static Provider<Vector2> Transform(this Provider<Vector2> vectors, Provider<Matrix> matrices) {
+            return Provider.Create((v, matrix) => Vector2.Transform(v, matrix), vectors, matrices);
+        }
+
         public static Provider<Vector2> Lerp(this Provider<Vector2> v1s, Provider<Vector2> v2s, Provider<TFloat> amounts) {
             return Provider.Create((v1, v2, amount) => Vector2.Lerp(v1, v2, amount), v1s, v2s, amounts);
         }
@@ -77,6 +129,22 @@ namespace Ark.Geometry {
         #endregion
 
         #region 3D
+        public static Provider<TFloat> Length(this Provider<Vector3> vectors) {
+            return Provider.Create((v) => v.Length(), vectors);
+        }
+
+        public static Provider<TFloat> LengthSquared(this Provider<Vector3> vectors) {
+            return Provider.Create((v) => v.LengthSquared(), vectors);
+        }
+
+        public static Provider<TFloat> DistanceTo(this Provider<Vector3> vectors1, Provider<Vector3> vectors2) {
+            return Provider.Create((v1, v2) => Vector3.Distance(v1, v2), vectors1, vectors2);
+        }
+
+        public static Provider<TFloat> DistanceToSquared(this Provider<Vector3> vectors1, Provider<Vector3> vectors2) {
+            return Provider.Create((v1, v2) => Vector3.DistanceSquared(v1, v2), vectors1, vectors2);
+        }
+
         public static Provider<Vector3> Add(this Provider<Vector3> v1s, Provider<Vector3> v2s) {
             return Provider.Create((v1, v2) => v1 + v2, v1s, v2s);
         }
@@ -103,6 +171,42 @@ namespace Ark.Geometry {
 
         public static Provider<Vector3> Subtract(this Provider<Vector3> v1s, Vector3 v2) {
             return Provider.Create((v1) => v1 - v2, v1s);
+        }
+
+        public static Provider<Vector3> Scale(this Provider<Vector3> vectors, TFloat scaleFactor) {
+            return Provider.Create((v) => v * scaleFactor, vectors);
+        }
+
+        public static Provider<Vector3> Scale(this Provider<Vector3> vectors, Provider<TFloat> scaleFactors) {
+            return Provider.Create((v, scaleFactor) => v * scaleFactor, vectors, scaleFactors);
+        }
+
+        public static Provider<Vector3> Scale(this Provider<Vector3> vectors, Vector3 scale) {
+            return Provider.Create((v) => Vector3.Multiply(v, scale), vectors);
+        }
+
+        public static Provider<Vector3> Scale(this Provider<Vector3> vectors, Provider<Vector3> scales) {
+            return Provider.Create((v, scale) => Vector3.Multiply(v, scale), vectors, scales);
+        }
+
+        public static Provider<Vector3> Normalize(this Provider<Vector3> vectors) {
+            return Provider.Create((v) => Vector3.Normalize(v), vectors);
+        }
+
+        public static Provider<Vector3> Transform(this Provider<Vector3> vectors, Quaternion rotation) {
+            return Provider.Create((v) => Vector3.Transform(v, rotation), vectors);
+        }
+
+        public static Provider<Vector3> Transform(this Provider<Vector3> vectors, Matrix matrix) {
+            return Provider.Create((v) => Vector3.Transform(v, matrix), vectors);
+        }
+
+        public static Provider<Vector3> Transform(this Provider<Vector3> vectors, Provider<Quaternion> rotations) {
+            return Provider.Create((v, rotation) => Vector3.Transform(v, rotation), vectors, rotations);
+        }
+
+        public static Provider<Vector3> Transform(this Provider<Vector3> vectors, Provider<Matrix> matrices) {
+            return Provider.Create((v, matrix) => Vector3.Transform(v, matrix), vectors, matrices);
         }
 
         public static Provider<Vector3> Lerp(this Provider<Vector3> v1s, Provider<Vector3> v2s, Provider<TFloat> amounts) {
@@ -229,12 +333,12 @@ namespace Ark.Animation { //.Pipes
             }, timer);
         }
 
-        public static Provider<Tuple<float, DeltaT>> AddDeltaTs(this Provider<TFloat> timer) {
+        public static Provider<Tuple<TFloat, DeltaT>> AddDeltaTs(this Provider<TFloat> timer) {
             TFloat time = timer.Value;
             return Provider.Create((newTime) => {
                 TFloat oldTime = time;
                 time = newTime;
-                return new Tuple<float, DeltaT>(newTime, newTime - oldTime);
+                return new Tuple<TFloat, DeltaT>(newTime, newTime - oldTime);
             }, timer);
         }
         #endregion
