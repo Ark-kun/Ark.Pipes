@@ -5,11 +5,29 @@ using System.Windows.Media.Media3D;
 using Ark.Geometry;
 using Ark.Pipes;
 
+#if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
+#else
+using TFloat = System.Single;
+#endif
+
+#if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
+using Ark.Geometry.Primitives.Double;
+#elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
+using Ark.Geometry.Primitives.Single;
+#elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
+using Microsoft.Xna.Framework;
+#elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
+using System.Windows;
+using System.Windows.Media.Media3D;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
+#else
+#error Bad geometry framework
+#endif
 
 namespace Ark.Geometry { //.Pipes.Wpf {
+#if FRAMEWORK_WPF
     public static class Extensions_Wpf {
         public static Vector2 ToVector2(this Point vector) {
             return new Vector2((TFloat)vector.X, (TFloat)vector.Y);
@@ -20,11 +38,11 @@ namespace Ark.Geometry { //.Pipes.Wpf {
         }
 
         public static Provider<Vector2> ToVectors2(this Provider<Point> vectors) {
-            return Provider<Vector2>.Create((v) => v.ToVector2(), vectors);
+            return Provider.Create((v) => v.ToVector2(), vectors);
         }
 
         public static Provider<Vector3> ToVectors3(this Provider<Vector3D> vectors) {
-            return Provider<Vector3>.Create((v) => v.ToVector3(), vectors);
+            return Provider.Create((v) => v.ToVector3(), vectors);
         }
 
         public static Vector2Components ToVector2Components(this Provider<Point> vectors) {
@@ -35,6 +53,7 @@ namespace Ark.Geometry { //.Pipes.Wpf {
             return vectors.ToVectors3().ToComponents();
         }
     }
+#endif
 }
 
 namespace Ark.Wpf { //.Pipes {
