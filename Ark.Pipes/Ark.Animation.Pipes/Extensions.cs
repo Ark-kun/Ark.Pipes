@@ -222,10 +222,19 @@ namespace Ark.Animation { //.Pipes
 
         public static Provider<DeltaT> ToDeltaTs(this Provider<TFloat> timer) {
             TFloat time = timer.Value;
-            return Provider.Create<TFloat, DeltaT>((newTime) => {
+            return Provider.Create((newTime) => {
                 TFloat oldTime = time;
                 time = newTime;
                 return (DeltaT)(newTime - oldTime);
+            }, timer);
+        }
+
+        public static Provider<Tuple<float, DeltaT>> AddDeltaTs(this Provider<TFloat> timer) {
+            TFloat time = timer.Value;
+            return Provider.Create((newTime) => {
+                TFloat oldTime = time;
+                time = newTime;
+                return new Tuple<float, DeltaT>(newTime, newTime - oldTime);
             }, timer);
         }
         #endregion
