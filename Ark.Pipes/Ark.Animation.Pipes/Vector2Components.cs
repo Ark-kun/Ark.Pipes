@@ -42,8 +42,8 @@ namespace Ark.Geometry { //.Pipes {
 
 #if !PORTABLE
         public static Vector2Components From<TPoint>(Provider<TPoint> point) {
-            var x = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).X), point);
-            var y = Provider<TFloat>.Create(p => (TFloat)(((dynamic)p).Y), point);
+            var x = Provider.Create(p => (TFloat)(((dynamic)p).X), point);
+            var y = Provider.Create(p => (TFloat)(((dynamic)p).Y), point);
             return new Vector2Components(x, y);
         }
 #endif
