@@ -286,6 +286,20 @@ namespace Ark.Geometry {
             TFloat cos = (TFloat)Math.Cos(angle);
             return new Vector2(v.X * cos - v.Y * sin, v.X * sin + v.Y * cos);
         }
+
+        public static Quaternion MultiplyAngle(this Quaternion q, TFloat multiplier) {
+            TFloat oldCos = q.W;
+            TFloat oldSin = (TFloat)Math.Sqrt(q.X * q.X + q.Y * q.Y + q.Z * q.Z);
+            if (oldSin == 0) {
+                return Quaternion.Identity;
+            }
+            TFloat oldAngle = (TFloat)Math.Atan2(oldSin, oldCos);
+            TFloat newAngle = oldAngle * multiplier;
+            TFloat newCos = (TFloat)Math.Cos(newAngle);
+            TFloat newSin = (TFloat)Math.Sin(newAngle);
+            TFloat k = newSin / oldSin;
+            return new Quaternion(k * q.X, k * q.Y, k * q.Z, newCos);
+        }
     }
 }
 
