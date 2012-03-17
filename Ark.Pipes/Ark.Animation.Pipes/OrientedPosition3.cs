@@ -1,4 +1,5 @@
 ﻿using Ark.Abstract;
+using Ark.Geometry;
 using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
@@ -59,9 +60,9 @@ namespace Ark.Animation { //.Pipes {
 
         public void MakeStep(ref OrientedPosition3 state, ref DeltaT deltaArg, out OrientedPosition3 result) {
             StaticVector3.Multiply(ref Position, deltaArg, out result.Position);
-            StaticVector3.Add(ref result.Position, ref state.Position, out result.Position);
-            StaticQuaternion.Multiply(ref Orientation, deltaArg, out result.Orientation);
-            StaticQuaternion.Add(ref result.Orientation, ref state.Orientation, out result.Orientation);
+            StaticVector3.Add(ref result.Position, ref state.Position, out result.Position); //TODO: investigate out parameters
+            Quaternion deltaOrientation = Orientation.MultiplyAngle(deltaArg);
+            StaticQuaternion.Multiply(ref state.Orientation, ref deltaOrientation, out result.Orientation);
         }
 
         public OrientedPosition3 Plus(OrientedPosition3 value) {
@@ -82,16 +83,16 @@ namespace Ark.Animation { //.Pipes {
 
         public static void Add(ref OrientedPosition3 value1, ref OrientedPosition3 value2, out OrientedPosition3 result) {
             StaticVector3.Add(ref value1.Position, ref value2.Position, out result.Position);
-            StaticQuaternion.Add(ref value1.Orientation, ref value2.Orientation, out result.Orientation);
+            StaticQuaternion.Multiply(ref value1.Orientation, ref value2.Orientation, out result.Orientation);
         }
 
         public static void Multiply(ref OrientedPosition3 value, DeltaT multiplier, out OrientedPosition3 result) {
             StaticVector3.Multiply(ref value.Position, multiplier, out result.Position);
-            StaticQuaternion.Multiply(ref value.Orientation, multiplier, out result.Orientation);
+            result.Orientation = value.Orientation.MultiplyAngle(multiplier);
         }
 
         public static OrientedPosition3 operator *(OrientedPosition3 op, DeltaT dt) {
-            return new OrientedPosition3(op.Position * dt, StaticQuaternion.Multiply(op.Orientation, dt));
+            return new OrientedPosition3(op.Position * dt, op.Orientation.MultiplyAngle(dt));
         }
 
         public static OrientedPosition3 operator +(OrientedPosition3 op1, OrientedPosition3 op2) {
