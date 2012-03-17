@@ -53,7 +53,7 @@ namespace Ark.Geometry { //.Pipes {
 #endif
 
         public Provider<Vector3> ToVectors3() {
-            return Provider.Create((x, y, z) => new Vector3(x, y, z), _x, _x, _x);
+            return Provider.Create((x, y, z) => new Vector3(x, y, z), _x, _y, _z);
         }
 
         public Property<TFloat> X {
