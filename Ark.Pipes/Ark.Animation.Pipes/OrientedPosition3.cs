@@ -9,15 +9,22 @@ using TFloat = System.Single;
 
 #if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
 using Ark.Geometry.Primitives.Double;
+using StaticVector3 = Ark.Geometry.Primitives.Double.Vector3;
+using StaticQuaternion = Ark.Geometry.Primitives.Double.Quaternion;
 #elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
 using Ark.Geometry.Primitives.Single;
+using StaticVector3 = Ark.Geometry.Primitives.Single.Vector3;
+using StaticQuaternion = Ark.Geometry.Primitives.Single.Quaternion;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
+using StaticVector2 = Microsoft.Xna.Framework.Vector2;
+using StaticVector3 = Microsoft.Xna.Framework.Vector3;
+using StaticQuaternion = Microsoft.Xna.Framework.Quaternion;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
-using System.Windows;
 using System.Windows.Media.Media3D;
-using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
+using StaticVector3 = Ark.Geometry.XamlVector3;
+using StaticQuaternion = Ark.Geometry.XamlQuaternion;
 #else
 #error Bad geometry framework
 #endif
@@ -51,10 +58,10 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public void MakeStep(ref OrientedPosition3 state, ref DeltaT deltaArg, out OrientedPosition3 result) {
-            Vector3.Multiply(ref Position, deltaArg, out result.Position);
-            Vector3.Add(ref result.Position, ref state.Position, out result.Position);
-            Quaternion.Multiply(ref Orientation, deltaArg, out result.Orientation);
-            Quaternion.Add(ref result.Orientation, ref state.Orientation, out result.Orientation);
+            StaticVector3.Multiply(ref Position, deltaArg, out result.Position);
+            StaticVector3.Add(ref result.Position, ref state.Position, out result.Position);
+            StaticQuaternion.Multiply(ref Orientation, deltaArg, out result.Orientation);
+            StaticQuaternion.Add(ref result.Orientation, ref state.Orientation, out result.Orientation);
         }
 
         public OrientedPosition3 Plus(OrientedPosition3 value) {
@@ -74,17 +81,17 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public static void Add(ref OrientedPosition3 value1, ref OrientedPosition3 value2, out OrientedPosition3 result) {
-            Vector3.Add(ref value1.Position, ref value2.Position, out result.Position);
-            Quaternion.Add(ref value1.Orientation, ref value2.Orientation, out result.Orientation);
+            StaticVector3.Add(ref value1.Position, ref value2.Position, out result.Position);
+            StaticQuaternion.Add(ref value1.Orientation, ref value2.Orientation, out result.Orientation);
         }
 
         public static void Multiply(ref OrientedPosition3 value, DeltaT multiplier, out OrientedPosition3 result) {
-            Vector3.Multiply(ref value.Position, multiplier, out result.Position);
-            Quaternion.Multiply(ref value.Orientation, multiplier, out result.Orientation);
+            StaticVector3.Multiply(ref value.Position, multiplier, out result.Position);
+            StaticQuaternion.Multiply(ref value.Orientation, multiplier, out result.Orientation);
         }
 
         public static OrientedPosition3 operator *(OrientedPosition3 op, DeltaT dt) {
-            return new OrientedPosition3(op.Position * dt, op.Orientation * dt);
+            return new OrientedPosition3(op.Position * dt, StaticQuaternion.Multiply(op.Orientation, dt));
         }
 
         public static OrientedPosition3 operator +(OrientedPosition3 op1, OrientedPosition3 op2) {

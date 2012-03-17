@@ -9,16 +9,17 @@ using TFloat = System.Single;
 
 #if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
 using Ark.Geometry.Primitives.Double;
+using StaticVector2 = Ark.Geometry.Primitives.Double.Vector2;
 #elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
 using Ark.Geometry.Primitives.Single;
+using StaticVector2 = Ark.Geometry.Primitives.Single.Vector2;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
-
+using StaticVector2 = Microsoft.Xna.Framework.Vector2;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows;
-using System.Windows.Media.Media3D;
 using Vector2 = System.Windows.Vector;
-using Vector3 = System.Windows.Media.Media3D.Vector3D;
+using StaticVector2 = Ark.Geometry.XamlVector2;
 #else
 #error Bad geometry framework
 #endif
@@ -52,8 +53,8 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public void MakeStep(ref OrientedPosition2 state, ref DeltaT deltaArg, out OrientedPosition2 result) {
-            Vector2.Multiply(ref Position, deltaArg, out result.Position);
-            Vector2.Add(ref result.Position, ref state.Position, out result.Position);
+            StaticVector2.Multiply(ref Position, deltaArg, out result.Position);
+            StaticVector2.Add(ref result.Position, ref state.Position, out result.Position);
             result.Orientation = Orientation + state.Orientation;
         }
 
@@ -74,12 +75,12 @@ namespace Ark.Animation { //.Pipes {
         }
 
         public static void Add(ref OrientedPosition2 value1, ref OrientedPosition2 value2, out OrientedPosition2 result) {
-            Vector2.Add(ref value1.Position, ref value2.Position, out result.Position);
+            StaticVector2.Add(ref value1.Position, ref value2.Position, out result.Position);
             result.Orientation = value1.Orientation + value2.Orientation;
         }
 
         public static void Multiply(ref OrientedPosition2 value, DeltaT multiplier, out OrientedPosition2 result) {
-            Vector2.Multiply(ref value.Position, multiplier, out result.Position);
+            StaticVector2.Multiply(ref value.Position, multiplier, out result.Position);
             result.Orientation = value.Orientation * multiplier;
         }
 

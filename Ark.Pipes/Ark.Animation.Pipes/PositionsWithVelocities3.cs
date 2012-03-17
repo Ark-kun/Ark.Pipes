@@ -8,15 +8,17 @@ using TFloat = System.Single;
 
 #if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
 using Ark.Geometry.Primitives.Double;
+using StaticVector3 = Ark.Geometry.Primitives.Double.Vector3;
 #elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
 using Ark.Geometry.Primitives.Single;
+using StaticVector3 = Ark.Geometry.Primitives.Single.Vector3;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
+using StaticVector3 = Microsoft.Xna.Framework.Vector3;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
-using System.Windows;
 using System.Windows.Media.Media3D;
-using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
+using StaticVector3 = Ark.Geometry.XamlVector3;
 #else
 #error Bad geometry framework
 #endif
@@ -50,10 +52,10 @@ namespace Ark.Animation {
         }
 
         public void MakeStep(ref PositionWithVelocity3 state, ref DeltaT deltaArg, out PositionWithVelocity3 result) {
-            Vector3.Multiply(ref Position, deltaArg, out result.Position);
-            Vector3.Add(ref result.Position, ref state.Position, out result.Position);
-            Vector3.Multiply(ref Velocity, deltaArg, out result.Velocity);
-            Vector3.Add(ref result.Velocity, ref state.Velocity, out result.Velocity);
+            StaticVector3.Multiply(ref Position, deltaArg, out result.Position);
+            StaticVector3.Add(ref result.Position, ref state.Position, out result.Position);
+            StaticVector3.Multiply(ref Velocity, deltaArg, out result.Velocity);
+            StaticVector3.Add(ref result.Velocity, ref state.Velocity, out result.Velocity);
         }
 
         public PositionWithVelocity3 Plus(PositionWithVelocity3 value) {
@@ -73,13 +75,13 @@ namespace Ark.Animation {
         }
 
         public static void Add(ref PositionWithVelocity3 value1, ref PositionWithVelocity3 value2, out PositionWithVelocity3 result) {
-            Vector3.Add(ref value1.Position, ref value2.Position, out result.Position);
-            Vector3.Add(ref value1.Velocity, ref value2.Velocity, out result.Velocity);
+            StaticVector3.Add(ref value1.Position, ref value2.Position, out result.Position);
+            StaticVector3.Add(ref value1.Velocity, ref value2.Velocity, out result.Velocity);
         }
 
         public static void Multiply(ref PositionWithVelocity3 value, DeltaT multiplier, out PositionWithVelocity3 result) {
-            Vector3.Multiply(ref value.Position, multiplier, out result.Position);
-            Vector3.Multiply(ref value.Velocity, multiplier, out result.Velocity);
+            StaticVector3.Multiply(ref value.Position, multiplier, out result.Position);
+            StaticVector3.Multiply(ref value.Velocity, multiplier, out result.Velocity);
         }
 
         public static PositionWithVelocity3 operator *(PositionWithVelocity3 op, DeltaT dt) {

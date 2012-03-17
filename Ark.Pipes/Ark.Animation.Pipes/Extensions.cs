@@ -11,15 +11,23 @@ using TFloat = System.Single;
 
 #if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
 using Ark.Geometry.Primitives.Double;
+using StaticVector2 = Ark.Geometry.Primitives.Double.Vector2;
+using StaticVector3 = Ark.Geometry.Primitives.Double.Vector3;
 #elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
 using Ark.Geometry.Primitives.Single;
+using StaticVector2 = Ark.Geometry.Primitives.Single.Vector2;
+using StaticVector3 = Ark.Geometry.Primitives.Single.Vector3;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
+using StaticVector2 = Microsoft.Xna.Framework.Vector2;
+using StaticVector3 = Microsoft.Xna.Framework.Vector3;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows;
 using System.Windows.Media.Media3D;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
+using StaticVector2 = Ark.Geometry.XamlVector2;
+using StaticVector3 = Ark.Geometry.XamlVector3;
 #else
 #error Bad geometry framework
 #endif
@@ -36,11 +44,11 @@ namespace Ark.Geometry {
         }
 
         public static Provider<TFloat> DistanceTo(this Provider<Vector2> vectors1, Provider<Vector2> vectors2) {
-            return Provider.Create((v1, v2) => Vector2.Distance(v1, v2), vectors1, vectors2);
+            return Provider.Create((v1, v2) => StaticVector2.Distance(v1, v2), vectors1, vectors2);
         }
 
         public static Provider<TFloat> DistanceToSquared(this Provider<Vector2> vectors1, Provider<Vector2> vectors2) {
-            return Provider.Create((v1, v2) => Vector2.DistanceSquared(v1, v2), vectors1, vectors2);
+            return Provider.Create((v1, v2) => StaticVector2.DistanceSquared(v1, v2), vectors1, vectors2);
         }
 
         public static Provider<Vector2> Add(this Provider<Vector2> v1s, Provider<Vector2> v2s) {
@@ -80,17 +88,18 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector2> Scale(this Provider<Vector2> vectors, Vector2 scale) {
-            return Provider.Create((v) => Vector2.Multiply(v, scale), vectors);
+            return Provider.Create((v) => StaticVector2.Multiply(v, scale), vectors);
         }
 
         public static Provider<Vector2> Scale(this Provider<Vector2> vectors, Provider<Vector2> scales) {
-            return Provider.Create((v, scale) => Vector2.Multiply(v, scale), vectors, scales);
+            return Provider.Create((v, scale) => StaticVector2.Multiply(v, scale), vectors, scales);
         }
 
         public static Provider<Vector2> Normalize(this Provider<Vector2> vectors) {
-            return Provider.Create((v) => Vector2.Normalize(v), vectors);
+            return Provider.Create((v) => StaticVector2.Normalize(v), vectors);
         }
 
+#if FRAMEWORK_ARK || FRAMEWORK_XNA
         public static Provider<Vector2> Transform(this Provider<Vector2> vectors, Quaternion rotation) {
             return Provider.Create((v) => Vector2.Transform(v, rotation), vectors);
         }
@@ -110,7 +119,7 @@ namespace Ark.Geometry {
         public static Provider<Vector2> Lerp(this Provider<Vector2> v1s, Provider<Vector2> v2s, Provider<TFloat> amounts) {
             return Provider.Create((v1, v2, amount) => Vector2.Lerp(v1, v2, amount), v1s, v2s, amounts);
         }
-
+#endif
         public static Vector2Components ToComponents(this Provider<Vector2> vectors) {
             return new Vector2Components(vectors);
         }
@@ -138,11 +147,11 @@ namespace Ark.Geometry {
         }
 
         public static Provider<TFloat> DistanceTo(this Provider<Vector3> vectors1, Provider<Vector3> vectors2) {
-            return Provider.Create((v1, v2) => Vector3.Distance(v1, v2), vectors1, vectors2);
+            return Provider.Create((v1, v2) => StaticVector3.Distance(v1, v2), vectors1, vectors2);
         }
 
         public static Provider<TFloat> DistanceToSquared(this Provider<Vector3> vectors1, Provider<Vector3> vectors2) {
-            return Provider.Create((v1, v2) => Vector3.DistanceSquared(v1, v2), vectors1, vectors2);
+            return Provider.Create((v1, v2) => StaticVector3.DistanceSquared(v1, v2), vectors1, vectors2);
         }
 
         public static Provider<Vector3> Add(this Provider<Vector3> v1s, Provider<Vector3> v2s) {
@@ -182,17 +191,18 @@ namespace Ark.Geometry {
         }
 
         public static Provider<Vector3> Scale(this Provider<Vector3> vectors, Vector3 scale) {
-            return Provider.Create((v) => Vector3.Multiply(v, scale), vectors);
+            return Provider.Create((v) => StaticVector3.Multiply(v, scale), vectors);
         }
 
         public static Provider<Vector3> Scale(this Provider<Vector3> vectors, Provider<Vector3> scales) {
-            return Provider.Create((v, scale) => Vector3.Multiply(v, scale), vectors, scales);
+            return Provider.Create((v, scale) => StaticVector3.Multiply(v, scale), vectors, scales);
         }
 
         public static Provider<Vector3> Normalize(this Provider<Vector3> vectors) {
-            return Provider.Create((v) => Vector3.Normalize(v), vectors);
+            return Provider.Create((v) => StaticVector3.Normalize(v), vectors);
         }
 
+#if FRAMEWORK_ARK || FRAMEWORK_XNA
         public static Provider<Vector3> Transform(this Provider<Vector3> vectors, Quaternion rotation) {
             return Provider.Create((v) => Vector3.Transform(v, rotation), vectors);
         }
@@ -212,6 +222,7 @@ namespace Ark.Geometry {
         public static Provider<Vector3> Lerp(this Provider<Vector3> v1s, Provider<Vector3> v2s, Provider<TFloat> amounts) {
             return Provider.Create((v1, v2, amount) => Vector3.Lerp(v1, v2, amount), v1s, v2s, amounts);
         }
+#endif
 
         public static Vector3Components ToComponents(this Provider<Vector3> vectors) {
             return new Vector3Components(vectors);
@@ -242,23 +253,6 @@ namespace Ark.Geometry {
             return vector.X == 0 && vector.Y == 0 && vector.Z == 0;
         }
 
-#if FRAMEWORK_WPF
-        public static TFloat Length(this Vector2 vector) {
-            return vector.Length;
-        }
-
-        public static TFloat Length(this Vector3 vector) {
-            return vector.Length;
-        }
-
-        public static TFloat LengthSquared(this Vector2 vector) {
-            return vector.LengthSquared;
-        }
-
-        public static TFloat LengthSquared(this Vector3 vector) {
-            return vector.LengthSquared;
-        }
-#endif
         public static Vector2 ToVector2(this Vector3 v) {
             return new Vector2(v.X, v.Y);
         }
