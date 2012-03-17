@@ -130,22 +130,6 @@ namespace Ark.Geometry {
     }
 
     public static class XamlQuaternion {
-        public static Quaternion Add(Quaternion quaternion1, Quaternion quaternion2) {
-            return Quaternion.Add(quaternion1, quaternion2);
-        }
-
-        public static void Add(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result) {
-            result = Quaternion.Add(quaternion1, quaternion2);
-        }
-
-        public static Quaternion Multiply(Quaternion quaternion1, TFloat scaleFactor) {
-            return new Quaternion(quaternion1.Axis, quaternion1.Angle * scaleFactor);
-        }
-
-        public static void Multiply(ref Quaternion quaternion1, TFloat scaleFactor, out Quaternion result) {
-            result = new Quaternion(quaternion1.Axis, quaternion1.Angle * scaleFactor);
-        }
-
         public static Quaternion Multiply(Quaternion quaternion1, Quaternion quaternion2) {
             return Quaternion.Multiply(quaternion1, quaternion2);
         }
