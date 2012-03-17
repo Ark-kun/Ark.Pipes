@@ -69,7 +69,7 @@ namespace Ark.Geometry {
         }
 
         public static TFloat DistanceSquared(Vector2 vector1, Vector2 vector2) {
-            return (vector2 - vector1).LengthSquared;            
+            return (vector2 - vector1).LengthSquared;
         }
 
         public static TFloat Cross(Vector2 vector1, Vector2 vector2) {
@@ -130,6 +130,9 @@ namespace Ark.Geometry {
     }
 
     public static class XamlQuaternion {
+        public static Quaternion CreateFromAxisAngle(Vector3 axis, TFloat angle) {
+            return new Quaternion(axis, angle * 180 / Math.PI);
+        }
         public static Quaternion Multiply(Quaternion quaternion1, Quaternion quaternion2) {
             return Quaternion.Multiply(quaternion1, quaternion2);
         }
