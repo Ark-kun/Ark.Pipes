@@ -21,8 +21,8 @@ using StaticQuaternion = Microsoft.Xna.Framework.Quaternion;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows.Media.Media3D;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
-using StaticVector3 = Ark.Geometry.XamlVector3;
-using StaticQuaternion = Ark.Geometry.XamlQuaternion;
+using StaticVector3 = Ark.Geometry.Primitives.XamlVector3;
+using StaticQuaternion = Ark.Geometry.Primitives.XamlQuaternion;
 #else
 #error Bad geometry framework
 #endif

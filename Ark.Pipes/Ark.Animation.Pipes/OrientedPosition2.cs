@@ -19,7 +19,7 @@ using StaticVector2 = Microsoft.Xna.Framework.Vector2;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows;
 using Vector2 = System.Windows.Vector;
-using StaticVector2 = Ark.Geometry.XamlVector2;
+using StaticVector2 = Ark.Geometry.Primitives.XamlVector2;
 #else
 #error Bad geometry framework
 #endif

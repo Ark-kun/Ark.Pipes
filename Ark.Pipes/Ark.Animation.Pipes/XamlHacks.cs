@@ -26,7 +26,7 @@ using Matrix3 = System.Windows.Media.Media3D.Matrix3D;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Geometry {
+namespace Ark.Geometry.Primitives {
 #if FRAMEWORK_WPF
     public static class XamlVector2 {
         public static TFloat Length(this Vector2 vector) {
@@ -140,6 +140,9 @@ namespace Ark.Geometry {
         public static void Multiply(ref Quaternion quaternion1, ref Quaternion quaternion2, out Quaternion result) {
             result = Quaternion.Multiply(quaternion1, quaternion2);
         }
+    }
+
+    public static class XamlMatrix {
     }
 #endif
 }

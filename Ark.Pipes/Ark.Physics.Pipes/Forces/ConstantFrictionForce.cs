@@ -15,6 +15,7 @@ using Microsoft.Xna.Framework;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
 using System.Windows;
 using System.Windows.Media.Media3D;
+using Ark.Geometry.Primitives;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
 #else
