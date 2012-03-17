@@ -23,9 +23,9 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 
 namespace Ark.Geometry { //.Pipes {
     public class Vector3Components {
-        Property<TFloat> _x;
-        Property<TFloat> _y;
-        Property<TFloat> _z;
+        Provider<TFloat> _x;
+        Provider<TFloat> _y;
+        Provider<TFloat> _z;
 
         public Vector3Components()
             : this(Constant<TFloat>.Default, Constant<TFloat>.Default, Constant<TFloat>.Default) {
@@ -56,19 +56,16 @@ namespace Ark.Geometry { //.Pipes {
             return Provider.Create((x, y, z) => new Vector3(x, y, z), _x, _y, _z);
         }
 
-        public Property<TFloat> X {
+        public Provider<TFloat> X {
             get { return _x; }
-            set { _x.Provider = value.Provider; }
         }
 
-        public Property<TFloat> Y {
+        public Provider<TFloat> Y {
             get { return _y; }
-            set { _y.Provider = value.Provider; }
         }
 
-        public Property<TFloat> Z {
+        public Provider<TFloat> Z {
             get { return _z; }
-            set { _z.Provider = value.Provider; }
         }
     }
 }
