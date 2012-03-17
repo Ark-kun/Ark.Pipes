@@ -26,10 +26,6 @@ namespace Ark.Geometry { //.Pipes {
         Provider<TFloat> _x;
         Provider<TFloat> _y;
 
-        public Vector2Components()
-            : this(Constant<TFloat>.Default, Constant<TFloat>.Default) {
-        }
-
         public Vector2Components(Provider<TFloat> x, Provider<TFloat> y) {
             _x = x;
             _y = y;
