@@ -78,6 +78,27 @@ namespace Ark.Geometry.Primitives {
     }
 
     public static class XamlVector3 {
+        private static Vector3 _zero;
+        private static Vector3 _unitX;
+        private static Vector3 _unitY;
+        private static Vector3 _unitZ;
+
+        public static Vector3 Zero {
+            get { return _zero; }
+        }
+
+        public static Vector3 UnitX {
+            get { return _unitX; }
+        }
+
+        public static Vector3 UnitY {
+            get { return _unitY; }
+        }
+
+        public static Vector3 UnitZ {
+            get { return _unitZ; }
+        }
+
         public static TFloat Length(this Vector3 vector) {
             return vector.Length;
         }
@@ -133,6 +154,19 @@ namespace Ark.Geometry.Primitives {
         public static Quaternion CreateFromAxisAngle(Vector3 axis, TFloat angle) {
             return new Quaternion(axis, angle * 180 / Math.PI);
         }
+
+        public static Quaternion CreateRotationX(TFloat angle) {
+            return new Quaternion(XamlVector3.UnitX, angle * 180 / Math.PI);
+        }
+
+        public static Quaternion CreateRotationY(TFloat angle) {
+            return new Quaternion(XamlVector3.UnitY, angle * 180 / Math.PI);
+        }
+
+        public static Quaternion CreateRotationZ(TFloat angle) {
+            return new Quaternion(XamlVector3.UnitZ, angle * 180 / Math.PI);
+        }
+
         public static Quaternion Multiply(Quaternion quaternion1, Quaternion quaternion2) {
             return Quaternion.Multiply(quaternion1, quaternion2);
         }
@@ -143,6 +177,27 @@ namespace Ark.Geometry.Primitives {
     }
 
     public static class XamlMatrix {
+        public static Matrix3 CreateFromQuaternion(Quaternion quaternion) {
+            var res = new Matrix3();
+            res.Rotate(quaternion);
+            return res;
+        }
+
+        public static Matrix3 CreateFromAxisAngle(Vector3 axis, TFloat angle) {
+            return CreateFromQuaternion(XamlQuaternion.CreateFromAxisAngle(axis, angle));
+        }
+
+        public static Matrix3 CreateRotationX(TFloat angle) {
+            return CreateFromQuaternion(XamlQuaternion.CreateRotationX(angle));
+        }
+
+        public static Matrix3 CreateRotationY(TFloat angle) {
+            return CreateFromQuaternion(XamlQuaternion.CreateRotationY(angle));
+        }
+
+        public static Matrix3 CreateRotationZ(TFloat angle) {
+            return CreateFromQuaternion(XamlQuaternion.CreateRotationZ(angle));
+        }
     }
 #endif
 }

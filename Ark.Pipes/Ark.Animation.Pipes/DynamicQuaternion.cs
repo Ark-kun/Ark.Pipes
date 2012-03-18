@@ -27,7 +27,7 @@ using StaticQuaternion = Ark.Geometry.Primitives.XamlQuaternion;
 #error Bad geometry framework
 #endif
 
-namespace Ark.Animation { //.Pipes
+namespace Ark.Geometry { //.Pipes
     public static class DynamicQuaternion {
         public static Provider<Quaternion> CreateFromAxisAngle(Vector3 axis, Provider<TFloat> angles) {
             return Provider.Create(( angle) => StaticQuaternion.CreateFromAxisAngle(axis, angle), angles);
@@ -35,6 +35,22 @@ namespace Ark.Animation { //.Pipes
 
         public static Provider<Quaternion> CreateFromAxisAngle(Provider<Vector3> axes, Provider<TFloat> angles) { 
             return Provider.Create((axis, angle) => StaticQuaternion.CreateFromAxisAngle(axis, angle), axes, angles);
+        }
+
+        public static Provider<Quaternion> CreateRotationX(Provider<TFloat> angles) {
+            return Provider.Create((angle) => StaticQuaternion.CreateFromAxisAngle(StaticVector3.UnitX, angle), angles);
+        }
+
+        public static Provider<Quaternion> CreateRotationY(Provider<TFloat> angles) {
+            return Provider.Create((angle) => StaticQuaternion.CreateFromAxisAngle(StaticVector3.UnitY, angle), angles);
+        }
+
+        public static Provider<Quaternion> CreateRotationZ(Provider<TFloat> angles) {
+            return Provider.Create((angle) => StaticQuaternion.CreateFromAxisAngle(StaticVector3.UnitZ, angle), angles);
+        }
+
+        public static Provider<Quaternion> Normalize(this Provider<Quaternion> quaternions) {
+            return Provider.Create((quaternion) => { quaternion.Normalize(); return quaternion; }, quaternions);
         }
     }
 }
