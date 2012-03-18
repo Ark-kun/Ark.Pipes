@@ -28,8 +28,8 @@ using System.Windows;
 using System.Windows.Media.Media3D;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
-using StaticVector2 = Ark.Geometry.XamlVector2;
-using StaticVector3 = Ark.Geometry.XamlVector3;
+using StaticVector2 = Ark.Geometry.Primitives.XamlVector2;
+using StaticVector3 = Ark.Geometry.Primitives.XamlVector3;
 #else
 #error Bad geometry framework
 #endif
