@@ -35,6 +35,10 @@ using StaticVector3 = Ark.Geometry.Primitives.XamlVector3;
 
 namespace Ark.Geometry { //.Pipes
     public static class DynamicVector3 {
+        public static Provider<Vector3> FromComponents(Provider<TFloat> xs, Provider<TFloat> ys, Provider<TFloat> zs) {
+            return Provider.Create((x, y, z) => new Vector3(x, y, z), xs, ys, zs);
+        }
+
         public static Provider<TFloat> Length(this Provider<Vector3> vectors) {
             return Provider.Create((v) => v.Length(), vectors);
         }
