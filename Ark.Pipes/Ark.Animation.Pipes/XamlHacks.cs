@@ -83,6 +83,13 @@ namespace Ark.Geometry.Primitives {
         private static Vector3 _unitY;
         private static Vector3 _unitZ;
 
+        static XamlVector3() {
+            _zero = new Vector3();
+            _unitX = new Vector3(1f, 0f, 0f);
+            _unitY = new Vector3(0f, 1f, 0f);
+            _unitZ = new Vector3(0f, 0f, 1f);
+        }
+
         public static Vector3 Zero {
             get { return _zero; }
         }
