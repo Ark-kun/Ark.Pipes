@@ -1,8 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Media.Media3D;
-using Ark.Geometry;
+﻿using Ark.Geometry;
 using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
