@@ -56,6 +56,18 @@ namespace Ark.Animation { //.Pipes
             return Provider.Create((t) => t0 + (t - t0) * multiplier, ts);
         }
 
+        public static Provider<TFloat> LaterThan(this Provider<TFloat> ts, TFloat lowerLimit) {
+            return Provider.Create((t) => (t < lowerLimit ? lowerLimit : t), ts);
+        }
+
+        public static Provider<TFloat> EarlierThan(this Provider<TFloat> ts, TFloat upperLimit) {
+            return Provider.Create((t) => (t > upperLimit ? upperLimit : t), ts);
+        }
+
+        public static Provider<TFloat> Between(this Provider<TFloat> ts, TFloat lowerLimit, TFloat upperLimit) {
+            return Provider.Create((t) => (t > upperLimit ? upperLimit : (t < lowerLimit ? lowerLimit : t)), ts);
+        }
+
         public static Provider<TFloat> Reset(this Provider<TFloat> timer) {
             TFloat t0 = timer.Value;
             return Provider.Create((t) => t - t0, timer);
