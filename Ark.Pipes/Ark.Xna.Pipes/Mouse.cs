@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 namespace Ark.Input { //.Pipes.Xna {
-    public sealed class XnaMouse : IMouse<Vector2> {
+    public sealed class XnaMouse {
         bool _isDirty = true;
         MouseState _cachedValue;
         ITrigger _invalidationTrigger;

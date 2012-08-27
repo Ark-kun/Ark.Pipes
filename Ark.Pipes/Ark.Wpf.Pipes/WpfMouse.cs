@@ -3,7 +3,7 @@ using System.Windows.Input;
 using Ark.Pipes;
 
 namespace Ark.Input { //.Pipes.Wpf {
-    public class WpfMouse : IMouse<Point> {
+    public class WpfMouse {
         IInputElement _canvas;
         Provider<Point> _position;
         Provider<bool> _leftButton;
