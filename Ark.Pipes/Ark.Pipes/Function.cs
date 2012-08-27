@@ -14,8 +14,13 @@ namespace Ark.Pipes {
             _function = function;
         }
 
-        public Function(IOut<TResult> source)
-            : this(source.GetValue) {
+        public Function(IOut<TResult> source) {
+            var function = source as Function<TResult>;
+            if (function != null) {
+                _function = function._function;
+            } else {
+                _function = source.GetValue;
+            }            
         }
 
         public Function(Func<TResult> function, ITrigger changedTrigger) {
@@ -28,7 +33,12 @@ namespace Ark.Pipes {
 
 #if !NOTIFICATIONS_DISABLE
         public Function(INotifyingOut<TResult> source) {
-            _function = source.GetValue;
+            var function = source as Function<TResult>;
+            if (function != null) {
+                _function = function._function;
+            } else {
+                _function = source.GetValue;
+            }            
             _notifier.Source = source.Notifier;
         }
 #endif
