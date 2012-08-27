@@ -22,7 +22,7 @@ namespace Ark.Pipes {
             _function = function;
 #if !NOTIFICATIONS_DISABLE
             _notifier.SetReliability(true);
-            changedTrigger.Triggered += _notifier.OnValueChanged;
+            changedTrigger.Triggered += _notifier.SignalValueChanged;
 #endif
         }
 

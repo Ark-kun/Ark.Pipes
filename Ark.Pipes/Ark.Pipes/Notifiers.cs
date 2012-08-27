@@ -138,7 +138,7 @@ namespace Ark.Pipes {
             IsReliable = value;
         }
 
-        public new void OnValueChanged() {
+        public new void SignalValueChanged() {
             base.OnValueChanged();
         }
 
@@ -157,7 +157,7 @@ namespace Ark.Pipes {
 
         protected override void ConnectToSources() {
             if (_source != null) {
-                _source.ValueChanged += OnValueChanged;
+                _source.ValueChanged += SignalValueChanged;
                 _source.ReliabilityChanged += SetReliability;
                 IsReliable = _source.IsReliable;
             }
@@ -165,7 +165,7 @@ namespace Ark.Pipes {
 
         protected override void DisconnectFromSources() {
             if (_source != null) {
-                _source.ValueChanged -= OnValueChanged;
+                _source.ValueChanged -= SignalValueChanged;
                 _source.ReliabilityChanged -= SetReliability;
                 IsReliable = false;
             }

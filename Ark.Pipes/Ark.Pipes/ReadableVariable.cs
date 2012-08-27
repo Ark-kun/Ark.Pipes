@@ -32,7 +32,7 @@ namespace Ark.Pipes {
         protected void SetValue(T value) {
             _value = value;
 #if !NOTIFICATIONS_DISABLE
-            _notifier.OnValueChanged();
+            _notifier.SignalValueChanged();
 #endif
         }
     }
