@@ -24,7 +24,7 @@ using Vector3 = System.Windows.Media.Media3D.Vector3D;
 namespace Ark.Physics.Forces { //.Pipes {
     public abstract class AmbientForce {
         public Provider<Vector3> GetForceOnObject(MaterialPoint obj) {
-            return new Function<Vector3>(() => CalculateForceOnObject(obj));
+            return Provider.Create(() => CalculateForceOnObject(obj));
         }
         public abstract Vector3 CalculateForceOnObject(MaterialPoint obj);
     }

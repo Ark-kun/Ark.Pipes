@@ -12,10 +12,10 @@ namespace Ark.Input { //.Pipes.Wpf {
 
         public WpfMouse(IInputElement canvas) {
             _canvas = canvas;
-            _position = new Function<Point>(() => Mouse.GetPosition(_canvas));
-            _leftButton = new Function<bool>(() => Mouse.LeftButton == MouseButtonState.Pressed);
-            _middleButton = new Function<bool>(() => Mouse.MiddleButton == MouseButtonState.Pressed);
-            _rightButton = new Function<bool>(() => Mouse.RightButton == MouseButtonState.Pressed);
+            _position = Provider.Create(() => Mouse.GetPosition(_canvas));
+            _leftButton = Provider.Create(() => Mouse.LeftButton == MouseButtonState.Pressed);
+            _middleButton = Provider.Create(() => Mouse.MiddleButton == MouseButtonState.Pressed);
+            _rightButton = Provider.Create(() => Mouse.RightButton == MouseButtonState.Pressed);
         }
 
         public Provider<Point> Position {
