@@ -138,7 +138,7 @@ namespace Ark.Pipes {
             IsReliable = value;
         }
 
-        public new void SignalValueChanged() {
+        public void SignalValueChanged() {
             base.OnValueChanged();
         }
 
