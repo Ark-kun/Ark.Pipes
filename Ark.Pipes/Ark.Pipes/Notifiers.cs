@@ -127,7 +127,7 @@ namespace Ark.Pipes {
         public abstract bool IsReliable { get; }
     }
 
-    public sealed class PrivateNotifier : Notifier {
+    public class PrivateNotifier : Notifier {
         INotifier _source;
 
         public PrivateNotifier() { }
@@ -138,7 +138,7 @@ namespace Ark.Pipes {
             IsReliable = value;
         }
 
-        public void SignalValueChanged() {
+        public virtual void SignalValueChanged() {
             base.OnValueChanged();
         }
 
@@ -168,6 +168,24 @@ namespace Ark.Pipes {
                 _source.ValueChanged -= SignalValueChanged;
                 _source.ReliabilityChanged -= SetReliability;
                 IsReliable = false;
+            }
+        }
+    }
+
+    public sealed class PausablePrivateNotifier : PrivateNotifier {
+        bool _paused = false;
+
+        public void Pause() {
+            _paused = true;
+        }
+
+        public void Unpause() {
+            _paused = false;
+        }
+
+        public override void SignalValueChanged() {
+            if (!_paused) {
+                base.SignalValueChanged();
             }
         }
     }
