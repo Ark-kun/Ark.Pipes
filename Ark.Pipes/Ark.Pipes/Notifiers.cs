@@ -98,7 +98,7 @@ namespace Ark.Pipes {
         }
 
         public static ConstantReliabilityNotifier ConstantInstance {
-            get { return _unreliableInstance; }
+            get { return _constantInstance; }
         }
 
         event Action INotifier.ValueChanged {
