@@ -50,6 +50,7 @@
     <Compile Include="Constant.cs" />
     <Compile Include="Function.cs" />
     <Compile Include="Property.cs" />
+    <Compile Include="WeakEvents.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

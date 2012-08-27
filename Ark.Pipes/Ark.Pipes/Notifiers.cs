@@ -61,10 +61,10 @@ namespace Ark.Pipes {
                 if (!IsConnected) {
                     ConnectToSources();
                 }
-                _valueChanged += value;
+                _valueChanged += value.Weaken(h => _valueChanged -= h);
             }
             remove {
-                _valueChanged -= value;
+                value.RemoveFrom(ref _valueChanged);
                 if (!IsConnected) {
                     DisconnectFromSources();
                 }
@@ -76,10 +76,10 @@ namespace Ark.Pipes {
                 if (!IsConnected) {
                     ConnectToSources();
                 }
-                _reliabilityChanged += value;
+                _reliabilityChanged += value.Weaken(h => _reliabilityChanged -= h);
             }
             remove {
-                _reliabilityChanged -= value;
+                value.RemoveFrom(ref _reliabilityChanged);
                 if (!IsConnected) {
                     DisconnectFromSources();
                 }
