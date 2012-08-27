@@ -6,45 +6,30 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Ark.Input { //.Pipes.Xna {
     public sealed class XnaMouse : IMouse<Vector2> {
-        static Provider<Vector2> _staticPosition = Provider<Vector2>.Create(GetPosition);
-        static Provider<bool> _staticLeftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed);
-        static Provider<bool> _staticMiddleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed);
-        static Provider<bool> _staticRightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed);
-        static XnaMouse _default = new XnaMouse();
+        bool _isDirty = true;
+        MouseState _cachedValue;
+        ITrigger _invalidationTrigger;
 
         Provider<Vector2> _position;
         Provider<bool> _leftButton;
         Provider<bool> _middleButton;
         Provider<bool> _rightButton;
-
-        public XnaMouse() {
-            _position = _staticPosition;
-            _leftButton = _staticLeftButton;
-            _middleButton = _staticMiddleButton;
-            _rightButton = _staticRightButton;
-        }
-
-        public XnaMouse(Action<Action> trigger) {
-            _position = Provider<Vector2>.Create(GetPosition, trigger);
-            _leftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed, trigger);
-            _middleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed, trigger);
-            _rightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed, trigger);
-        }
+        Provider<int> _scrollWheel;
 
         public XnaMouse(ITrigger trigger) {
-            _position = Provider<Vector2>.Create(GetPosition, trigger);
-            _leftButton = Provider<bool>.Create(() => Mouse.GetState().LeftButton == ButtonState.Pressed, trigger);
-            _middleButton = Provider<bool>.Create(() => Mouse.GetState().MiddleButton == ButtonState.Pressed, trigger);
-            _rightButton = Provider<bool>.Create(() => Mouse.GetState().RightButton == ButtonState.Pressed, trigger);
+            InvalidationTrigger = trigger;
+            _position = Provider.Create(() => { Refresh(); return new Vector2(_cachedValue.X, _cachedValue.Y); });
+            _leftButton = Provider.Create(() => { Refresh(); return _cachedValue.LeftButton == ButtonState.Pressed; });
+            _middleButton = Provider.Create(() => { Refresh(); return _cachedValue.MiddleButton == ButtonState.Pressed; });
+            _rightButton = Provider.Create(() => { Refresh(); return _cachedValue.RightButton == ButtonState.Pressed; });
+            _scrollWheel = Provider.Create(() => { Refresh(); return _cachedValue.ScrollWheelValue; });
         }
 
-        static Vector2 GetPosition() {
-            var mouseState = Mouse.GetState();
-            return new Vector2(mouseState.X, mouseState.Y);
-        }
-
-        public static XnaMouse Default {
-            get { return _default; }
+        void Refresh() {
+            if (_isDirty) {
+                _cachedValue = Mouse.GetState();
+                _isDirty = false;
+            }
         }
 
         public Provider<Vector2> Position {
@@ -61,6 +46,27 @@ namespace Ark.Input { //.Pipes.Xna {
 
         public Provider<bool> IsRightButtonPressed {
             get { return _rightButton; }
+        }
+
+        public Provider<int> ScrollWheel {
+            get { return _scrollWheel; }
+        }
+
+        void Invalidate() {
+            _isDirty = true;
+        }
+
+        public ITrigger InvalidationTrigger {
+            get { return _invalidationTrigger; }
+            set {
+                if (_invalidationTrigger != null) {
+                    _invalidationTrigger.Triggered -= Invalidate;
+                }
+                _invalidationTrigger = value;
+                if (_invalidationTrigger != null) {
+                    _invalidationTrigger.Triggered += Invalidate;
+                }
+            }
         }
     }
 
