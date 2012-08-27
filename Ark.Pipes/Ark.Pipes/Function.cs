@@ -1,53 +1,6 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public sealed class Function<TResult> :
-#if NOTIFICATIONS_DISABLE
-        Provider<TResult> 
-#else
-        ProviderWithNotifier<TResult> 
-#endif
-    {
-        Func<TResult> _function;
-
-        public Function(Func<TResult> function) {
-            _function = function;
-        }
-
-        public Function(IOut<TResult> source) {
-            var function = source as Function<TResult>;
-            if (function != null) {
-                _function = function._function;
-            } else {
-                _function = source.GetValue;
-            }            
-        }
-
-        public Function(Func<TResult> function, ITrigger changedTrigger) {
-            _function = function;
-#if !NOTIFICATIONS_DISABLE
-            _notifier.SetReliability(true);
-            changedTrigger.Triggered += _notifier.SignalValueChanged;
-#endif
-        }
-
-#if !NOTIFICATIONS_DISABLE
-        public Function(INotifyingOut<TResult> source) {
-            var function = source as Function<TResult>;
-            if (function != null) {
-                _function = function._function;
-            } else {
-                _function = source.GetValue;
-            }            
-            _notifier.Source = source.Notifier;
-        }
-#endif
-
-        public override TResult GetValue() {
-            return _function();
-        }
-    }
-
     public sealed class Function<T, TResult> : 
 #if NOTIFICATIONS_DISABLE
         Provider<TResult> 

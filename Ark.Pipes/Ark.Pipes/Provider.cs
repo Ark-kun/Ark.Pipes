@@ -43,13 +43,13 @@ namespace Ark.Pipes {
         //}
 
         static public implicit operator Provider<T>(Func<T> value) {
-            return new Function<T>(value);
+            return Source<T>.Create(value);
         }
 
 #if !NOTIFICATIONS_DISABLE
         [System.Runtime.CompilerServices.SpecialName]
         static public Provider<T> op_Implicit(INotifyingOut<T> value) {
-            return new Function<T>(value);
+            return Source<T>.Create(value);
         }
 #endif
 
@@ -57,9 +57,11 @@ namespace Ark.Pipes {
             return provider.Value;
         }
 
+#if !NOTIFICATIONS_DISABLE
         public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
-            return new Function<T>(GetValue, changedTrigger);
+            return Source<T>.Create(this, changedTrigger);
         }
+#endif
     }
 
     public static class Provider {
@@ -69,12 +71,14 @@ namespace Ark.Pipes {
         }
 
         public static Provider<T> Create<T>(Func<T> function) {
-            return new Function<T>(function);
+            return Source<T>.Create(function);
         }
 
+#if !NOTIFICATIONS_DISABLE
         static public Provider<T> Create<T>(Func<T> function, ITrigger changedTrigger) {
-            return new Function<T>(function, changedTrigger);
+            return Source<T>.Create(function, changedTrigger);
         }
+#endif
 
         public static Provider<T> Create<T1, T>(Func<T1, T> function, Provider<T1> arg) {
             return new Function<T1, T>(function, arg);
