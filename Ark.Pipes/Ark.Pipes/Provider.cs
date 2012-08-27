@@ -60,14 +60,6 @@ namespace Ark.Pipes {
         public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
             return new Function<T>(GetValue, changedTrigger);
         }
-
-        public CachingProvider<T> AddCache() {
-            return new CachingProvider<T>(this);
-        }
-
-        public CachingProvider<T> AddCache(ITrigger changedTrigger, bool autoRefresh = false) {
-            return new CachingProvider<T>(this, changedTrigger, autoRefresh);
-        }
     }
 
     public static class Provider {
