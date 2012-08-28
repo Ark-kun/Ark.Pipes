@@ -33,7 +33,7 @@ namespace Ark.Physics.Forces { //.Pipes {
         public TwoBodyForce(MaterialPoint obj1, MaterialPoint obj2) {
             _obj1 = obj1;
             _obj2 = obj2;
-            _forceOnObj1 = new Function<Vector3, Vector3, Vector3>((p1, p2) => {
+            _forceOnObj1 = Provider.Create((p1, p2) => {
                 Vector3 _delta = p2 - p1;
                 if (_delta.IsZero()) {
                     return new Vector3();
@@ -41,7 +41,7 @@ namespace Ark.Physics.Forces { //.Pipes {
                 _delta.Normalize();
                 return GetMagnitude() * _delta;
             }, _obj1.Position, _obj2.Position);
-            _forceOnObj2 = new Function<Vector3, Vector3, Vector3>((p1, p2) => {
+            _forceOnObj2 = Provider.Create((p1, p2) => {
                 Vector3 _delta = p1 - p2;
                 if (_delta.IsZero()) {
                     return new Vector3();
