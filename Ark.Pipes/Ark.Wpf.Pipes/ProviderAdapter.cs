@@ -20,7 +20,7 @@ namespace Ark.Wpf { //.Pipes.Wpf {
             var npc = _obj as INotifyPropertyChanged;
             if (npc != null) {
                 _notifier.SetReliability(true);
-                npc.PropertyChanged += (s, e) => { if (e.PropertyName == dp.Name) _notifier.OnValueChanged(); };
+                npc.PropertyChanged += (s, e) => { if (e.PropertyName == dp.Name) _notifier.SignalValueChanged(); };
             }
         }
 
