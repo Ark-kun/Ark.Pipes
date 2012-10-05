@@ -2,19 +2,15 @@
 
 namespace Ark.Pipes {
     //ReadableProperty<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
-    public class ReadableProvider<T> :
-#if NOTIFICATIONS_DISABLE
-        Provider<T>
-#else
-        ProviderWithNotifier<T>
-#endif
-    {
+    public class ReadableProvider<T> : Provider<T> {
         protected Provider<T> _provider;
 #if !NOTIFICATIONS_DISABLE
 #if CACHE_ENABLE
         bool _isDirty = true;
         T _cachedValue;
 #endif
+        //protected PausablePrivateNotifier _notifier = new PausablePrivateNotifier();
+        protected PrivateNotifier _notifier = new PrivateNotifier();
         public event Action ProviderChanged;
 #endif
 
@@ -23,7 +19,7 @@ namespace Ark.Pipes {
 #if !NOTIFICATIONS_DISABLE
             _notifier.Source = _provider.Notifier;
 #if CACHE_ENABLE
-            _notifier.ValueChanged += () => { _isDirty = true; _cachedValue = default(T); };
+            _notifier.ValueChanged += OnValueChanged;
 #endif
 #endif
         }
@@ -52,9 +48,17 @@ namespace Ark.Pipes {
             }
         }
 #endif
+#if !NOTIFICATIONS_DISABLE && CACHE_ENABLE
+        protected void OnValueChanged() {
+            _isDirty = true;
+            _cachedValue = default(T);
+            //_notifier.Pause();
+        }
+#endif
 
         public override T GetValue() {
 #if !NOTIFICATIONS_DISABLE && CACHE_ENABLE
+            //_notifier.Unpause();
             if (_notifier.IsReliable) {
                 if (_isDirty) {
                     _cachedValue = _provider.GetValue();
