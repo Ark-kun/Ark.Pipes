@@ -114,7 +114,7 @@ namespace Ark.Pipes {
         }
 
 #if !NOTIFICATIONS_DISABLE
-        public Provider<T> AddChangeTrigger(ITrigger changedTrigger) {
+        public Provider<T> WithChangeTrigger(ITrigger changedTrigger) {
             return Source<T>.Create(this, changedTrigger);
         }
 #endif

@@ -47,7 +47,7 @@ namespace Ark.Wpf.Pipes.Testing {
             var clock = new WpfTrigger();
 
             var mousePosition = mouse.Position.ToVectors2();            
-            mousePosition = mousePosition.AddChangeTrigger(clock);
+            mousePosition = mousePosition.WithChangeTrigger(clock);
             var mouse3d = mousePosition.ToVectors3XZ().Multiply(scale);
 
             //Mouse "cursor"
