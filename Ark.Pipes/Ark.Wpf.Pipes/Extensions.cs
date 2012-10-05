@@ -57,14 +57,14 @@ namespace Ark.Geometry { //.Pipes.Wpf {
 namespace Ark.Wpf { //.Pipes {
     public static class Extensions {
         public static void SetBinding<T>(this FrameworkElement element, DependencyProperty property, Provider<T> provider) {
-            element.SetBinding(property, new Binding("Value") { Source = new NotifyPropertyChangedAdapter<T>(provider), Mode = BindingMode.OneWay });
+            element.SetBinding(property, new Binding("Value") { Source = provider, Mode = BindingMode.OneWay });
         }
 
         public static void SetCanvasPosition(this FrameworkElement element, Provider<Vector2> position) {
             var components = position.ToComponents();
 
-            element.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = new NotifyPropertyChangedAdapter<TFloat>(components.X), Mode = BindingMode.OneWay });
-            element.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = new NotifyPropertyChangedAdapter<TFloat>(components.Y), Mode = BindingMode.OneWay });
+            element.SetBinding(Canvas.LeftProperty, new Binding("Value") { Source = components.X, Mode = BindingMode.OneWay });
+            element.SetBinding(Canvas.TopProperty, new Binding("Value") { Source = components.Y, Mode = BindingMode.OneWay });
         }
 
         //TODO: Create a real provider

@@ -33,7 +33,7 @@ namespace Ark.Wpf.Pipes.Testing {
             _adapter = new DependencyPropertyAdapter<float>(_prop);
             //RegisterName("adapter", _adapter);
             _dc.Adapter = _adapter;
-            _dc.TinyAdapter = new NotifyPropertyChangedAdapter<float>(_prop);
+            _dc.TinyAdapter = _prop;
             MyGrid.DataContext = _dc;
             //Binding myBinding = new Binding("Value");
             //myBinding.Source = _adapter;
@@ -47,7 +47,7 @@ namespace Ark.Wpf.Pipes.Testing {
             var clock = new WpfTrigger();
 
             var mousePosition = mouse.Position.ToVectors2();            
-            mousePosition = mousePosition.AddChangeTrigger((callback) => clock.Triggered += callback);
+            mousePosition = mousePosition.AddChangeTrigger(clock);
             var mouse3d = mousePosition.ToVectors3XZ().Multiply(scale);
 
             //Mouse "cursor"
@@ -85,12 +85,12 @@ namespace Ark.Wpf.Pipes.Testing {
             ball2.Forces.Add(friction2.GetForceOnObject(ball2));
 
             //Spring visualization
-            var modifiedSpring = Provider<double>.Create((f) => 1 + 20 * 1.0 / (1.0 + Math.Exp(-f * -0.1)), spring);
+            var modifiedSpring = Provider.Create((f) => 1 + 20 * 1.0 / (1.0 + Math.Exp(-f * -0.1)), spring);
             SpringLine.SetBinding(Line.StrokeThicknessProperty, modifiedSpring);
         }
 
         private void button1_Click(object sender, RoutedEventArgs e) {
-            _prop.Provider = Provider<float>.Create((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
+            _prop.Provider = Provider.Create((s) => (float)(100 + Math.Sin(s) * 100), new MyTimer(Dispatcher));
         }
     }
 
@@ -138,13 +138,13 @@ namespace Ark.Wpf.Pipes.Testing {
 
         void Callback(object sender, System.Timers.ElapsedEventArgs e) {
             _lastTime = e.SignalTime;
-            _dispatcher.Invoke((Action)_notifier.OnValueChanged);
+            _dispatcher.Invoke((Action)_notifier.SignalValueChanged);
         }
     }
 
     public class DC {
         public DependencyPropertyAdapter<float> Adapter { get; set; }
-        public NotifyPropertyChangedAdapter<float> TinyAdapter { get; set; }
+        public Provider<float> TinyAdapter { get; set; }
     }
 
 

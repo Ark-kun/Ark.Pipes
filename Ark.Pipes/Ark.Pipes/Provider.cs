@@ -1,11 +1,12 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace Ark.Pipes {
     public abstract class Provider<T> :
 #if NOTIFICATIONS_DISABLE
         IOut<T>
 #else
-        INotifyingOut<T>
+        INotifyingOut<T>, INotifyPropertyChanged
 #endif
     {
         public abstract T GetValue();
@@ -18,6 +19,61 @@ namespace Ark.Pipes {
         public virtual INotifier Notifier {
             get { return Ark.Pipes.Notifier.AlwaysUnreliable; }
         }
+
+        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged {
+            //FIX: To prevent memory leaks/premature garbage collection we need to strongly subscribe a handler with a weak reference to the value delegate target.
+            add { Notifier.ValueChanged += new PropertyChangedClosure(value, this).Invoke; }
+            remove { Notifier.ValueChanged -= new PropertyChangedClosure(value, this).Invoke; }
+        }
+
+        class PropertyChangedClosure : IEquatable<PropertyChangedEventHandler>, IEquatable<PropertyChangedClosure>, IEquatable<Action> {
+            Object _sender;
+            PropertyChangedEventHandler _handler;
+            static PropertyChangedEventArgs _eventArgs = new PropertyChangedEventArgs("value");
+
+            public PropertyChangedClosure(PropertyChangedEventHandler handler, object sender) {
+                _handler = handler;
+                _sender = sender;
+            }
+
+            public void Invoke() {
+                _handler(_sender, _eventArgs);
+            }
+
+            public override bool Equals(object obj) {
+                var action = obj as Action;
+                if (action != null) {
+                    return Equals(action);
+                }
+                var closure = obj as PropertyChangedClosure;
+                if (closure != null) {
+                    return Equals(closure);
+                }
+                var handler = obj as PropertyChangedEventHandler;
+                if (handler != null) {
+                    return Equals(handler);
+                }
+                return false;
+            }
+
+            public override int GetHashCode() {
+                return _handler.GetHashCode();
+            }
+
+            public bool Equals(PropertyChangedEventHandler other) {
+                return _handler == other;
+            }
+
+            public bool Equals(PropertyChangedClosure other) {
+                return _handler == other._handler;
+            }
+
+            public bool Equals(Action other) {
+                var closure = other.Target as PropertyChangedClosure;
+                return closure != null && closure._handler == _handler;
+            }
+        }
+
 #endif
         static public implicit operator Provider<T>(T value) {
             return new Constant<T>(value);
