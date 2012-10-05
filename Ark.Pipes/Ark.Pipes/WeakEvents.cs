@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Ark {
-    public abstract class WeakHandler<T> where T : class {
+    //IEquatable<WeakHandler<T>>
+    public abstract class WeakDelegate<TDelegate> where TDelegate : class {
         protected WeakReference _targetReference;
         protected MethodInfo _method;
-        Action<T> _unregister;
+        Action<TDelegate> _unregister;
 
-        protected WeakHandler(T eventHandler, Action<T> unregister) {
+        protected WeakDelegate(TDelegate eventHandler, Action<TDelegate> unregister) {
             var delegateHandler = eventHandler as Delegate;
             if (delegateHandler == null)
                 throw new ArgumentException("Agrument must have a delegate type.");
@@ -21,22 +22,22 @@ namespace Ark {
 
         public void Unregister() {
             if (_unregister != null) {
-                _unregister(Handle);
+                _unregister(Handler);
                 _unregister = null;
             }
         }
 
         public bool IsWrapperOf(Delegate handler) {
-            return handler != null && handler.Method == _method && handler.Target == _targetReference.Target;
+            return handler != null && handler.Method == _method && handler.Target == _targetReference.Target; //ReferenceEquals?
         }
 
-        public abstract T Handle { get; }
+        public abstract TDelegate Handler { get; }
 
-        public static implicit operator T(WeakHandler<T> wh) {
-            return wh.Handle;
+        public static implicit operator TDelegate(WeakDelegate<TDelegate> wh) {
+            return wh.Handler;
         }
 
-        public static void RemoveHandler(ref T eventHandlers, T handlerToRemove) {
+        public static TDelegate Remove(TDelegate eventHandlers, TDelegate handlerToRemove) {
             var delegateEventHandlers = eventHandlers as Delegate;
             if (delegateEventHandlers == null)
                 throw new ArgumentException("Agrument 1 must have a delegate type.");
@@ -55,7 +56,7 @@ namespace Ark {
                         eventInvocationList = delegateEventHandlers.GetInvocationList();
                     }
                     foreach (var eventHandler in eventInvocationList) {
-                        var weakEventHandler = eventHandler.Target as WeakHandler<T>;
+                        var weakEventHandler = eventHandler.Target as WeakDelegate<TDelegate>;
                         if (weakEventHandler != null && weakEventHandler.IsWrapperOf(handler)) {
                             found = true;
                             handlersToRemove.Add(eventHandler);
@@ -68,14 +69,14 @@ namespace Ark {
             }
 
             foreach (var handler in handlersToRemove) {
-                delegateEventHandlers = Delegate.Remove(delegateEventHandlers, handler);
+                delegateEventHandlers = System.Delegate.Remove(delegateEventHandlers, handler);
             }
-            eventHandlers = delegateEventHandlers as T;
+            return delegateEventHandlers as TDelegate;
         }
     }
 
 
-    public sealed class WeakEventHandler<TEventArgs> : WeakHandler<EventHandler<TEventArgs>>
+    public sealed class WeakEventHandler<TEventArgs> : WeakDelegate<EventHandler<TEventArgs>>
         where TEventArgs : EventArgs {
 
         public WeakEventHandler(EventHandler<TEventArgs> eventHandler, Action<EventHandler<TEventArgs>> unregister)
@@ -91,14 +92,14 @@ namespace Ark {
             }
         }
 
-        public override EventHandler<TEventArgs> Handle {
+        public override EventHandler<TEventArgs> Handler {
             get { return Invoke; }
         }
     }
 
-    public sealed class WeakActionEventHandler : WeakHandler<Action> {
+    public sealed class WeakAction : WeakDelegate<Action> {
 
-        public WeakActionEventHandler(Action eventHandler, Action<Action> unregister)
+        public WeakAction(Action eventHandler, Action<Action> unregister)
             : base(eventHandler, unregister) {
         }
 
@@ -111,14 +112,14 @@ namespace Ark {
             }
         }
 
-        public override Action Handle {
+        public override Action Handler {
             get { return Invoke; }
         }
     }
 
-    public sealed class WeakActionEventHandler<T> : WeakHandler<Action<T>> {
+    public sealed class WeakAction<T> : WeakDelegate<Action<T>> {
 
-        public WeakActionEventHandler(Action<T> eventHandler, Action<Action<T>> unregister)
+        public WeakAction(Action<T> eventHandler, Action<Action<T>> unregister)
             : base(eventHandler, unregister) {
         }
 
@@ -131,22 +132,22 @@ namespace Ark {
             }
         }
 
-        public override Action<T> Handle {
+        public override Action<T> Handler {
             get { return Invoke; }
         }
     }
 
     public static class WeakEventHelpers {
         public static void RemoveFrom<TEventArgs>(this EventHandler<TEventArgs> handlerToRemove, ref EventHandler<TEventArgs> eventHandlers) where TEventArgs : EventArgs {
-            WeakHandler<EventHandler<TEventArgs>>.RemoveHandler(ref eventHandlers, handlerToRemove);
+            eventHandlers = WeakDelegate<EventHandler<TEventArgs>>.Remove(eventHandlers, handlerToRemove);
         }
 
         public static void RemoveFrom(this Action handlerToRemove, ref Action eventHandlers) {
-            WeakHandler<Action>.RemoveHandler(ref eventHandlers, handlerToRemove);
+            eventHandlers = WeakDelegate<Action>.Remove(eventHandlers, handlerToRemove);
         }
 
         public static void RemoveFrom<T>(this Action<T> handlerToRemove, ref Action<T> eventHandlers) {
-            WeakHandler<Action<T>>.RemoveHandler(ref eventHandlers, handlerToRemove);
+            eventHandlers = WeakDelegate<Action<T>>.Remove(eventHandlers, handlerToRemove);
         }
 
         public static bool CanBeWeak(this Delegate handler) {
@@ -177,7 +178,7 @@ namespace Ark {
                 if (handler.CanBeWeak()) {
                     weakHandlers += handler;
                 } else {
-                    weakHandlers += new WeakActionEventHandler<T>(handler, unregister);
+                    weakHandlers += new WeakAction<T>(handler, unregister);
                 }
             }
 
@@ -192,7 +193,7 @@ namespace Ark {
                 if (handler.CanBeWeak()) {
                     weakHandlers += handler;
                 } else {
-                    weakHandlers += new WeakActionEventHandler(handler, unregister);
+                    weakHandlers += new WeakAction(handler, unregister);
                 }
             }
 
