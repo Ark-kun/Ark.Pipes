@@ -1,4 +1,6 @@
-﻿using Ark.Geometry;
+﻿using System.Windows.Data;
+using System.Windows.Controls;
+using Ark.Geometry;
 using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
