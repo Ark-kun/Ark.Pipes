@@ -10,7 +10,19 @@ namespace Ark.Pipes {
     //OneWayToSource: Source.Property = Target.Property
     //TwoWay: new TwoWayBinding(Source.Property, Target.Property)
 
-    public abstract class TwoWayBindingBase<TSource, TTarget> {
+    //Fix notification unsubscribing and binding removal.
+
+    public static class TwoWayBinding {
+        public static IDisposable Create<T>(Property<T> source, Property<T> target) {
+            return new TwoWayBinding<T>(source, target);
+        }
+
+        public static IDisposable Create<TSource, TTarget>(Property<TSource> source, Property<TTarget> target, Func<TSource, TTarget> sourceToTarget, Func<TTarget, TSource> targetToSource) {
+            return new TwoWayBinding<TSource, TTarget>(source, target, sourceToTarget, targetToSource);
+        }
+    }
+
+    abstract class TwoWayBindingBase<TSource, TTarget> : IDisposable {
         protected Property<TSource> _source;
         protected Property<TTarget> _target;
 
@@ -25,9 +37,16 @@ namespace Ark.Pipes {
 
         protected abstract void OnSourceProviderChanged();
         protected abstract void OnTargetProviderChanged();
+
+        public void Dispose() {
+            _source.ProviderChanged -= OnSourceProviderChanged;
+            _target.ProviderChanged -= OnTargetProviderChanged;
+            _source = null;
+            _target = null;
+        }
     }
 
-    public sealed class TwoWayBinding<T> : TwoWayBindingBase<T, T> {
+    sealed class TwoWayBinding<T> : TwoWayBindingBase<T, T> {
         public TwoWayBinding(Property<T> source, Property<T> target)
             : base(source, target) {
                 OnSourceProviderChanged();
@@ -42,7 +61,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class TwoWayBinding<TSource, TTarget> : TwoWayBindingBase<TSource, TTarget> {
+    sealed class TwoWayBinding<TSource, TTarget> : TwoWayBindingBase<TSource, TTarget> {
         Provider<TSource> _lastSource;
         Provider<TTarget> _lastTarget;
         Func<TSource, TTarget> _sourceToTarget;
