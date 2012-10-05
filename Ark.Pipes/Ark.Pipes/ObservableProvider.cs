@@ -53,4 +53,12 @@ namespace Ark.Pipes {
         }
     }
 }
+
+namespace Ark.Pipes {
+    public static partial class Extensions {
+        public static IObservable<T> AsObservable<T>(this INotifyingOut<T> provider) {
+            return new ObservableProvider<T>(provider);
+        }
+    }
+}
 #endif

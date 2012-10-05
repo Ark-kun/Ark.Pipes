@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Threading;
 
 namespace Ark.Pipes {
-    public static class Extensions {
+    public static partial class Extensions {
+#if false
         public static IEnumerable<T> AsEnumerable<T>(this IOut<T> provider) {
             while (true) {
                 yield return provider.GetValue();
             }
         }
 
-#if false
         public IEnumerable<T> AsEnumerableChanges<T>(this INotifyingOut<T> provider) {
             var trigger = new ManualResetEvent(false);
             Action onChanged = () => trigger.Set();
@@ -23,14 +23,6 @@ namespace Ark.Pipes {
             }
             provider.Notifier.ValueChanged -= onChanged;
         }
-#endif
-
-#if !PORTABLE
-#if !NOTIFICATIONS_DISABLE
-        public static IObservable<T> AsObservable<T>(this INotifyingOut<T> provider) {
-            return new ObservableProvider<T>(provider);
-        }
-#endif
 #endif
     }
 }
