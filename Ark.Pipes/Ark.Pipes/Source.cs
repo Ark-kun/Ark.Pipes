@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public abstract class Source<TResult> : Provider<TResult> {
+    abstract class Source<TResult> : Provider<TResult> {
         Func<TResult> _function;
 
         public Source(Func<TResult> function) {

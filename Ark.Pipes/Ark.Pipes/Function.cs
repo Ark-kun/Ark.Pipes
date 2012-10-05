@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    public sealed class Function<T, TResult> : 
+    sealed class Function<T, TResult> : 
 #if NOTIFICATIONS_DISABLE
         Provider<TResult> 
 #else
@@ -24,7 +24,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class Function<T1, T2, TResult> : Provider<TResult> {
+    sealed class Function<T1, T2, TResult> : Provider<TResult> {
         Func<T1, T2, TResult> _function;
         Provider<T1> _arg1;
         Provider<T2> _arg2;
@@ -53,7 +53,7 @@ namespace Ark.Pipes {
 #endif 
     }
 
-    public sealed class Function<T1, T2, T3, TResult> : Provider<TResult> {
+    sealed class Function<T1, T2, T3, TResult> : Provider<TResult> {
         Func<T1, T2, T3, TResult> _function;
         Provider<T1> _arg1;
         Provider<T2> _arg2;
@@ -85,7 +85,7 @@ namespace Ark.Pipes {
 #endif 
     }
 
-    public sealed class Function<T1, T2, T3, T4, TResult> : Provider<TResult> {
+    sealed class Function<T1, T2, T3, T4, TResult> : Provider<TResult> {
         Func<T1, T2, T3, T4, TResult> _function;
         Provider<T1> _arg1;
         Provider<T2> _arg2;
