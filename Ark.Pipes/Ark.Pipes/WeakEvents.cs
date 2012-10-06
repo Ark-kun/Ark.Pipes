@@ -36,43 +36,6 @@ namespace Ark {
         public static implicit operator TDelegate(WeakDelegate<TDelegate> wh) {
             return wh.Handler;
         }
-
-        public static TDelegate Remove(TDelegate eventHandlers, TDelegate handlerToRemove) {
-            var delegateEventHandlers = eventHandlers as Delegate;
-            if (delegateEventHandlers == null)
-                throw new ArgumentException("Agrument 1 must have a delegate type.");
-            var delegateRemoveHandler = handlerToRemove as Delegate;
-            if (delegateRemoveHandler == null)
-                throw new ArgumentException("Agrument 2 must have a delegate type.");
-
-            var handlersToRemove = new List<Delegate>();
-            Delegate[] eventInvocationList = null;
-            var removeInvocationList = delegateRemoveHandler.GetInvocationList();
-
-            foreach (Action handler in removeInvocationList) {
-                bool found = false;
-                if (handler.CanBeWeak()) {
-                    if (eventInvocationList == null) {
-                        eventInvocationList = delegateEventHandlers.GetInvocationList();
-                    }
-                    foreach (var eventHandler in eventInvocationList) {
-                        var weakEventHandler = eventHandler.Target as WeakDelegate<TDelegate>;
-                        if (weakEventHandler != null && weakEventHandler.IsWrapperOf(handler)) {
-                            found = true;
-                            handlersToRemove.Add(eventHandler);
-                        }
-                    }
-                }
-                if (!found) {
-                    handlersToRemove.Add(handler);
-                }
-            }
-
-            foreach (var handler in handlersToRemove) {
-                delegateEventHandlers = System.Delegate.Remove(delegateEventHandlers, handler);
-            }
-            return delegateEventHandlers as TDelegate;
-        }
     }
 
 
@@ -137,20 +100,57 @@ namespace Ark {
         }
     }
 
-    public static class WeakEventHelpers {
+    public static class WeakDelegate {
+        public static TDelegate Remove<TDelegate>(TDelegate eventHandlers, TDelegate handlerToRemove) where TDelegate : class {
+            var delegateEventHandlers = eventHandlers as Delegate;
+            if (delegateEventHandlers == null)
+                throw new ArgumentException("Agrument 1 must have a delegate type.");
+            var delegateRemoveHandler = handlerToRemove as Delegate;
+            if (delegateRemoveHandler == null)
+                throw new ArgumentException("Agrument 2 must have a delegate type.");
+
+            var handlersToRemove = new List<Delegate>();
+            Delegate[] eventInvocationList = null;
+            var removeInvocationList = delegateRemoveHandler.GetInvocationList();
+
+            foreach (Action handler in removeInvocationList) {
+                bool found = false;
+                if (handler.IsSensibleToMakeWeak()) {
+                    if (eventInvocationList == null) {
+                        eventInvocationList = delegateEventHandlers.GetInvocationList();
+                    }
+                    foreach (var eventHandler in eventInvocationList) {
+                        var weakEventHandler = eventHandler.Target as WeakDelegate<TDelegate>;
+                        if (weakEventHandler != null && weakEventHandler.IsWrapperOf(handler)) {
+                            found = true;
+                            handlersToRemove.Add(eventHandler);
+                        }
+                    }
+                }
+                if (!found) {
+                    handlersToRemove.Add(handler);
+                }
+            }
+
+            foreach (var handler in handlersToRemove) {
+                delegateEventHandlers = System.Delegate.Remove(delegateEventHandlers, handler);
+            }
+            return delegateEventHandlers as TDelegate;
+        }
+
         public static void RemoveFrom<TEventArgs>(this EventHandler<TEventArgs> handlerToRemove, ref EventHandler<TEventArgs> eventHandlers) where TEventArgs : EventArgs {
-            eventHandlers = WeakDelegate<EventHandler<TEventArgs>>.Remove(eventHandlers, handlerToRemove);
+            eventHandlers = Remove(eventHandlers, handlerToRemove);
         }
 
         public static void RemoveFrom(this Action handlerToRemove, ref Action eventHandlers) {
-            eventHandlers = WeakDelegate<Action>.Remove(eventHandlers, handlerToRemove);
+            eventHandlers = Remove(eventHandlers, handlerToRemove);
         }
 
         public static void RemoveFrom<T>(this Action<T> handlerToRemove, ref Action<T> eventHandlers) {
-            eventHandlers = WeakDelegate<Action<T>>.Remove(eventHandlers, handlerToRemove);
+            eventHandlers = Remove(eventHandlers, handlerToRemove);
         }
 
-        public static bool CanBeWeak(this Delegate handler) {
+        public static bool IsSensibleToMakeWeak(this Delegate handler) {
             //Don't wrap static methods and lambdas with closures
             return !handler.Method.IsStatic && handler.Target != null && handler.Method.DeclaringType.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length == 0;
         }
@@ -160,7 +160,7 @@ namespace Ark {
             var invocationList = handlers.GetInvocationList();
 
             foreach (EventHandler<TEventArgs> handler in invocationList) {
-                if (handler.CanBeWeak()) {
+                if (handler.IsSensibleToMakeWeak()) {
                     weakHandlers += new WeakEventHandler<TEventArgs>(handler, unregister);
                 } else {
                     weakHandlers += handler;
@@ -175,7 +175,7 @@ namespace Ark {
             var invocationList = handlers.GetInvocationList();
 
             foreach (Action<T> handler in invocationList) {
-                if (handler.CanBeWeak()) {
+                if (handler.IsSensibleToMakeWeak()) {
                     weakHandlers += new WeakAction<T>(handler, unregister);
                 } else {
                     weakHandlers += handler;
@@ -190,7 +190,7 @@ namespace Ark {
             var invocationList = handlers.GetInvocationList();
 
             foreach (Action handler in invocationList) {
-                if (handler.CanBeWeak()) {
+                if (handler.IsSensibleToMakeWeak()) {
                     weakHandlers += new WeakAction(handler, unregister);
                 } else {
                     weakHandlers += handler;
