@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Ark {
-    //IEquatable<WeakHandler<T>>
-    public abstract class WeakDelegate<TDelegate> where TDelegate : class {
+    public abstract class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
         protected WeakReference _targetReference;
         protected MethodInfo _method;
         Action<TDelegate> _unregister;
+        int _hashCode;
 
         protected WeakDelegate(TDelegate eventHandler, Action<TDelegate> unregister) {
             var delegateHandler = eventHandler as Delegate;
@@ -18,6 +18,7 @@ namespace Ark {
             _targetReference = new WeakReference(delegateHandler.Target);
             _method = delegateHandler.Method;
             _unregister = unregister;
+            _hashCode = delegateHandler.GetHashCode();
         }
 
         public void Unregister() {
@@ -27,14 +28,35 @@ namespace Ark {
             }
         }
 
-        public bool IsWrapperOf(Delegate handler) {
-            return handler != null && handler.Method == _method && handler.Target == _targetReference.Target; //ReferenceEquals?
-        }
-
         public abstract TDelegate Handler { get; }
 
         public static implicit operator TDelegate(WeakDelegate<TDelegate> wh) {
             return wh.Handler;
+        }
+
+        public override int GetHashCode() {
+            return _hashCode;
+        }
+
+        public override bool Equals(object obj) {
+            var weakDelegate = obj as WeakDelegate<TDelegate>;
+            if (weakDelegate != null) {
+                return Equals(weakDelegate);
+            }
+            var strongDelegate = obj as TDelegate;
+            if (strongDelegate != null) {
+                return Equals(strongDelegate);
+            }
+            return false;
+        }
+
+        public bool Equals(WeakDelegate<TDelegate> other) {
+            return other != null && other._hashCode == _hashCode && other._method == _method && other._targetReference.Target == _targetReference.Target;
+        }
+
+        public bool Equals(TDelegate other) {
+            var otherDelegate = other as Delegate;
+            return otherDelegate != null && otherDelegate.GetHashCode() == _hashCode && otherDelegate.Method == _method && otherDelegate.Target == _targetReference.Target;
         }
     }
 
@@ -121,7 +143,7 @@ namespace Ark {
                     }
                     foreach (var eventHandler in eventInvocationList) {
                         var weakEventHandler = eventHandler.Target as WeakDelegate<TDelegate>;
-                        if (weakEventHandler != null && weakEventHandler.IsWrapperOf(handler)) {
+                        if (weakEventHandler != null && weakEventHandler.Equals(handler)) {
                             found = true;
                             handlersToRemove.Add(eventHandler);
                         }
