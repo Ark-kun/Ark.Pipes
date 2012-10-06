@@ -161,9 +161,9 @@ namespace Ark {
 
             foreach (EventHandler<TEventArgs> handler in invocationList) {
                 if (handler.CanBeWeak()) {
-                    weakHandlers += handler;
-                } else {
                     weakHandlers += new WeakEventHandler<TEventArgs>(handler, unregister);
+                } else {
+                    weakHandlers += handler;
                 }
             }
 
@@ -176,9 +176,9 @@ namespace Ark {
 
             foreach (Action<T> handler in invocationList) {
                 if (handler.CanBeWeak()) {
-                    weakHandlers += handler;
-                } else {
                     weakHandlers += new WeakAction<T>(handler, unregister);
+                } else {
+                    weakHandlers += handler;
                 }
             }
 
@@ -191,9 +191,9 @@ namespace Ark {
 
             foreach (Action handler in invocationList) {
                 if (handler.CanBeWeak()) {
-                    weakHandlers += handler;
-                } else {
                     weakHandlers += new WeakAction(handler, unregister);
+                } else {
+                    weakHandlers += handler;
                 }
             }
 
