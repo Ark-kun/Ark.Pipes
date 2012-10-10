@@ -1,0 +1,7 @@
+﻿<#@ include file="DynamicMathTemplate.t4" #>
+<# 
+	TypeName = "System.Single";
+	ClassName = "MathExtensions";
+	Namespace = "Ark.Pipes";
+	RenderMathExtensions(); 
+#>
