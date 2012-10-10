@@ -12,7 +12,7 @@ namespace Ark.Animation {
 
         void OnTriggerTriggered() {
             if (_switcher.Value) {
-                OnTriggered();
+                SignalTriggered();
             }
         }
     }
