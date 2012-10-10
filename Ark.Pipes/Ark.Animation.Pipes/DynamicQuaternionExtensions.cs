@@ -1,7 +1,4 @@
-﻿using System;
-using Ark.Animation;
-using Ark.Pipes;
-using Ark.Geometry;
+﻿using Ark.Pipes;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -11,32 +8,29 @@ using TFloat = System.Single;
 
 #if FRAMEWORK_ARK && FLOAT_TYPE_DOUBLE
 using Ark.Geometry.Primitives.Double;
-using StaticVector2 = Ark.Geometry.Primitives.Double.Vector2;
 using StaticVector3 = Ark.Geometry.Primitives.Double.Vector3;
+using StaticQuaternion = Ark.Geometry.Primitives.Double.Quaternion;
 #elif FRAMEWORK_ARK && FLOAT_TYPE_SINGLE
 using Ark.Geometry.Primitives.Single;
-using StaticVector2 = Ark.Geometry.Primitives.Single.Vector2;
 using StaticVector3 = Ark.Geometry.Primitives.Single.Vector3;
+using StaticQuaternion = Ark.Geometry.Primitives.Single.Quaternion;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
-using StaticVector2 = Microsoft.Xna.Framework.Vector2;
 using StaticVector3 = Microsoft.Xna.Framework.Vector3;
+using StaticQuaternion = Microsoft.Xna.Framework.Quaternion;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
-using System.Windows;
 using System.Windows.Media.Media3D;
-using Ark.Geometry.Primitives;
-using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
-using StaticVector2 = Ark.Geometry.Primitives.XamlVector2;
 using StaticVector3 = Ark.Geometry.Primitives.XamlVector3;
+using StaticQuaternion = Ark.Geometry.Primitives.XamlQuaternion;
 #else
 #error Bad geometry framework
 #endif
 
 namespace Ark.Geometry { //.Pipes
-    public static class DynamicVector3 {
-        public static Provider<Vector3> FromComponents(Provider<TFloat> xs, Provider<TFloat> ys, Provider<TFloat> zs) {
-            return Provider.Create((x, y, z) => new Vector3(x, y, z), xs, ys, zs);
+    public static partial class DynamicExtensions {
+        public static Provider<Quaternion> Normalize(this Provider<Quaternion> quaternions) {
+            return Provider.Create((quaternion) => { quaternion.Normalize(); return quaternion; }, quaternions);
         }
     }
 }
