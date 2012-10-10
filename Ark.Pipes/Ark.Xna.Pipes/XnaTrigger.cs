@@ -4,16 +4,19 @@ using Microsoft.Xna.Framework;
 
 namespace Ark.Animation { //.Pipes.Xna {
     public class XnaTrigger : GameComponent, ITrigger {
-        public event Action Triggered;
+        ManualTrigger _trigger = new ManualTrigger();
 
-        public XnaTrigger(Game game) : base(game) { 
+        public event Action Triggered {
+            add { _trigger.Triggered += value; }
+            remove { _trigger.Triggered -= value; }
+        }
+
+        public XnaTrigger(Game game)
+            : base(game) {
         }
 
         public override void Update(GameTime gameTime) {
-            var handler = Triggered;
-            if (handler != null) {
-                handler();
-            }
+            _trigger.Trigger();
         }
     }
 }
