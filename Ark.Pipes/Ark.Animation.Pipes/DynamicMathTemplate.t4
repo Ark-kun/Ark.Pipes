@@ -1,0 +1,208 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#
+	IsEqualityComparable = true;
+	IsNumericallyComparable = true;
+	HasArithmetics = true;
+
+	IsAdditive = true;
+	IsMultiplicative = true;
+
+	HasAdditiveInverse = true;
+	HasMultiplicativeInverse = true;
+#><#+
+public string TypeName { get; set; }
+public string ClassName { get; set; }
+public string Namespace { get; set; }
+
+public bool IsEqualityComparable { get; set; }
+public bool IsNumericallyComparable { get; set; }
+
+public bool HasArithmetics { get; set; }
+public bool IsAdditive { get; set; }
+public bool IsMultiplicative { get; set; }
+
+public bool HasAdditiveInverse { get; set; }
+public bool HasMultiplicativeInverse { get; set; }
+
+void RenderMathExtensions() {
+#>
+#region <#= ClassName #> for <#= TypeName #>
+namespace <#= Namespace #> {
+    using TType = <#= TypeName #>;
+
+    public static partial class <#= ClassName #> {
+		<#+ if(IsEqualityComparable) { #>
+
+	    #region Equality comparison operations
+        public static Provider<bool> IsEqualTo(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 == value2, values1);
+        }
+
+        public static Provider<bool> IsEqualTo(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 == value2, values1, values2);
+        }
+
+        public static Provider<bool> IsNotEqualTo(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 != value2, values1);
+        }
+
+        public static Provider<bool> IsNotEqualTo(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 != value2, values1, values2);
+        }
+        #endregion
+		<#+ } #>
+		<#+ if(IsNumericallyComparable) { #>
+
+        #region Numerical comparison operations
+        public static Provider<bool> IsLessThan(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 < value2, values1);
+        }
+
+        public static Provider<bool> IsLessThan(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 < value2, values1, values2);
+        }
+
+        public static Provider<bool> IsLessThanOrEqual(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 <= value2, values1);
+        }
+
+        public static Provider<bool> IsLessThanOrEqual(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 <= value2, values1, values2);
+        }
+
+        public static Provider<bool> IsGreaterThan(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 > value2, values1);
+        }
+
+        public static Provider<bool> IsGreaterThan(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 > value2, values1, values2);
+        }
+
+        public static Provider<bool> IsGreaterThanOrEqual(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 >= value2, values1);
+        }
+
+        public static Provider<bool> IsGreaterThanOrEqual(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 >= value2, values1, values2);
+        }
+
+        public static Provider<bool> IsBetween(this Provider<TType> values, TType lowerBound, TType upperBound, bool strictLowerBound = false, bool strictUpperBound = false) {
+            if (strictLowerBound) {
+                if (strictUpperBound) {
+                    return Provider.Create((value) => value > lowerBound && value < upperBound, values);
+                } else {
+                    return Provider.Create((value) => value > lowerBound && value <= upperBound, values);
+                }
+            } else {
+                if (strictUpperBound) {
+                    return Provider.Create((value) => value >= lowerBound && value < upperBound, values);
+                } else {
+                    return Provider.Create((value) => value >= lowerBound && value <= upperBound, values);
+                }
+            }
+        }
+
+        public static Provider<bool> IsBetween(this Provider<TType> values, Provider<TType> lowerBounds, Provider<TType> upperBounds, bool strictLowerBound = false, bool strictUpperBound = false) {
+            if (strictLowerBound) {
+                if (strictUpperBound) {
+                    return Provider.Create((value, lowerBound, upperBound) => value > lowerBound && value < upperBound, values, lowerBounds, upperBounds);
+                } else {
+                    return Provider.Create((value, lowerBound, upperBound) => value > lowerBound && value <= upperBound, values, lowerBounds, upperBounds);
+                }
+            } else {
+                if (strictUpperBound) {
+                    return Provider.Create((value, lowerBound, upperBound) => value >= lowerBound && value < upperBound, values, lowerBounds, upperBounds);
+                } else {
+                    return Provider.Create((value, lowerBound, upperBound) => value >= lowerBound && value <= upperBound, values, lowerBounds, upperBounds);
+                }
+            }
+        }
+        #endregion
+
+		#region Clamping
+        public static Provider<TType> ClampMax(this Provider<TType> values, TType upperBound) {
+            return Provider.Create((value) => value > upperBound ? upperBound : value, values);
+        }
+
+        public static Provider<TType> ClampMax(this Provider<TType> values, Provider<TType> upperBounds) {
+            return Provider.Create((value, upperBound) => value > upperBound ? upperBound : value, values, upperBounds);
+        }
+
+        public static Provider<TType> ClampMin(this Provider<TType> values, TType lowerBound) {
+            return Provider.Create((value) => value < lowerBound ? lowerBound : value, values);
+        }
+
+        public static Provider<TType> ClampMin(this Provider<TType> values, Provider<TType> lowerBounds) {
+            return Provider.Create((value, lowerBound) => value < lowerBound ? lowerBound : value, values, lowerBounds);
+        }
+
+        public static Provider<TType> Clamp(this Provider<TType> values, TType lowerBound, TType upperBound) {
+            return Provider.Create((value) => value > upperBound ? upperBound : (value < lowerBound ? lowerBound : value), values);
+        }
+
+        public static Provider<TType> Clamp(this Provider<TType> values, Provider<TType> lowerBounds, Provider<TType> upperBounds) {
+            return Provider.Create((value, lowerBound, upperBound) => value > upperBound ? upperBound : (value < lowerBound ? lowerBound : value), values, lowerBounds, upperBounds);
+        }
+        #endregion
+		<#+ } #>
+		<#+ if(HasArithmetics) { #>
+
+        #region Arithmetic operations
+		<#+ if(IsAdditive) { #>
+
+        public static Provider<TType> Add(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 + value2, values1, values2);
+        }
+
+        public static Provider<TType> Add(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 + value2, values1);
+        }
+		<#+ if(HasAdditiveInverse) { #>
+		
+        public static Provider<TType> Negate(this Provider<TType> values) {
+            return Provider.Create((value) => -value, values);
+        }
+
+        public static Provider<TType> Subtract(this Provider<TType> values1, Provider<TType> values2) {
+            return Provider.Create((value1, value2) => value1 - value2, values1, values2);
+        }
+
+        public static Provider<TType> Subtract(this Provider<TType> values1, TType value2) {
+            return Provider.Create((value1) => value1 - value2, values1);
+        }
+		<#+ } #>
+		<#+ } #>
+		<#+ if(IsMultiplicative) { #>
+
+        public static Provider<TType> Multiply(this Provider<TType> values, TType multiplier) {
+            return Provider.Create((value) => value * multiplier, values);
+        }
+
+        public static Provider<TType> Multiply(this Provider<TType> values, Provider<TType> multipliers) {
+            return Provider.Create((value, multiplier) => value * multiplier, values, multipliers);
+        }
+		<#+ if(HasMultiplicativeInverse) { #>
+
+        public static Provider<TType> Inverse(this Provider<TType> values) {
+            return Provider.Create((value) => 1 / value, values);
+        }
+
+        public static Provider<TType> Divide(this Provider<TType> values, TType divisor) {
+            return values.Multiply(1 / divisor);
+        }
+
+        public static Provider<TType> Divide(this Provider<TType> values, Provider<TType> divisors) {
+            return Provider.Create((value, divisor) => value / divisor, values, divisors);
+        }
+		<#+ } #>
+		<#+ } #>
+
+        #endregion
+		<#+ } #>
+
+    }
+}
+#endregion
+<#+
+}#>
