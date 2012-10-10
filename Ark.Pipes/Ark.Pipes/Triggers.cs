@@ -5,7 +5,7 @@ namespace Ark.Pipes {
     public abstract class TriggerBase : ITrigger {
         public event Action Triggered;
 
-        protected void OnTriggered() {
+        protected void SignalTriggered() {
             var handler = Triggered;
             if (handler != null)
                 handler();
@@ -14,7 +14,7 @@ namespace Ark.Pipes {
 
     public class ManualTrigger : TriggerBase {
         public void Trigger() {
-            OnTriggered();
+            SignalTriggered();
         }
     }
 }
