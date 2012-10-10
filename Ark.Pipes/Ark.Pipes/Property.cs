@@ -34,14 +34,14 @@ namespace Ark.Pipes {
                 _provider = value;
 #if !NOTIFICATIONS_DISABLE
                 _notifier.Source = _provider.Notifier;
-                OnProviderChanged();
+                SignalProviderChanged();
                 //_notifier.OnValueChanged();
 #endif
             }
         }
 
 #if !NOTIFICATIONS_DISABLE
-        void OnProviderChanged() {
+        void SignalProviderChanged() {
             var handler = ProviderChanged;
             if (handler != null) {
                 handler();
