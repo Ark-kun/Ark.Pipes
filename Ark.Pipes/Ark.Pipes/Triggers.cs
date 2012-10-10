@@ -1,7 +1,7 @@
 ﻿using System;
 using Ark.Pipes;
 
-namespace Ark.Animation {
+namespace Ark.Pipes {
     public abstract class TriggerBase : ITrigger {
         public event Action Triggered;
 
