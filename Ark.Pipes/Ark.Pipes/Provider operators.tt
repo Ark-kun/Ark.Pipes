@@ -1,0 +1,118 @@
+﻿<#@ template language="C#" #>
+<#@ output extension=".cs" #>
+<#@ import namespace="System" #>
+<#
+	//private noOperatorsTypes = new Type[] {Byte, SByte, UInt16, Int16, UInt32, Int32, UInt64, Int64, Single, Double, Boolean, Char, String };
+	//private primitiveTypes = new Type[] {Byte, Int16, Int32, Int64, Single, Double,, Boolean, Char, String, DateTime, TimeSpan  };
+	Type[] types = new Type[] {typeof(Int32), typeof(Single), typeof(Double)};
+
+	string[] arithmeticOperators = new string[] { "+", "-", "*", "/" };
+	string[] arithmeticOperatorsFull = new string[] { "Addition", "Subtraction", "Multiply", "Division" };	
+	string[] unaryOperators = new string[] { "-" };
+	string[] unaryOperatorsFull = new string[] { "UnaryNegation" };
+	string[] equalityOperators = new string[] { "==", "!=" };
+	string[] equalityOperatorsFull = new string[] { "Equality", "Equality" };
+	string[] comparisonOperators = new string[] { ">", ">=", "<", "<=" };
+	string[] comparisonOperatorsFull = new string[] { "GreaterThan", "GreaterThanOrEqual", "LessThan", "LessThanOrEqual" };
+
+	string[] bitwiseUnaryOperators = new string[] { "~" };
+	string[] bitwiseUnaryOperatorsFull = new string[] { "OnesComplement" };
+	string[] bitwiseOperators = new string[] { "&", "|", "^" };
+	string[] bitwiseOperatorsFull = new string[] { "BitwiseAnd", "BitwiseOr", "ExclusiveOr" };
+	string[] bitwiseShiftOperators = new string[] { "<<", ">>" };
+	string[] bitwiseShiftOperatorsFull = new string[] { "LeftShift", "RightShift" };
+
+	string[] logicalNullaryOperators = new string[] { "true", "false" };
+	string[] logicalNullaryOperatorsFull = new string[] { "True", "False" };
+
+	string[] logicalUnaryOperators = new string[] { "!" };
+	string[] logicalUnaryOperatorsFull = new string[] { "LogicalNot" };
+
+	string[] logicalOperators = new string[] { "&&", "||" };
+	string[] logicalOperatorsFull = new string[] { "LogicalAnd", "LogicalOr" };
+
+	//other
+	string[] otherArithmeticOperators = new string[] { "%" };
+	string[] otherArithmeticOperatorsFull = new string[] { "Modulus" };
+
+	string[] otherUnaryOperators = new string[] { "+", "++", "--" };
+	string[] otherUnaryOperatorsFull = new string[] { "UnaryPlus", "Increment ", "Decrement" };
+
+	string[] conversionOperators = new string[] { "implicit", "explicit" };
+	string[] conversionOperatorsFull = new string[] { "Implicit", "Explicit" };
+
+	//special
+	string[] specialUnaryOperators = new string[] { "&", "*", ".", "", "," }; //?
+	string[] specialUnaryOperatorsFull = new string[] { "AddressOf", "PointerDereference", "MemberSelection", "PointerToMemberSelection", "Comma" };
+
+	string[] specialAssignOperators = new string[] { "=" };
+	string[] specialAssignOperatorsFull = new string[] { "Assign" };
+
+	//assignment
+
+	string[] arithmeticAssignmentOperators = new string[] { "+=", "-=", "*=", "/=" };
+	string[] arithmeticAssignmentOperatorsFull = new string[] { "AdditionAssignment", "SubtractionAssignment", "MultiplicationAssignment", "DivisionAssignment" };	
+
+	string[] bitwiseAssignmentOperators = new string[] { "&=", "|=", "^=" };
+	string[] bitwiseAssignmentOperatorsFull = new string[] { "BitwiseAndAssignment", "BitwiseOrAssignment", "ExclusiveOrAssignment" };
+	string[] bitwiseShiftAssignmentOperators = new string[] { "<<=", ">>=" };
+	string[] bitwiseShiftAssignmentOperatorsFull = new string[] { "LeftShiftAssignment", "RightShiftAssignment" };
+
+	string[] otherArithmeticAssignmentOperators = new string[] { "%=" };
+	string[] otherArithmeticAssignmentOperatorsFull = new string[] { "ModulusAssignment" };
+#>
+using System;
+using System.Runtime.CompilerServices;
+
+namespace Ark.Pipes {
+    public abstract partial class Provider<T> {
+	<#	
+	string[] operatorNames; 
+	string[] fullOperatorNames;
+	string operatorsGroup;
+	#>
+	<# 
+	operatorNames = arithmeticOperators;
+	fullOperatorNames = arithmeticOperatorsFull;
+	operatorsGroup = "Arithmetic";
+	for(int i = 0; i < operatorNames.Length; i++) { 
+		string op = operatorNames[i];
+		string opFull = fullOperatorNames[i];		
+	#>
+
+	    public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
+
+		//We must enable both of these operators. If we disable Provider<T> + T, then Provider<Vector> + Vector would be ambigous because of the two-way implicit conversions.
+        public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
+        public static Provider<T> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+
+		//public static Provider<T> operator <#=op#>(Provider<T> values1, object value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
+        //public static Provider<T> operator <#=op#>(object value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+
+
+		<# 
+		//if(false) {
+		foreach(Type type in types) { 
+			string typeName = type.Name;
+		#>
+
+		//We must enable only one operator from this group or Provider<int> + Provider<int> will be ambigous
+		//Problem: either Provider<Vector>*Provider<float> or Provider<float>*Provider<Vector> won't work.
+		//Possible solution: define Provider<T>+Provider<object> and Provider<object>+Provider<T>.
+		//Nobody will notice the Provider<object> + Provider<object> ambiguity.
+		//Possible problem: dynamics.
+        public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, values2); }		
+		////public static Provider<T> operator <#=op#>(Provider<<#=typeName#>> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(values1, values2); }
+
+        //public static Provider<T> operator <#=op#>(Provider<T> values1, <#=typeName#> value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, value2); }
+		//public static Provider<T> operator <#=op#>(<#=typeName#> value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(value1, values2); }
+
+		////[SpecialName]
+        ////public static Provider<T> op_<#=opFull#>(T value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(value1, values2); }        
+		////[SpecialName]
+        ////public static Provider<T> op_<#=opFull#>(Provider<<#=typeName#>> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(values1, value2); }
+		<#// } #>    
+		<# } #>    
+	<# } #>
+    }
+}
