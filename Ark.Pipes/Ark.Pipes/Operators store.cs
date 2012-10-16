@@ -194,6 +194,23 @@ namespace Ark.Pipes.Operators {
         public UnaryOperatorEntry.RestrictedResult<bool> False { get { return _FalseEntry; } }
     }
 
+    public class Conversion {
+        Dictionary<Tuple<Type, Type>, object> _ImplicitStore;
+        Dictionary<Tuple<Type, Type>, object> _ExplicitStore;
+        UnaryOperatorEntry.AnyTypes _ImplicitEntry;
+        UnaryOperatorEntry.AnyTypes _ExplicitEntry;        
+
+        internal Conversion() {
+            _ExplicitStore = new Dictionary<Tuple<Type, Type>, object>();
+            _ImplicitStore = new Dictionary<Tuple<Type, Type>, object>();
+            _ExplicitEntry = new UnaryOperatorEntry.AnyTypes(_ExplicitStore);
+            _ImplicitEntry = new UnaryOperatorEntry.AnyTypes(_ImplicitStore);
+        }
+
+        internal UnaryOperatorEntry.AnyTypes Implicit { get { return _ImplicitEntry; } }
+        public UnaryOperatorEntry.AnyTypes Explicit { get { return _ExplicitEntry; } }
+    }
+
     class Nullary<TResult> {
     }
 
