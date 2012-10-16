@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Ark.Pipes.Operators;
+using System;
 using System.ComponentModel;
 
 namespace Ark.Pipes {
-    public abstract class Provider<T> :
+    public abstract partial class Provider<T> :
 #if NOTIFICATIONS_DISABLE
         IOut<T>
 #else
@@ -103,6 +104,9 @@ namespace Ark.Pipes {
             return new Function<T1, T2, T3, T4, T>(function, arg1, arg2, arg3, arg4);
         }
         #endregion
+
+        static ProviderOperators _operators = new ProviderOperators();
+        public static ProviderOperators Operators { get { return _operators; } }
     }
 #if !NOTIFICATIONS_DISABLE
     public abstract class ProviderWithNotifier<T> : Provider<T> {
