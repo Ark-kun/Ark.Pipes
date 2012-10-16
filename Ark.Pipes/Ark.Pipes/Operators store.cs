@@ -6,7 +6,7 @@ using System.Linq;
 namespace Ark.Pipes.Operators {
     public class ProviderOperators {
         Unary _Unary = new Unary();
-        Conditional _Conditional = new Conditional();
+        Relational _Relational = new Relational();
         Arithmetic _Arithmetic = new Arithmetic();
         Bitwise _Bitwise = new Bitwise();
         Logical _Logical = new Logical();
@@ -15,7 +15,7 @@ namespace Ark.Pipes.Operators {
         internal ProviderOperators() { }
 
         public Unary Unary { get { return _Unary; } }
-        public Conditional Conditional { get { return _Conditional; } }
+        public Relational Relational { get { return _Relational; } }
         public Arithmetic Arithmetic { get { return _Arithmetic; } }
         public Bitwise Bitwise { get { return _Bitwise; } }
         internal Logical Logical { get { return _Logical; } }
@@ -56,7 +56,7 @@ namespace Ark.Pipes.Operators {
     }
 
 
-    public class Conditional {
+    public class Relational {
         Dictionary<Tuple<Type, Type, Type>, object> _EqualityStore;
         Dictionary<Tuple<Type, Type, Type>, object> _InequalityStore;
         Dictionary<Tuple<Type, Type, Type>, object> _GreaterThanStore;
@@ -70,7 +70,7 @@ namespace Ark.Pipes.Operators {
         BinaryOperatorEntry.SameTypes_ConstrainedResult<bool> _LessThanEntry;
         BinaryOperatorEntry.SameTypes_ConstrainedResult<bool> _LessThanOrEqualEntry;
 
-        internal Conditional() {
+        internal Relational() {
             _EqualityStore = new Dictionary<Tuple<Type, Type, Type>, object>();
             _InequalityStore = new Dictionary<Tuple<Type, Type, Type>, object>();
             _GreaterThanStore = new Dictionary<Tuple<Type, Type, Type>, object>();
