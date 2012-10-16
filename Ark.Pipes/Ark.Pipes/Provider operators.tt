@@ -1,6 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ output extension=".cs" #>
 <#@ import namespace="System" #>
+<#	#pragma warning disable 0162 #>
 <#
 	//private noOperatorsTypes = new Type[] {Byte, SByte, UInt16, Int16, UInt32, Int32, UInt64, Int64, Single, Double, Boolean, Char, String };
 	//private primitiveTypes = new Type[] {Byte, Int16, Int32, Int64, Single, Double,, Boolean, Char, String, DateTime, TimeSpan  };
@@ -66,42 +67,48 @@ namespace Ark.Pipes {
 	string[] fullOperatorNames;
 	string operatorsGroup;
 	#>
-	<# 
+	<#
 	operatorNames = arithmeticOperators;
 	fullOperatorNames = arithmeticOperatorsFull;
 	operatorsGroup = "Arithmetic";
-	for(int i = 0; i < operatorNames.Length; i++) { 
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
 	#>
 
-	    public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-
-		//We must enable both of these operators. If we disable Provider<T> + T, then Provider<Vector> + Vector would be ambigous because of the two-way implicit conversions.
-        public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-        public static Provider<T> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
-
-		//public static Provider<T> operator <#=op#>(Provider<T> values1, object value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(values1, value2); }
-        //public static Provider<T> operator <#=op#>(object value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(value1, values2); }
-
-
-		<# 
-		//if(false) {
-		foreach(Type type in types) { 
-			string typeName = type.Name;
+	#region <#=operatorsGroup#> operators
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
+		string op = operatorNames[i];
+		string opFull = fullOperatorNames[i];		
 		#>
 
+		#region <#=opFull#> operators
+
+	    public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
+		<#
+		//We must enable both of these operators. If we disable Provider<T> + T, then Provider<Vector> + Vector would be ambigous because of the two-way implicit conversions.
+		#>
+
+        public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
+        public static Provider<T> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		<# if(false) { #>
+		//public static Provider<T> operator <#=op#>(Provider<T> values1, object value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(values1, value2); }
+        //public static Provider<T> operator <#=op#>(object value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(value1, values2); }
+		<# } #>
+		<# foreach(Type type in types) { #>
+		<# string typeName = type.Name; #>
+		<# if(false) { #>
 		//We must enable only one operator from this group or Provider<int> + Provider<int> will be ambigous
 		//Problem: either Provider<Vector>*Provider<float> or Provider<float>*Provider<Vector> won't work.
 		//Possible solution: define Provider<T>+Provider<object> and Provider<object>+Provider<T>.
 		//Nobody will notice the Provider<object> + Provider<object> ambiguity.
 		//Possible problem: dynamics.
 		//Fixed the first problem: added the Provider<int> + Provider<int> operator
+		<# } #>
+
         public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, values2); }
 		public static Provider<T> operator <#=op#>(Provider<<#=typeName#>> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(values1, values2); }
 		[SpecialName]
         public static Provider<<#=typeName#>> op_<#=opFull#>(Provider<<#=typeName#>> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-
+		<# if(false) { #>
         //public static Provider<T> operator <#=op#>(Provider<T> values1, <#=typeName#> value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, value2); }
 		//public static Provider<T> operator <#=op#>(<#=typeName#> value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(value1, values2); }
 
@@ -115,73 +122,92 @@ namespace Ark.Pipes {
         //public static Provider<Vector> op_<#=opFull#>(Vector value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<Vector, <#=typeName#>, Vector>(value1, values2); }        
 		//[SpecialName]
         //public static Provider<Vector> op_<#=opFull#>(Provider<<#=typeName#>> values1, Vector value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, Vector, Vector>(values1, value2); }
+		<# } #>
+		<# } #>
 
-		<# //} #>    
-		<# } #>    
+		#endregion    
 	<# } #>
 
+	#endregion
+	<# operatorsGroup = "Unary"; #>
+
+	#region <#=operatorsGroup#> operators
 	<# 
 	operatorNames = unaryOperators;
-	fullOperatorNames = unaryOperatorsFull;
-	operatorsGroup = "Unary";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	fullOperatorNames = unaryOperatorsFull;	
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
 	<# } #>	
 
-	<# 
+	#endregion
+	<# operatorsGroup = "Conditional"; #>
+
+	#region <#=operatorsGroup#> operators
+	<#
 	operatorNames = equalityOperators;
-	fullOperatorNames = equalityOperatorsFull;
-	operatorsGroup = "Conditional";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	fullOperatorNames = equalityOperatorsFull;	
+	#>	
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
-
-		//public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-		//public static Provider<bool> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-		//public static Provider<bool> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		#>
+		<# if(false) { #>
+		////public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
+		////public static Provider<bool> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
+		////public static Provider<bool> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
 		//public static bool operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
 		//public static bool operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		<# } #>
 	<# } #>
-	
+	<##>
 	<# 
 	operatorNames = comparisonOperators;
 	fullOperatorNames = comparisonOperatorsFull;
-	operatorsGroup = "Conditional";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
 		public static Provider<bool> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
 		public static Provider<bool> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
 	<# } #>
 
+	#endregion
+	<# operatorsGroup = "Bitwise"; #>
+
+	#region <#=operatorsGroup#> operators
 	<# 
 	operatorNames = bitwiseUnaryOperators;
-	fullOperatorNames = bitwiseUnaryOperatorsFull;
-	operatorsGroup = "Bitwise";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	fullOperatorNames = bitwiseUnaryOperatorsFull;	
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
 	<# } #>
 
-	<# 
+	<#
 	operatorNames = bitwiseOperators;
 	fullOperatorNames = bitwiseOperatorsFull;
-	operatorsGroup = "Bitwise";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
 		public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
@@ -191,41 +217,49 @@ namespace Ark.Pipes {
 	<# 
 	operatorNames = bitwiseShiftOperators;
 	fullOperatorNames = bitwiseShiftOperatorsFull;
-	operatorsGroup = "Bitwise";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values, int shift) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values, shift); }
 	<# } #>
 
+	#endregion
+	<# operatorsGroup = "Logical"; #>
 
+	#region <#=operatorsGroup#> operators
 	<# 
 	operatorNames = logicalCheckOperators;
 	fullOperatorNames = logicalCheckOperatorsFull;
-	operatorsGroup = "Logical";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
-
+		#>
+		<# if(false) { #>
 		//public static bool operator <#=op#>(Provider<bool> values) { return values.Value == <#=op#>; }
 		//[SpecialName]
 		//public static bool op_<#=opFull#>(Provider<bool> values) { return values.Value == <#=op#>; }
+		<# } #>		
 
 		[SpecialName]
-		public static bool op_<#=opFull#>(Provider<bool> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); } //var bools = values as Provider<bool>; return ((bool)(bools != null)) && (bools.Value == <#=op#>);
+		public static bool op_<#=opFull#>(Provider<bool> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
+		<# //var bools = values as Provider<bool>; return ((bool)(bools != null)) && (bools.Value == \<#=op\#>); #>
 	<# } #>
 
 	<# 
 	operatorNames = logicalUnaryOperators;
 	fullOperatorNames = logicalUnaryOperatorsFull;
-	operatorsGroup = "Logical";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		[SpecialName]
 		public static Provider<bool> op_<#=opFull#>(Provider<bool> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
@@ -234,11 +268,12 @@ namespace Ark.Pipes {
 	<# 
 	operatorNames = logicalOperators;
 	fullOperatorNames = logicalOperatorsFull;
-	operatorsGroup = "Logical";
-	for(int i = 0; i < operatorNames.Length; i++) { 
+	#>
+	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+		<#
 		string op = operatorNames[i];
 		string opFull = fullOperatorNames[i];		
-	#>
+		#>
 
 		[SpecialName]
 		public static Provider<bool> op_<#=opFull#>(Provider<bool> values1, Provider<bool> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
@@ -247,5 +282,7 @@ namespace Ark.Pipes {
 		[SpecialName]
 		public static Provider<bool> op_<#=opFull#>(bool value1, Provider<bool> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
 	<# } #>
+
+	#endregion
     }
 }
