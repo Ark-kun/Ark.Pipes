@@ -9,7 +9,7 @@ namespace Ark.Pipes.Operators {
         Conditional _Conditional = new Conditional();
         Arithmetic _Arithmetic = new Arithmetic();
         Bitwise _Bitwise = new Bitwise();
-        //logical
+        Logical _Logical = new Logical();
         //conversion!
 
         internal ProviderOperators() { }
@@ -18,6 +18,7 @@ namespace Ark.Pipes.Operators {
         public Conditional Conditional { get { return _Conditional; } }
         public Arithmetic Arithmetic { get { return _Arithmetic; } }
         public Bitwise Bitwise { get { return _Bitwise; } }
+        internal Logical Logical { get { return _Logical; } }
     }
 
 
@@ -161,6 +162,38 @@ namespace Ark.Pipes.Operators {
         public BinaryOperatorEntry.SameTypes_ConstrainedOperand2<int> RightShift { get { return _RightShiftEntry; } }
     }
 
+    public class Logical {
+        Dictionary<Tuple<Type, Type>, object> _LogicalNotStore;
+        Dictionary<Tuple<Type, Type, Type>, object> _LogicalAndStore;
+        Dictionary<Tuple<Type, Type, Type>, object> _LogicalOrStore;
+        Dictionary<Tuple<Type, Type>, object> _TrueStore;
+        Dictionary<Tuple<Type, Type>, object> _FalseStore;        
+        UnaryOperatorEntry.SameTypes _LogicalNotEntry;
+        BinaryOperatorEntry.SameTypes _LogicalAndEntry;
+        BinaryOperatorEntry.SameTypes _LogicalOrEntry;
+        UnaryOperatorEntry.RestrictedResult<bool> _TrueEntry;
+        UnaryOperatorEntry.RestrictedResult<bool> _FalseEntry;
+
+        internal Logical() {
+            _LogicalNotStore = new Dictionary<Tuple<Type, Type>, object>();
+            _LogicalAndStore = new Dictionary<Tuple<Type, Type, Type>, object>();
+            _LogicalOrStore = new Dictionary<Tuple<Type, Type, Type>, object>();
+            _TrueStore = new Dictionary<Tuple<Type, Type>, object>();
+            _FalseStore = new Dictionary<Tuple<Type, Type>, object>();
+            _LogicalNotEntry = new UnaryOperatorEntry.SameTypes(_LogicalNotStore);
+            _LogicalAndEntry = new BinaryOperatorEntry.SameTypes(_LogicalAndStore);
+            _LogicalOrEntry = new BinaryOperatorEntry.SameTypes(_LogicalOrStore);
+            _TrueEntry = new UnaryOperatorEntry.RestrictedResult<bool>(_TrueStore);
+            _FalseEntry = new UnaryOperatorEntry.RestrictedResult<bool>(_FalseStore);
+        }
+
+        public UnaryOperatorEntry.SameTypes LogicalNot { get { return _LogicalNotEntry; } }
+        public BinaryOperatorEntry.SameTypes LogicalAnd { get { return _LogicalAndEntry; } }
+        public BinaryOperatorEntry.SameTypes LogicalOr { get { return _LogicalOrEntry; } }
+        public UnaryOperatorEntry.RestrictedResult<bool> True { get { return _TrueEntry; } }
+        public UnaryOperatorEntry.RestrictedResult<bool> False { get { return _FalseEntry; } }
+    }
+
     class Nullary<TResult> {
     }
 
@@ -184,6 +217,29 @@ namespace Ark.Pipes.Operators {
 
             public Provider<T> GetProvider<T>(Provider<T> operand) {
                 var entry = UnaryOperatorEntry.GetEntry<T, T>(_entries);
+                return entry.GetProvider(operand);
+            }
+        }
+
+        public class RestrictedResult<TResult> {
+            Dictionary<Tuple<Type, Type>, object> _entries;
+
+            internal RestrictedResult(Dictionary<Tuple<Type, Type>, object> entries) {
+                _entries = entries;
+            }
+
+            public void SetHandler<TOperand>(Func<TOperand, TResult> handler) {
+                var entry = UnaryOperatorEntry.GetEntry<TOperand, TResult>(_entries);
+                entry.SetHandler(handler);
+            }
+
+            public void SetProviderFactory<TOperand>(Func<Provider<TOperand>, Provider<TResult>> providerFactory) {
+                var entry = UnaryOperatorEntry.GetEntry<TOperand, TResult>(_entries);
+                entry.SetProviderFactory(providerFactory);
+            }
+
+            public Provider<TResult> GetProvider<TOperand>(Provider<TOperand> operand) {
+                var entry = UnaryOperatorEntry.GetEntry<TOperand, TResult>(_entries);
                 return entry.GetProvider(operand);
             }
         }
@@ -431,6 +487,32 @@ namespace Ark.Pipes.Operators {
                 var entry = BinaryOperatorEntry.GetEntry<TOperand1, TOperand2, TResult>(_entries);
                 return entry.GetProvider(operand1, operands2);
             }
+
+            public Provider<TResult> GetProvider<TOperand1, TResult>(Provider<TOperand1> operands1, object operand2) {
+                Type operandType = GetOperandType(operand2);
+                var entry = BinaryOperatorEntry.GetExistingEntry<TResult>(_entries, typeof(TOperand1), operandType);
+                return entry.GetProvider(operands1, operand2);
+            }
+
+            public Provider<TResult> GetProvider<TOperand2, TResult>(object operand1, Provider<TOperand2> operands2) {
+                Type operandType = GetOperandType(operand1);
+                var entry = BinaryOperatorEntry.GetExistingEntry<TResult>(_entries, operandType, typeof(TOperand2));
+                return entry.GetProvider(operand1, operands2);
+            }
+
+            Type GetOperandType(object operand) {
+                Type objectType = operand.GetType();
+                Type operandType = objectType;
+                Type genericProvider = typeof(Provider<>);
+                for (Type type = objectType; type != null; type = type.BaseType) {
+                    if (type.IsGenericType && type.GetGenericTypeDefinition() == genericProvider) {
+                        var providerTypeArgument = type.GetGenericArguments()[0];
+                        operandType = providerTypeArgument;
+                        break;
+                    }
+                }
+                return operandType;
+            }
         }
 
 
@@ -446,10 +528,28 @@ namespace Ark.Pipes.Operators {
             }
             return entry;
         }
+
+        internal static IBinaryOperatorEntry<TResult> GetExistingEntry<TResult>(Dictionary<Tuple<Type, Type, Type>, object> entries, Type operand1Type, Type operand2Type) {
+            var key = Tuple.Create(operand1Type, operand2Type, typeof(TResult));
+            IBinaryOperatorEntry<TResult> entry;
+            object entryObject;
+            if (entries.TryGetValue(key, out entryObject)) {
+                entry = (IBinaryOperatorEntry<TResult>)entryObject;
+            } else {
+                throw new InvalidOperationException(string.Format("No handler was registered for this operation for types ({0}, {1}) -> {2}.", operand1Type.Name, operand2Type.Name, typeof(TResult).Name));
+            }
+            return entry;
+        }
+
     }
 
+    interface IBinaryOperatorEntry<TResult> {
+        Provider<TResult> GetProvider(object operand1, object operand2);
+    }
 
-    class BinaryOperatorEntry<TOperand1, TOperand2, TResult> {
+    class BinaryOperatorEntry<TOperand1, TOperand2, TResult> : IBinaryOperatorEntry<TResult> {
+        static Exception NotFoundException = new InvalidOperationException(string.Format("No handler was registered for this operation for types ({0}, {1}) -> {2}.", typeof(TOperand1).Name, typeof(TOperand2).Name, typeof(TResult).Name));
+
         Func<TOperand1, TOperand2, TResult> _handler;
         Func<Provider<TOperand1>, Provider<TOperand2>, Provider<TResult>> _providerFactory;
         Func<TOperand1, Provider<TOperand2>, Provider<TResult>> _providerFactoryLeftConst;
@@ -472,27 +572,102 @@ namespace Ark.Pipes.Operators {
         }
 
         public Provider<TResult> GetProvider(Provider<TOperand1> operands1, Provider<TOperand2> operands2) {
+            var constantOperands1 = operands1 as Constant<TOperand1>;
+            var constantOperands2 = operands2 as Constant<TOperand2>;
+            if (constantOperands1 != null) {
+                if (constantOperands2 != null) {
+                    return GetProvider(constantOperands1.Value, constantOperands2.Value);
+                } else {
+                    return GetProvider(constantOperands1.Value, operands2);
+                }
+            } else {
+                if (constantOperands2 != null) {
+                    return GetProvider(operands1, constantOperands2.Value);
+                } else {
+                    return GetProviderInternal(operands1, operands2);
+                }
+            }            
+        }
+
+        Provider<TResult> GetProviderInternal(Provider<TOperand1> operands1, Provider<TOperand2> operands2) {
             if (_providerFactory != null) {
                 return _providerFactory(operands1, operands2);
             }
             if (_handler != null) {
                 return Provider.Create(_handler, operands1, operands2);
             }
-            throw new InvalidOperationException(string.Format("No handler was registered for this operation for types ({0}, {1}) -> {2}.", typeof(TOperand1).Name, typeof(TOperand2).Name, typeof(TResult).Name));
+            throw NotFoundException;
         }
 
         public Provider<TResult> GetProvider(Provider<TOperand1> operands1, TOperand2 operand2) {
+            var constantOperands1 = operands1 as Constant<TOperand1>;
+            if (constantOperands1 != null) {
+                return GetProvider(constantOperands1.Value, operand2);
+            }
             if (_providerFactoryRightConst != null) {
                 return _providerFactoryRightConst(operands1, operand2);
             }
-            return GetProvider(operands1, Provider.Create(operand2));
+            return GetProviderInternal(operands1, Provider.Create(operand2));
         }
 
         public Provider<TResult> GetProvider(TOperand1 operand1, Provider<TOperand2> operands2) {
+            var constantOperands2 = operands2 as Constant<TOperand2>;
+            if (constantOperands2 != null) {
+                return GetProvider(operand1, constantOperands2.Value);
+            }
             if (_providerFactoryLeftConst != null) {
                 return _providerFactoryLeftConst(operand1, operands2);
             }
-            return GetProvider(Provider.Create(operand1), operands2);
+            return GetProviderInternal(Provider.Create(operand1), operands2);
         }
+
+        public Provider<TResult> GetProvider(TOperand1 operand1, TOperand2 operand2) {
+            TResult result;
+            if (_handler != null) {
+                result = _handler(operand1, operand2);
+            } else if (_providerFactory != null) {
+                result = _providerFactory(operand1, operand2).Value;
+            } else if (_providerFactoryRightConst != null) {
+                result = _providerFactoryRightConst(operand1, operand2).Value;
+            } else if (_providerFactoryLeftConst != null) {
+                result = _providerFactoryLeftConst(operand1, operand2).Value;
+            } else {
+                throw NotFoundException;
+            }
+            return Provider.Create(result);
+        }
+
+        public Provider<TResult> GetProvider(object operand1, object operand2) {
+            var providerOperand1 = operand1 as Provider<TOperand1>;
+            var providerOperand2 = operand2 as Provider<TOperand2>;
+           
+            bool isValue1 = operand1 is TOperand1;
+            bool isProvider1 = providerOperand1 != null;
+            bool isValue2 = operand2 is TOperand2;
+            bool isProvider2 = providerOperand2 != null;
+
+            if (isValue1) {
+                TOperand1 value1 = (TOperand1)operand1;
+                if (isValue2) {
+                    TOperand2 value2 = (TOperand2)operand2;
+                    return GetProvider(value1, value2);
+                } else if (isProvider2) {
+                    return GetProvider(value1, providerOperand2);
+                } else {
+                    throw new ArgumentException(string.Format("Argument operand2 is of type {0} which is neither {1}, nor {2}.", operand2.GetType().Name, typeof(TOperand2), typeof(Provider<TOperand2>)));
+                }
+            } else if (isProvider1) {
+                if (isValue2) {
+                    TOperand2 value2 = (TOperand2)operand2;
+                    return GetProvider(providerOperand1, value2);
+                } else if (isProvider2) {
+                    return GetProvider(providerOperand1, providerOperand2);
+                } else {
+                    throw new ArgumentException(string.Format("Argument operand2 is of type {0} which is neither {1}, nor {2}.", operand2.GetType().Name, typeof(TOperand2), typeof(Provider<TOperand2>)));
+                }
+            } else {
+                throw new ArgumentException(string.Format("Argument operand1 is of type {0} which is neither {1}, nor {2}.", operand1.GetType().Name, typeof(TOperand1), typeof(Provider<TOperand1>)));
+            }
+        }        
     }
 }
