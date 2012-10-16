@@ -68,9 +68,9 @@ namespace Ark.Physics.Forces { //.Pipes {
             return res;
         }
 
-        Property<Vector3> AttractionPoint {
+        Provider<Vector3> AttractionPoint {
             get { return _attractionPoint; }
-            set { _attractionPoint.Provider = value.Provider; }
+            set { _attractionPoint.Provider = value; }
         }
     }
 }

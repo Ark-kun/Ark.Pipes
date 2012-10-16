@@ -33,7 +33,7 @@ namespace Ark.Wpf { //.Pipes.Wpf {
             OnPropertyChanged();
         }
 
-        public Property<T> Value {
+        public Provider<T> Value {
             get { return _value; }
             set { _value.Provider = value;}
         }
