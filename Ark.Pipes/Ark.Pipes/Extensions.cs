@@ -24,5 +24,12 @@ namespace Ark.Pipes {
             provider.Notifier.ValueChanged -= onChanged;
         }
 #endif
+
+
+#if !NOTIFICATIONS_DISABLE
+        public Provider<T> WithChangeTrigger<T>(this IOut<T> provider, ITrigger changedTrigger) {
+            return Source<T>.Create(provider, changedTrigger);
+        }
+#endif
     }
 }

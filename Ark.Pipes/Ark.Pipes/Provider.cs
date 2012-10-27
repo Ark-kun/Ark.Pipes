@@ -64,12 +64,6 @@ namespace Ark.Pipes {
         static public implicit operator T(Provider<T> provider) {
             return provider.Value;
         }
-
-#if !NOTIFICATIONS_DISABLE
-        public Provider<T> WithChangeTrigger(ITrigger changedTrigger) {
-            return Source<T>.Create(this, changedTrigger);
-        }
-#endif
     }
 
     public static class Provider {
