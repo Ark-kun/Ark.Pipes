@@ -27,7 +27,7 @@ namespace Ark.Pipes {
 
 
 #if !NOTIFICATIONS_DISABLE
-        public Provider<T> WithChangeTrigger<T>(this IOut<T> provider, ITrigger changedTrigger) {
+        public static Provider<T> WithChangeTrigger<T>(this IOut<T> provider, ITrigger changedTrigger) {
             return Source<T>.Create(provider, changedTrigger);
         }
 #endif
