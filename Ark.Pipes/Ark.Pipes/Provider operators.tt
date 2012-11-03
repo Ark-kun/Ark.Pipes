@@ -1,6 +1,7 @@
 ﻿<#@ template language="C#" #>
 <#@ output extension=".cs" #>
 <#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
 <#@ include file="Operators.t4" #>
 <#	#pragma warning disable 0162 #>
 <#
@@ -12,21 +13,19 @@ using System.Runtime.CompilerServices;
 namespace Ark.Pipes {
     public abstract partial class Provider<T> {
 	<#	
-	string[] operatorNames; 
-	string[] fullOperatorNames;
+	Dictionary<string, string> operators; 
 	string operatorsGroup;
 	#>
 	<#
-	operatorNames = arithmeticOperators;
-	fullOperatorNames = arithmeticOperatorsFull;
+	operators = arithmeticOperators;
 	operatorsGroup = "Arithmetic";
 	#>
 
 	#region <#=operatorsGroup#> operators
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		#region <#=opFull#> operators
@@ -82,13 +81,12 @@ namespace Ark.Pipes {
 
 	#region <#=operatorsGroup#> operators
 	<# 
-	operatorNames = unaryOperators;
-	fullOperatorNames = unaryOperatorsFull;	
+	operators = unaryOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
@@ -99,13 +97,12 @@ namespace Ark.Pipes {
 
 	#region <#=operatorsGroup#> operators
 	<#
-	operatorNames = equalityOperators;
-	fullOperatorNames = equalityOperatorsFull;	
+	operators = equalityOperators;
 	#>	
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 		<# if(false) { #>
 		////public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
@@ -117,13 +114,12 @@ namespace Ark.Pipes {
 	<# } #>
 	<##>
 	<# 
-	operatorNames = comparisonOperators;
-	fullOperatorNames = comparisonOperatorsFull;
+	operators = comparisonOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
@@ -136,26 +132,24 @@ namespace Ark.Pipes {
 
 	#region <#=operatorsGroup#> operators
 	<# 
-	operatorNames = bitwiseUnaryOperators;
-	fullOperatorNames = bitwiseUnaryOperatorsFull;	
+	operators = bitwiseUnaryOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
 	<# } #>
 
 	<#
-	operatorNames = bitwiseOperators;
-	fullOperatorNames = bitwiseOperatorsFull;
+	operators = bitwiseOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
@@ -164,13 +158,12 @@ namespace Ark.Pipes {
 	<# } #>
 
 	<# 
-	operatorNames = bitwiseShiftOperators;
-	fullOperatorNames = bitwiseShiftOperatorsFull;
+	operators = bitwiseShiftOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		public static Provider<T> operator <#=op#>(Provider<T> values, int shift) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values, shift); }
@@ -181,13 +174,12 @@ namespace Ark.Pipes {
 
 	#region <#=operatorsGroup#> operators
 	<# 
-	operatorNames = logicalCheckOperators;
-	fullOperatorNames = logicalCheckOperatorsFull;
+	operators = logicalCheckOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 		<# if(false) { #>
 		//public static bool operator <#=op#>(Provider<bool> values) { return values.Value == <#=op#>; }
@@ -201,13 +193,12 @@ namespace Ark.Pipes {
 	<# } #>
 
 	<# 
-	operatorNames = logicalUnaryOperators;
-	fullOperatorNames = logicalUnaryOperatorsFull;
+	operators = logicalUnaryOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		[SpecialName]
@@ -215,13 +206,12 @@ namespace Ark.Pipes {
 	<# } #>
 
 	<# 
-	operatorNames = logicalOperators;
-	fullOperatorNames = logicalOperatorsFull;
+	operators = logicalOperators;
 	#>
-	<# for(int i = 0; i < operatorNames.Length; i++) { #>
+	<# foreach(var kv in operators) { #>
 		<#
-		string op = operatorNames[i];
-		string opFull = fullOperatorNames[i];		
+		string op = kv.Value;
+		string opFull = kv.Key;
 		#>
 
 		[SpecialName]

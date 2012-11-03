@@ -1,56 +1,111 @@
 ﻿<#@ import namespace="System" #>
+<#@ import namespace="System.Collections.Generic" #>
 <#	#pragma warning disable 0162 #>
-<#	
+<#
 	Type[] systemTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String), typeof(DateTime), typeof(TimeSpan) };
 	Type[] specialOperatorsTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String) };
 
-	string[] arithmeticOperators = new string[] { "+", "-", "*", "/", "%" };
-	string[] arithmeticOperatorsFull = new string[] { "Addition", "Subtraction", "Multiply", "Division", "Modulus" };	
-	string[] unaryOperators = new string[] { "+", "-", "++", "--" };
-	string[] unaryOperatorsFull = new string[] { "UnaryPlus", "UnaryNegation", "Increment", "Decrement" };
-	string[] equalityOperators = new string[] { "==", "!=" };
-	string[] equalityOperatorsFull = new string[] { "Equality", "Equality" };
-	string[] comparisonOperators = new string[] { ">", ">=", "<", "<=" };
-	string[] comparisonOperatorsFull = new string[] { "GreaterThan", "GreaterThanOrEqual", "LessThan", "LessThanOrEqual" };
+	Dictionary<string, string> arithmeticOperators = new Dictionary<string, string> {
+		{ "Addition",    "+" },
+		{ "Subtraction", "-" },
+		{ "Multiply",    "*" },
+		{ "Division",    "/" },
+		//{ "Exponent",    "^" },
+		{ "Modulus",     "%" }		
+	};
+	Dictionary<string, string> unaryOperators = new Dictionary<string, string> {
+		{ "UnaryPlus",     "+"  },
+		{ "UnaryNegation", "-"  },
+		{ "Increment",     "++" },
+		{ "Decrement",     "--" }
+	};
+	Dictionary<string, string> equalityOperators = new Dictionary<string, string> {
+		{ "Equality",   "==" },
+		{ "Inequality", "!=" }
+    };
+	Dictionary<string, string> comparisonOperators = new Dictionary<string, string> {
+		{ "GreaterThan",        ">"  },
+		{ "GreaterThanOrEqual", ">=" },
+		{ "LessThan",           "<"  },
+		{ "LessThanOrEqual",    "<=" }
+	};
 
-	string[] bitwiseUnaryOperators = new string[] { "~" };
-	string[] bitwiseUnaryOperatorsFull = new string[] { "OnesComplement" };
-	string[] bitwiseOperators = new string[] { "&", "|", "^" };
-	string[] bitwiseOperatorsFull = new string[] { "BitwiseAnd", "BitwiseOr", "ExclusiveOr" };
-	string[] bitwiseShiftOperators = new string[] { "<<", ">>" };
-	string[] bitwiseShiftOperatorsFull = new string[] { "LeftShift", "RightShift" };
 
-	string[] logicalCheckOperators = new string[] { "true", "false" };
-	string[] logicalCheckOperatorsFull = new string[] { "True", "False" };
+	Dictionary<string, string> bitwiseUnaryOperators = new Dictionary<string, string> {
+		{ "OnesComplement", "~" }
+    };
+	Dictionary<string, string> bitwiseOperators = new Dictionary<string, string> {
+		{ "BitwiseAnd",  "&" },
+		{ "BitwiseOr",   "|" },
+		{ "ExclusiveOr", "^" }
+	};
+	Dictionary<string, string> bitwiseShiftOperators = new Dictionary<string, string> {
+		{ "LeftShift",  "<<" },
+		{ "RightShift", ">>" }
+	};
 
-	string[] logicalUnaryOperators = new string[] { "!" };
-	string[] logicalUnaryOperatorsFull = new string[] { "LogicalNot" };
+	Dictionary<string, string> logicalCheckOperators = new Dictionary<string, string> {
+		{ "True",  "true"  },
+		{ "False", "false" }
+	};
 
-	string[] logicalOperators = new string[] { "&", "|" };
-	string[] logicalOperatorsFull = new string[] { "LogicalAnd", "LogicalOr" };
+	Dictionary<string, string> logicalUnaryOperators = new Dictionary<string, string> {
+		{ "LogicalNot", "!" }
+    };
+
+	Dictionary<string, string> logicalOperators = new Dictionary<string, string> {
+		{ "LogicalAnd", "&" },
+		{ "LogicalOr",  "|" }
+	};
 
 	//other
 
-	string[] conversionOperators = new string[] { "implicit", "explicit" };
-	string[] conversionOperatorsFull = new string[] { "Implicit", "Explicit" };
+	Dictionary<string, string> conversionOperators = new Dictionary<string, string> {
+		{ "Implicit", "implicit" },
+		{ "Explicit", "explicit" }
+	};
 
 	//special
-	string[] specialUnaryOperators = new string[] { "&", "*", ".", "", "," }; //?
-	string[] specialUnaryOperatorsFull = new string[] { "AddressOf", "PointerDereference", "MemberSelection", "PointerToMemberSelection", "Comma" };
+	Dictionary<string, string> specialUnaryOperators = new Dictionary<string, string> {
+		{ "AddressOf",                "&"   },
+		{ "PointerDereference",       "*"   },
+		{ "MemberSelection",          "->"  },
+		{ "PointerToMemberSelection", "->*" },
+		{ "Comma"                   , ","   }
+	};
 
-	string[] specialAssignOperators = new string[] { "=" };
-	string[] specialAssignOperatorsFull = new string[] { "Assign" };
+	Dictionary<string, string> specialAssignOperators = new Dictionary<string, string> {
+		{ "Assign", "=" }
+    };
 
 	//assignment
+	Dictionary<string, string> arithmeticAssignmentOperators = new Dictionary<string, string> {
+		{ "AdditionAssignment",       "+=" },
+		{ "SubtractionAssignment",    "-=" },
+		{ "MultiplicationAssignment", "*=" },
+		{ "DivisionAssignment",       "/=" },
+		{ "ModulusAssignment",        "%=" }
+	};
+	Dictionary<string, string> bitwiseAssignmentOperators = new Dictionary<string, string> {
+		{ "BitwiseAndAssignment",  "&=" },
+		{ "BitwiseOrAssignment",   "|=" },
+		{ "ExclusiveOrAssignment", "^=" }
+    };
+	Dictionary<string, string> bitwiseShiftAssignmentOperators = new Dictionary<string, string> {
+		{ "LeftShiftAssignment",  "<<=" },
+		{ "RightShiftAssignment", ">>=" }
+	};
 
-	string[] arithmeticAssignmentOperators = new string[] { "+=", "-=", "*=", "/=" };
-	string[] arithmeticAssignmentOperatorsFull = new string[] { "AdditionAssignment", "SubtractionAssignment", "MultiplicationAssignment", "DivisionAssignment" };	
-
-	string[] bitwiseAssignmentOperators = new string[] { "&=", "|=", "^=" };
-	string[] bitwiseAssignmentOperatorsFull = new string[] { "BitwiseAndAssignment", "BitwiseOrAssignment", "ExclusiveOrAssignment" };
-	string[] bitwiseShiftAssignmentOperators = new string[] { "<<=", ">>=" };
-	string[] bitwiseShiftAssignmentOperatorsFull = new string[] { "LeftShiftAssignment", "RightShiftAssignment" };
-
-	string[] otherArithmeticAssignmentOperators = new string[] { "%=" };
-	string[] otherArithmeticAssignmentOperatorsFull = new string[] { "ModulusAssignment" };
+	//class OperatorName {
+	//	  string _fullName;
+	//	  string _symbol;
+	//
+	//    public OperatorName(string fullName , string symbol) {
+	//        _fullName = fullName;
+	//        _symbol = symbol;
+	//    }
+	//
+	//    public String FullName { get {return _fullName; } }
+	//    public Symbol { get {return _symbol; } }
+	//}
 #>
