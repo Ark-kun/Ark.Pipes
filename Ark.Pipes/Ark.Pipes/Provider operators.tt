@@ -12,34 +12,22 @@ using System.Runtime.CompilerServices;
 
 namespace Ark.Pipes {
     public abstract partial class Provider<T> {
-	<#	
-	Dictionary<string, string> operators; 
-	string operatorsGroup;
-	#>
-	<#
-	operators = arithmeticOperators;
-	operatorsGroup = "Arithmetic";
-	#>
 
-	#region <#=operatorsGroup#> operators
-	<# foreach(var kv in operators) { #>
+	#region Arithmetic operators
+	<# foreach(var op in arithmeticOperators) { #>
+
+		#region <#=op.Name#> operators
+
+	    public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
 		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
+		//We must enable both of these operators. If we disable Provider<T> + T, then Provider<Vector> + Vector would be ambiguos because of the two-way implicit conversions.
 		#>
 
-		#region <#=opFull#> operators
-
-	    public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-		<#
-		//We must enable both of these operators. If we disable Provider<T> + T, then Provider<Vector> + Vector would be ambigous because of the two-way implicit conversions.
-		#>
-
-        public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-        public static Provider<T> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+        public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
+        public static Provider<T> operator <#=op.Symbol#>(T value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
 		<# if(false) { #>
-		//public static Provider<T> operator <#=op#>(Provider<T> values1, object value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(values1, value2); }
-        //public static Provider<T> operator <#=op#>(object value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, T>(value1, values2); }
+		//public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, object value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<T, T>(values1, value2); }
+        //public static Provider<T> operator <#=op.Symbol#>(object value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<T, T>(value1, values2); }
 		<# } #>
 		<# foreach(Type type in types) { #>
 		<# string typeName = type.Name; #>
@@ -52,24 +40,24 @@ namespace Ark.Pipes {
 		//Fixed the first problem: added the Provider<int> + Provider<int> operator
 		<# } #>
 
-        public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, values2); }
-		public static Provider<T> operator <#=op#>(Provider<<#=typeName#>> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(values1, values2); }
+        public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<T, <#=typeName#>, T>(values1, values2); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<<#=typeName#>> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<<#=typeName#>, T, T>(values1, values2); }
 		[SpecialName]
-        public static Provider<<#=typeName#>> op_<#=opFull#>(Provider<<#=typeName#>> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
+        public static Provider<<#=typeName#>> op_<#=op.Name#>(Provider<<#=typeName#>> values1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
 		<# if(false) { #>
-        //public static Provider<T> operator <#=op#>(Provider<T> values1, <#=typeName#> value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(values1, value2); }
-		//public static Provider<T> operator <#=op#>(<#=typeName#> value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(value1, values2); }
+        //public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, <#=typeName#> value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<T, <#=typeName#>, T>(values1, value2); }
+		//public static Provider<T> operator <#=op.Symbol#>(<#=typeName#> value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<<#=typeName#>, T, T>(value1, values2); }
 
 		////[SpecialName]
-        ////public static Provider<T> op_<#=opFull#>(T value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<T, <#=typeName#>, T>(value1, values2); }        
+        ////public static Provider<T> op_<#=op.Name#>(T value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<T, <#=typeName#>, T>(value1, values2); }        
 		////[SpecialName]
-        ////public static Provider<T> op_<#=opFull#>(Provider<<#=typeName#>> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, T, T>(values1, value2); }
+        ////public static Provider<T> op_<#=op.Name#>(Provider<<#=typeName#>> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<<#=typeName#>, T, T>(values1, value2); }
 
 		//uncomment to fix the Vector * Provider<double> -> Provider<Vector> operator.
 		//[SpecialName]
-        //public static Provider<Vector> op_<#=opFull#>(Vector value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<Vector, <#=typeName#>, Vector>(value1, values2); }        
+        //public static Provider<Vector> op_<#=op.Name#>(Vector value1, Provider<<#=typeName#>> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<Vector, <#=typeName#>, Vector>(value1, values2); }        
 		//[SpecialName]
-        //public static Provider<Vector> op_<#=opFull#>(Provider<<#=typeName#>> values1, Vector value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider<<#=typeName#>, Vector, Vector>(values1, value2); }
+        //public static Provider<Vector> op_<#=op.Name#>(Provider<<#=typeName#>> values1, Vector value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider<<#=typeName#>, Vector, Vector>(values1, value2); }
 		<# } #>
 		<# } #>
 
@@ -77,149 +65,82 @@ namespace Ark.Pipes {
 	<# } #>
 
 	#endregion
-	<# operatorsGroup = "Unary"; #>
 
-	#region <#=operatorsGroup#> operators
-	<# 
-	operators = unaryOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	#region Unary operators
+	<# foreach(var op in unaryOperators) { #>
 
-		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>	
 
 	#endregion
-	<# operatorsGroup = "Relational"; #>
 
-	#region <#=operatorsGroup#> operators
-	<#
-	operators = equalityOperators;
-	#>	
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	#region Relational operators
+	<# foreach(var op in equalityOperators) { #>
 		<# if(false) { #>
-		////public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-		////public static Provider<bool> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-		////public static Provider<bool> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
-		//public static bool operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-		//public static bool operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		////public static Provider<bool> operator <#=op.Symbol#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
+		////public static Provider<bool> operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
+		////public static Provider<bool> operator <#=op.Symbol#>(T value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
+		//public static bool operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
+		//public static bool operator <#=op.Symbol#>(T value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
 		<# } #>
 	<# } #>
 	<##>
-	<# 
-	operators = comparisonOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	<# foreach(var op in comparisonOperators) { #>
 
-		public static Provider<bool> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-		public static Provider<bool> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-		public static Provider<bool> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		public static Provider<bool> operator <#=op.Symbol#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
+		public static Provider<bool> operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
+		public static Provider<bool> operator <#=op.Symbol#>(T value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
 	<# } #>
 
 	#endregion
-	<# operatorsGroup = "Bitwise"; #>
 
-	#region <#=operatorsGroup#> operators
-	<# 
-	operators = bitwiseUnaryOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	#region Bitwise operators
+	<# foreach(var op in bitwiseUnaryOperators) { #>
 
-		public static Provider<T> operator <#=op#>(Provider<T> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>
 
-	<#
-	operators = bitwiseOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	<# foreach(var op in bitwiseOperators) { #>
 
-		public static Provider<T> operator <#=op#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
-		public static Provider<T> operator <#=op#>(Provider<T> values1, T value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
-		public static Provider<T> operator <#=op#>(T value1, Provider<T> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
+		public static Provider<T> operator <#=op.Symbol#>(T value1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
 	<# } #>
 
-	<# 
-	operators = bitwiseShiftOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	<# foreach(var op in bitwiseShiftOperators) { #>
 
-		public static Provider<T> operator <#=op#>(Provider<T> values, int shift) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values, shift); }
+		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values, int shift) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values, shift); }
 	<# } #>
 
 	#endregion
-	<# operatorsGroup = "Logical"; #>
 
-	#region <#=operatorsGroup#> operators
-	<# 
-	operators = logicalCheckOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	#region Logical operators
+	<# foreach(var op in logicalCheckOperators) { #>
 		<# if(false) { #>
-		//public static bool operator <#=op#>(Provider<bool> values) { return values.Value == <#=op#>; }
+		//public static bool operator <#=op.Symbol#>(Provider<bool> values) { return values.Value == <#=op.Symbol#>; }
 		//[SpecialName]
-		//public static bool op_<#=opFull#>(Provider<bool> values) { return values.Value == <#=op#>; }
+		//public static bool op_<#=op.Name#>(Provider<bool> values) { return values.Value == <#=op.Symbol#>; }
 		<# } #>		
 
 		[SpecialName]
-		public static bool op_<#=opFull#>(Provider<bool> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
+		public static bool op_<#=op.Name#>(Provider<bool> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 		<# //var bools = values as Provider<bool>; return ((bool)(bools != null)) && (bools.Value == \<#=op\#>); #>
 	<# } #>
 
-	<# 
-	operators = logicalUnaryOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	<# foreach(var op in logicalUnaryOperators) { #>
 
 		[SpecialName]
-		public static Provider<bool> op_<#=opFull#>(Provider<bool> values) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values); }
+		public static Provider<bool> op_<#=op.Name#>(Provider<bool> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>
 
-	<# 
-	operators = logicalOperators;
-	#>
-	<# foreach(var kv in operators) { #>
-		<#
-		string op = kv.Value;
-		string opFull = kv.Key;
-		#>
+	<# foreach(var op in logicalOperators) { #>
 
 		[SpecialName]
-		public static Provider<bool> op_<#=opFull#>(Provider<bool> values1, Provider<bool> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, values2); }
+		public static Provider<bool> op_<#=op.Name#>(Provider<bool> values1, Provider<bool> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
 		[SpecialName]
-		public static Provider<bool> op_<#=opFull#>(Provider<bool> values1, bool value2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(values1, value2); }
+		public static Provider<bool> op_<#=op.Name#>(Provider<bool> values1, bool value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
 		[SpecialName]
-		public static Provider<bool> op_<#=opFull#>(bool value1, Provider<bool> values2) { return Provider.Operators.<#=operatorsGroup#>.<#=opFull#>.GetProvider(value1, values2); }
+		public static Provider<bool> op_<#=op.Name#>(bool value1, Provider<bool> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(value1, values2); }
 	<# } #>
 
 	#endregion

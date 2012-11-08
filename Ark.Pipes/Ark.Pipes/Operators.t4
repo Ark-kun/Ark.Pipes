@@ -1,72 +1,100 @@
 ﻿<#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#	#pragma warning disable 0162 #>
-<#
-	Type[] systemTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String), typeof(DateTime), typeof(TimeSpan) };
-	Type[] specialOperatorsTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String) };
+<#+
+	static Type[] systemTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Boolean), typeof(Char), typeof(String), typeof(DateTime), typeof(TimeSpan) };
+	static Type[] specialOperatorsTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String) };
+	static Type[] integerTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64) };
+	static Type[] signedIntegerTypes = new Type[] { typeof(SByte), typeof(Int16), typeof(Int32), typeof(Int64) };
+	static Type[] unsignedIntegerTypes = new Type[] { typeof(Byte), typeof(UInt16), typeof(UInt32), typeof(UInt64) };
+	static Type[] numberTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal) };
 
-	Dictionary<string, string> arithmeticOperators = new Dictionary<string, string> {
-		{ "Addition",    "+" },
-		{ "Subtraction", "-" },
-		{ "Multiply",    "*" },
-		{ "Division",    "/" },
-		//{ "Exponent",    "^" },
-		{ "Modulus",     "%" }		
-	};
-	Dictionary<string, string> unaryOperators = new Dictionary<string, string> {
-		{ "UnaryPlus",     "+"  },
-		{ "UnaryNegation", "-"  },
-		{ "Increment",     "++" },
-		{ "Decrement",     "--" }
-	};
-	Dictionary<string, string> equalityOperators = new Dictionary<string, string> {
-		{ "Equality",   "==" },
-		{ "Inequality", "!=" }
-    };
-	Dictionary<string, string> comparisonOperators = new Dictionary<string, string> {
-		{ "GreaterThan",        ">"  },
-		{ "GreaterThanOrEqual", ">=" },
-		{ "LessThan",           "<"  },
-		{ "LessThanOrEqual",    "<=" }
-	};
+	class OperatorInfo {
+		public string Group { get; set; }
+		public string Name { get; set; }
+		public string Symbol { get; set; }		
+		public Type FixedReturnType { get; set; }
 
+		public OperatorInfo(string group, string name, string symbol) {
+			Group = group;
+			Name = name;
+			Symbol = symbol;
+		}
+	}
 
-	Dictionary<string, string> bitwiseUnaryOperators = new Dictionary<string, string> {
-		{ "OnesComplement", "~" }
-    };
-	Dictionary<string, string> bitwiseOperators = new Dictionary<string, string> {
-		{ "BitwiseAnd",  "&" },
-		{ "BitwiseOr",   "|" },
-		{ "ExclusiveOr", "^" }
-	};
-	Dictionary<string, string> bitwiseShiftOperators = new Dictionary<string, string> {
-		{ "LeftShift",  "<<" },
-		{ "RightShift", ">>" }
-	};
+	class UnaryOperatorInfo : OperatorInfo {
+		public Type FixedOperandType { get; set; }
 
-	Dictionary<string, string> logicalCheckOperators = new Dictionary<string, string> {
-		{ "True",  "true"  },
-		{ "False", "false" }
-	};
+		public UnaryOperatorInfo(string group, string name, string symbol)
+			: base(group, name, symbol) {
+		}
+    }
 
-	Dictionary<string, string> logicalUnaryOperators = new Dictionary<string, string> {
-		{ "LogicalNot", "!" }
-    };
+	class BinaryOperatorInfo : OperatorInfo {
+		public Type FixedOperand1Type { get; set; }
+		public Type FixedOperand2Type { get; set; }
+		public bool IsCommutative { get; set; }
 
-	Dictionary<string, string> logicalOperators = new Dictionary<string, string> {
-		{ "LogicalAnd", "&" },
-		{ "LogicalOr",  "|" }
-	};
+		public BinaryOperatorInfo(string group, string name, string symbol, bool isCommutative = false)
+			: base(group, name, symbol) {
+			IsCommutative = isCommutative;
+		}
+    }
 
+	static BinaryOperatorInfo opAddition    = new BinaryOperatorInfo("Arithmetic", "Addition",    "+", true);
+	static BinaryOperatorInfo opSubtraction = new BinaryOperatorInfo("Arithmetic", "Subtraction", "-");
+	static BinaryOperatorInfo opMultiply    = new BinaryOperatorInfo("Arithmetic", "Multiply",    "*", true);
+	static BinaryOperatorInfo opDivision    = new BinaryOperatorInfo("Arithmetic", "Division",    "/");
+	static BinaryOperatorInfo opExponent    = new BinaryOperatorInfo("Arithmetic", "Exponent",    "^");
+	static BinaryOperatorInfo opModulus     = new BinaryOperatorInfo("Arithmetic", "Modulus",     "%");
+	static BinaryOperatorInfo[] arithmeticOperators = new BinaryOperatorInfo[] { opAddition, opSubtraction, opMultiply, opDivision, opModulus };
+	
+	static UnaryOperatorInfo opUnaryPlus     = new UnaryOperatorInfo("Unary", "UnaryPlus",     "+");
+	static UnaryOperatorInfo opUnaryNegation = new UnaryOperatorInfo("Unary", "UnaryNegation", "-");
+	static UnaryOperatorInfo opIncrement     = new UnaryOperatorInfo("Unary", "Increment",     "++");
+	static UnaryOperatorInfo opDecrement     = new UnaryOperatorInfo("Unary", "Decrement",     "--");
+	static UnaryOperatorInfo[] unaryOperators = new UnaryOperatorInfo[] { opUnaryPlus, opUnaryNegation, opIncrement, opDecrement };
+	
+	static BinaryOperatorInfo opEquality   = new BinaryOperatorInfo("Relational", "Equality",   "==") { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo opInequality = new BinaryOperatorInfo("Relational", "Inequality", "!=") { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo[] equalityOperators = new BinaryOperatorInfo[] { opEquality, opInequality };
+	
+	static BinaryOperatorInfo opGreaterThan        = new BinaryOperatorInfo("Relational", "GreaterThan",        ">" ) { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo opGreaterThanOrEqual = new BinaryOperatorInfo("Relational", "GreaterThanOrEqual", ">=") { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo opLessThan           = new BinaryOperatorInfo("Relational", "LessThan",           "<" ) { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo opLessThanOrEqual    = new BinaryOperatorInfo("Relational", "LessThanOrEqual",    "<=") { FixedReturnType = typeof(bool) };
+	static BinaryOperatorInfo[] comparisonOperators = new BinaryOperatorInfo[] { opGreaterThan, opGreaterThanOrEqual, opLessThan, opLessThanOrEqual };
+	
+	static UnaryOperatorInfo opOnesComplement = new UnaryOperatorInfo("Bitwise", "OnesComplement", "~");
+	static UnaryOperatorInfo[] bitwiseUnaryOperators = new UnaryOperatorInfo[] { opOnesComplement };
+	
+	static BinaryOperatorInfo opBitwiseAnd  = new BinaryOperatorInfo("Bitwise", "BitwiseAnd",  "&");
+	static BinaryOperatorInfo opBitwiseOr   = new BinaryOperatorInfo("Bitwise", "BitwiseOr",   "|");
+	static BinaryOperatorInfo opExclusiveOr = new BinaryOperatorInfo("Bitwise", "ExclusiveOr", "^");
+	static BinaryOperatorInfo[] bitwiseOperators = new BinaryOperatorInfo[] { opBitwiseAnd, opBitwiseOr, opExclusiveOr };
+	
+	static BinaryOperatorInfo opLeftShift  = new BinaryOperatorInfo("Bitwise", "LeftShift",  "<<") { FixedOperand2Type = typeof(int) };
+	static BinaryOperatorInfo opRightShift = new BinaryOperatorInfo("Bitwise", "RightShift", ">>") { FixedOperand2Type = typeof(int) };
+	static BinaryOperatorInfo[] bitwiseShiftOperators = new BinaryOperatorInfo[] { opLeftShift, opRightShift };
+	
+	static UnaryOperatorInfo opTrue  = new UnaryOperatorInfo("Logical", "True",  "true") { FixedReturnType = typeof(bool) };
+	static UnaryOperatorInfo opFalse = new UnaryOperatorInfo("Logical", "False", "false") { FixedReturnType = typeof(bool) };
+	static UnaryOperatorInfo[] logicalCheckOperators = new UnaryOperatorInfo[] { opTrue, opFalse };
+	
+	static UnaryOperatorInfo opLogicalNot = new UnaryOperatorInfo("Logical", "LogicalNot", "!");
+	static UnaryOperatorInfo[] logicalUnaryOperators = new UnaryOperatorInfo[] { opLogicalNot };
+	
+	static BinaryOperatorInfo opLogicalAnd = new BinaryOperatorInfo("Logical", "LogicalAnd", "&");
+	static BinaryOperatorInfo opLogicalOr = new BinaryOperatorInfo("Logical", "LogicalOr",   "|");
+	static BinaryOperatorInfo[] logicalOperators = new BinaryOperatorInfo[] { opLogicalAnd, opLogicalOr };
+	
 	//other
-
-	Dictionary<string, string> conversionOperators = new Dictionary<string, string> {
-		{ "Implicit", "implicit" },
-		{ "Explicit", "explicit" }
-	};
+	static UnaryOperatorInfo opImplicit = new UnaryOperatorInfo("Conversion", "Implicit",   "implicit");
+	static UnaryOperatorInfo opExplicit = new UnaryOperatorInfo("Conversion", "Explicit",   "explicit");
+	static UnaryOperatorInfo[] conversionOperators = new UnaryOperatorInfo[] { opImplicit, opExplicit };
 
 	//special
-	Dictionary<string, string> specialUnaryOperators = new Dictionary<string, string> {
+	static Dictionary<string, string> specialUnaryOperators = new Dictionary<string, string> {
 		{ "AddressOf",                "&"   },
 		{ "PointerDereference",       "*"   },
 		{ "MemberSelection",          "->"  },
@@ -74,38 +102,25 @@
 		{ "Comma"                   , ","   }
 	};
 
-	Dictionary<string, string> specialAssignOperators = new Dictionary<string, string> {
+	static Dictionary<string, string> specialAssignOperators = new Dictionary<string, string> {
 		{ "Assign", "=" }
     };
 
 	//assignment
-	Dictionary<string, string> arithmeticAssignmentOperators = new Dictionary<string, string> {
+	static Dictionary<string, string> arithmeticAssignmentOperators = new Dictionary<string, string> {
 		{ "AdditionAssignment",       "+=" },
 		{ "SubtractionAssignment",    "-=" },
 		{ "MultiplicationAssignment", "*=" },
 		{ "DivisionAssignment",       "/=" },
 		{ "ModulusAssignment",        "%=" }
 	};
-	Dictionary<string, string> bitwiseAssignmentOperators = new Dictionary<string, string> {
+	static Dictionary<string, string> bitwiseAssignmentOperators = new Dictionary<string, string> {
 		{ "BitwiseAndAssignment",  "&=" },
 		{ "BitwiseOrAssignment",   "|=" },
 		{ "ExclusiveOrAssignment", "^=" }
     };
-	Dictionary<string, string> bitwiseShiftAssignmentOperators = new Dictionary<string, string> {
+	static Dictionary<string, string> bitwiseShiftAssignmentOperators = new Dictionary<string, string> {
 		{ "LeftShiftAssignment",  "<<=" },
 		{ "RightShiftAssignment", ">>=" }
 	};
-
-	//class OperatorName {
-	//	  string _fullName;
-	//	  string _symbol;
-	//
-	//    public OperatorName(string fullName , string symbol) {
-	//        _fullName = fullName;
-	//        _symbol = symbol;
-	//    }
-	//
-	//    public String FullName { get {return _fullName; } }
-	//    public Symbol { get {return _symbol; } }
-	//}
 #>
