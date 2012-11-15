@@ -99,7 +99,14 @@ namespace Ark.Pipes {
         }
         #endregion
 
-        static ProviderOperators _operators = new ProviderOperators();
+        static ProviderOperators _operators;
+
+        static Provider() {
+            typeof(Ark.Pipes.Provider<int>).ToString();
+            _operators = new ProviderOperators();
+            Ark.Pipes.Generated.OperatorRegistrator.RegisterHandlers(_operators);
+        }
+
         public static ProviderOperators Operators { get { return _operators; } }
     }
 #if !NOTIFICATIONS_DISABLE

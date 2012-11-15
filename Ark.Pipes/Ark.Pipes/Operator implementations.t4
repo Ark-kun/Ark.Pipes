@@ -1,0 +1,153 @@
+﻿<#+
+public void GenerateOperatorHandlerRegistration(string operatorGroup, string fullName, string symbol, string operand1Type, string operand2Type, string resultType) {
+#>
+	operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operand1Type#> operand1, <#=operand2Type#> operand2) => operand1 <#=symbol#> operand2);
+<#+
+}
+#>
+
+<#+
+public void GenerateOperatorHandlerRegistration(string operatorGroup, string fullName, string symbol, string operandType, string resultType) {
+#>
+	operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operandType#> operand) => (<#=resultType#>)(<#=symbol#>operand));
+<#+
+}
+#>
+
+<#+
+public List<string> GenerateOperatorImplementation(string operatorGroup, string fullName, string symbol, string operand1Type, string operand2Type, string resultType) {
+	var generatedClasses = new List<string>();
+	//_registrations.Add(string.Format("operators.{0}.{1}.SetHandler(({3} operand1, {4} operand2) => operand1 {2} operand2);"), operatorGroup, fullName, symbol, operand1Type, operand2Type);
+	//_registrations.Add(string.Format("operators.{0}.{1}.SetProviderFactory((Provider<{3}> operands1, Provider<{4}> operands2) => new Operator_{1}_{3}Provider_{4}Provider_{5}Provider(operands1, operands2));"), operatorGroup, fullName, symbol, operand1Type, operand2Type, resultType);
+	//_registrations.Add(string.Format("operators.{0}.{1}.SetProviderFactory((Provider<{3}> operands1, {4} operand2) => new Operator_{1}_{3}Provider_{4}_{5}Provider(operands1, operand2));"), operatorGroup, fullName, symbol, operand1Type, operand2Type, resultType);
+	//_registrations.Add(string.Format("operators.{0}.{1}.SetProviderFactory(({3} operand1, Provider<{4}> operands2) => new Operator_{1}_{3}_{4}Provider_{5}Provider(operand1, operands2));"), operatorGroup, fullName, symbol, operand1Type, operand2Type, resultType);
+#>
+//	static class OperatorRegistrator_<#=fullName#>_<#=operand1Type#>_<#=operand2Type#>_<#=resultType#> : Provider<<#=resultType#>> {
+//		public partial void RegisterHandlers(ProviderOperators operators) {
+//			operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operand1Type#> operand1, <#=operand2Type#> operand2) => operand1 <#=symbol#> operand2);
+//			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operand1Type#>> operands1, Provider<<#=operand2Type#>> operands2) => new Operator_<#=fullName#>_<#=operand1Type#>Provider_<#=operand2Type#>Provider_<#=resultType#>Provider(operands1, operands2));
+//			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operand1Type#>> operands1, <#=operand2Type#> operand2) => new Operator_<#=fullName#>_<#=operand1Type#>Provider_<#=operand2Type#>_<#=resultType#>Provider(operands1, operand2));
+//			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((<#=operand2Type#> operand1, Provider<<#=operand2Type#>> operands2) => new Operator_<#=fullName#>_<#=operand1Type#>_<#=operand2Type#>Provider_<#=resultType#>Provider(operand1, operands2));
+//		}
+//	}
+
+<#+
+	string classNameFull = string.Format("Operator_{0}_{1}Provider_{2}Provider_{3}Provider", fullName, operand1Type, operand2Type, resultType);
+	generatedClasses.Add(classNameFull);
+#>
+
+	class <#=classNameFull#> : Provider<<#=resultType#>> {
+		Provider<<#=operand1Type#>> _operands1;
+		Provider<<#=operand2Type#>> _operands2;
+
+		public <#=classNameFull#>(Provider<<#=operand1Type#>> operands1, Provider<<#=operand2Type#>> operands2) {
+			_operands1 = operands1;
+			_operands2 = operands2;
+		}
+
+		public static void RegisterHandlers(ProviderOperators operators) {
+			operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operand1Type#> operand1, <#=operand2Type#> operand2) => (<#=resultType#>)(operand1 <#=symbol#> operand2));
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operand1Type#>> operands1, Provider<<#=operand2Type#>> operands2) => (Provider<<#=resultType#>>)new <#=classNameFull#>(operands1, operands2));
+		}
+
+		public override <#=resultType#> GetValue() {
+			return (<#=resultType#>)(_operands1.GetValue() <#=symbol#> _operands2.GetValue());
+		}
+	}
+
+<#+
+	string classNameConst2 = string.Format("Operator_{0}_{1}Provider_{2}_{3}Provider", fullName, operand1Type, operand2Type, resultType);
+	generatedClasses.Add(classNameConst2);
+#>
+
+	class <#=classNameConst2#> : Provider<<#=resultType#>> {
+		Provider<<#=operand1Type#>> _operands1;
+		<#=operand2Type#> _operand2;
+
+		public <#=classNameConst2#>(Provider<<#=operand1Type#>> operands1, <#=operand2Type#> operand2) {
+			_operands1 = operands1;
+			_operand2 = operand2;
+		}
+
+		public static void RegisterHandlers(ProviderOperators operators) {
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operand1Type#>> operands1, <#=operand2Type#> operand2) => new <#=classNameConst2#>(operands1, operand2));
+		}
+
+		public override <#=resultType#> GetValue() {
+			return (<#=resultType#>)(_operands1.GetValue() <#=symbol#> _operand2);
+		}
+	}
+
+<#+
+	string classNameConst1 = string.Format("Operator_{0}_{1}_{2}Provider_{3}Provider", fullName, operand1Type, operand2Type, resultType);
+	generatedClasses.Add(classNameConst1);
+#>
+
+	class <#=classNameConst1#> : Provider<<#=resultType#>> {
+		<#=operand1Type#> _operand1;
+		Provider<<#=operand2Type#>> _operands2;
+
+		public <#=classNameConst1#>(<#=operand1Type#> operand1, Provider<<#=operand2Type#>> operands2) {
+			_operand1 = operand1;
+			_operands2 = operands2;
+		}
+
+		public static void RegisterHandlers(ProviderOperators operators) {
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((<#=operand1Type#> operand1, Provider<<#=operand2Type#>> operands2) => new <#=classNameConst1#>(operand1, operands2));
+		}
+
+		public override <#=resultType#> GetValue() {
+			return (<#=resultType#>)(_operand1 <#=symbol#> _operands2.GetValue());
+		}
+	}
+<#+	return generatedClasses; #>
+<#+ } #>
+
+<#+
+public List<string> GenerateOperatorImplementation(string operatorGroup, string fullName, string symbol, string operandType, string resultType) {
+	var generatedClasses = new List<string>();
+	string classNameFull = string.Format("Operator_{0}_{1}Provider_{2}Provider", fullName, operandType, resultType);
+	string registratorClassName = string.Format("OperatorRegistrator_{0}_{1}_{2}", fullName, operandType, resultType);
+#>
+<#+	if(false && (fullName == "Increment" || fullName == "Decrement")) { #>
+<#+		generatedClasses.Add(registratorClassName); #>
+
+	static class <#=registratorClassName#> {
+		public static void RegisterHandlers(ProviderOperators operators) {
+			operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operandType#> operand) => (<#=resultType#>)(<#=symbol#>operand));
+
+			<#+ if(fullName == "Increment") { #>
+
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operandType#>> operands) => new Operator_Addition_<#=operandType#>Provider_<#=operandType#>Provider_<#=resultType#>Provider(operands, (<#=operandType#>)1));
+			<#+ } else if(fullName == "Decrement") { #>
+		
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operandType#>> operands) => new Operator_Subtraction_<#=operandType#>Provider_<#=operandType#>Provider_<#=resultType#>Provider(operands, (<#=operandType#>)1));
+			<#+ } else { #>
+
+			//operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operandType#>> operands) => new <#=classNameFull#>(operands));
+			<#+ } #>
+		}
+	}
+<#+	} else { #>
+<#+		generatedClasses.Add(classNameFull); #>
+
+	class <#=classNameFull#> : Provider<<#=resultType#>> {
+		Provider<<#=operandType#>> _operands;
+
+		public <#=classNameFull#>(Provider<<#=operandType#>> operands) {
+			_operands = operands;
+		}
+
+		public static void RegisterHandlers(ProviderOperators operators) {
+			operators.<#=operatorGroup#>.<#=fullName#>.SetHandler((<#=operandType#> operand) => (<#=resultType#>)(<#=symbol#>operand));
+			operators.<#=operatorGroup#>.<#=fullName#>.SetProviderFactory((Provider<<#=operandType#>> operands) => new <#=classNameFull#>(operands));
+		}
+
+		public override <#=resultType#> GetValue() {
+			var value = (<#=resultType#>)_operands.GetValue();
+			return (<#=resultType#>)(<#=symbol#>value);
+		}
+	}
+<#+ } #>
+<#+	return generatedClasses; #>
+<#+ } #>
