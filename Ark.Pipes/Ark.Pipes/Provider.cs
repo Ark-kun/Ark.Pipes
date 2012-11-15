@@ -102,7 +102,6 @@ namespace Ark.Pipes {
         static ProviderOperators _operators;
 
         static Provider() {
-            typeof(Ark.Pipes.Provider<int>).ToString();
             _operators = new ProviderOperators();
             Ark.Pipes.Generated.OperatorRegistrator.RegisterHandlers(_operators);
         }
