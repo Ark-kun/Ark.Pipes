@@ -1,14 +1,8 @@
 ﻿<#@ import namespace="System" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ include file="Types.t4" #>
 <#	#pragma warning disable 0162 #>
 <#+
-	static Type[] systemTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Boolean), typeof(Char), typeof(String), typeof(DateTime), typeof(TimeSpan) };
-	static Type[] specialOperatorsTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Boolean), typeof(Char), typeof(String) };
-	static Type[] integerTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64) };
-	static Type[] signedIntegerTypes = new Type[] { typeof(SByte), typeof(Int16), typeof(Int32), typeof(Int64) };
-	static Type[] unsignedIntegerTypes = new Type[] { typeof(Byte), typeof(UInt16), typeof(UInt32), typeof(UInt64) };
-	static Type[] numberTypes = new Type[] { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal) };
-
 	class OperatorInfo {
 		public string Group { get; set; }
 		public string Name { get; set; }

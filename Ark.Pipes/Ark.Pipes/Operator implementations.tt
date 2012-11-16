@@ -16,14 +16,14 @@ namespace Ark.Pipes.Generated {
 	<#
 	foreach(var op in arithmeticOperators) {
 		foreach(var type in numberTypes) {
-			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, type.Name, type.Name));
+			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, type, type));
         }
 	}    
 	
 	foreach(var op in unaryOperators) {
 		foreach(var type in numberTypes) {
 			if(!(op.Name == "UnaryNegation" && Array.IndexOf(unsignedIntegerTypes, type) > 0)) {
-				generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, type.Name));
+				generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, type));
             }
         }
 	}
@@ -34,36 +34,36 @@ namespace Ark.Pipes.Generated {
 
 	foreach(var op in comparisonOperators) {
 		foreach(var type in numberTypes) {
-			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, type.Name, ( op.FixedReturnType ?? type).Name));
+			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, type, (op.FixedReturnType ?? type)));
         }
 	}
 	
 	foreach(var op in bitwiseUnaryOperators) {
 		foreach(var type in integerTypes) {
-			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, type.Name));
+			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, type));
         }
 	}
 
 	foreach(var op in bitwiseOperators) {
 		foreach(var type in integerTypes) {
-			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, ( op.FixedOperand2Type ?? type).Name, type.Name));
+			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, (op.FixedOperand2Type ?? type), type));
         }
 	}
 
 	foreach(var op in bitwiseShiftOperators) {
 		foreach(var type in integerTypes) {
-			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type.Name, ( op.FixedOperand2Type ?? type).Name, type.Name));
+			generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, type, (op.FixedOperand2Type ?? type), type));
         }
 	}
 
 	//logicalCheckOperators
 
 	foreach(var op in logicalUnaryOperators) {
-		generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, "Boolean", "Boolean"));
+		generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, typeof(Boolean), typeof(Boolean)));
 	}
 	
 	foreach(var op in logicalOperators) {
-		generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, "Boolean", "Boolean", "Boolean"));
+		generatedClasses.AddRange(GenerateOperatorImplementation(op.Group, op.Name, op.Symbol, typeof(Boolean), typeof(Boolean), typeof(Boolean)));
 	}
 	#>
 
