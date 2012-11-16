@@ -1,6 +1,7 @@
-﻿<#@ import namespace="System" #>
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Collections.Generic" #>
-<#@ include file="Types.t4" #>
 <#	#pragma warning disable 0162 #>
 <#+
 	class OperatorInfo {
@@ -41,46 +42,64 @@
 	static BinaryOperatorInfo opDivision    = new BinaryOperatorInfo("Arithmetic", "Division",    "/");
 	static BinaryOperatorInfo opExponent    = new BinaryOperatorInfo("Arithmetic", "Exponent",    "^");
 	static BinaryOperatorInfo opModulus     = new BinaryOperatorInfo("Arithmetic", "Modulus",     "%");
-	static BinaryOperatorInfo[] arithmeticOperators = new BinaryOperatorInfo[] { opAddition, opSubtraction, opMultiply, opDivision, opModulus };
+	static BinaryOperatorInfo[] arithmeticBinaryOperators = new BinaryOperatorInfo[] { opAddition, opSubtraction, opMultiply, opDivision, opModulus }; //Does not include Exponent
+	static HashSet<BinaryOperatorInfo> arithmeticBinaryOperatorsSet = new HashSet<BinaryOperatorInfo>(arithmeticBinaryOperators);
 	
 	static UnaryOperatorInfo opUnaryPlus     = new UnaryOperatorInfo("Unary", "UnaryPlus",     "+");
 	static UnaryOperatorInfo opUnaryNegation = new UnaryOperatorInfo("Unary", "UnaryNegation", "-");
 	static UnaryOperatorInfo opIncrement     = new UnaryOperatorInfo("Unary", "Increment",     "++");
 	static UnaryOperatorInfo opDecrement     = new UnaryOperatorInfo("Unary", "Decrement",     "--");
-	static UnaryOperatorInfo[] unaryOperators = new UnaryOperatorInfo[] { opUnaryPlus, opUnaryNegation, opIncrement, opDecrement };
+	static UnaryOperatorInfo[] arithmeticUnaryOperators = new UnaryOperatorInfo[] { opUnaryPlus, opUnaryNegation, opIncrement, opDecrement };
+	static HashSet<UnaryOperatorInfo> arithmeticUnaryOperatorsSet = new HashSet<UnaryOperatorInfo>(arithmeticUnaryOperators);
 	
 	static BinaryOperatorInfo opEquality   = new BinaryOperatorInfo("Relational", "Equality",   "==") { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo opInequality = new BinaryOperatorInfo("Relational", "Inequality", "!=") { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo[] equalityOperators = new BinaryOperatorInfo[] { opEquality, opInequality };
+	static HashSet<BinaryOperatorInfo> equalityOperatorsSet = new HashSet<BinaryOperatorInfo>(equalityOperators);
 	
 	static BinaryOperatorInfo opGreaterThan        = new BinaryOperatorInfo("Relational", "GreaterThan",        ">" ) { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo opGreaterThanOrEqual = new BinaryOperatorInfo("Relational", "GreaterThanOrEqual", ">=") { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo opLessThan           = new BinaryOperatorInfo("Relational", "LessThan",           "<" ) { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo opLessThanOrEqual    = new BinaryOperatorInfo("Relational", "LessThanOrEqual",    "<=") { FixedReturnType = typeof(bool) };
 	static BinaryOperatorInfo[] comparisonOperators = new BinaryOperatorInfo[] { opGreaterThan, opGreaterThanOrEqual, opLessThan, opLessThanOrEqual };
-	
+	static HashSet<BinaryOperatorInfo> comparisonOperatorsSet = new HashSet<BinaryOperatorInfo>(comparisonOperators);
+
 	static UnaryOperatorInfo opOnesComplement = new UnaryOperatorInfo("Bitwise", "OnesComplement", "~");
 	static UnaryOperatorInfo[] bitwiseUnaryOperators = new UnaryOperatorInfo[] { opOnesComplement };
+	static HashSet<UnaryOperatorInfo> bitwiseUnaryOperatorsSet = new HashSet<UnaryOperatorInfo>(bitwiseUnaryOperators);
 	
 	static BinaryOperatorInfo opBitwiseAnd  = new BinaryOperatorInfo("Bitwise", "BitwiseAnd",  "&");
 	static BinaryOperatorInfo opBitwiseOr   = new BinaryOperatorInfo("Bitwise", "BitwiseOr",   "|");
 	static BinaryOperatorInfo opExclusiveOr = new BinaryOperatorInfo("Bitwise", "ExclusiveOr", "^");
-	static BinaryOperatorInfo[] bitwiseOperators = new BinaryOperatorInfo[] { opBitwiseAnd, opBitwiseOr, opExclusiveOr };
+	static BinaryOperatorInfo[] bitwiseBinaryOperators = new BinaryOperatorInfo[] { opBitwiseAnd, opBitwiseOr, opExclusiveOr };
+	static HashSet<BinaryOperatorInfo> bitwiseBinaryOperatorsSet = new HashSet<BinaryOperatorInfo>(bitwiseBinaryOperators);
 	
 	static BinaryOperatorInfo opLeftShift  = new BinaryOperatorInfo("Bitwise", "LeftShift",  "<<") { FixedOperand2Type = typeof(int) };
 	static BinaryOperatorInfo opRightShift = new BinaryOperatorInfo("Bitwise", "RightShift", ">>") { FixedOperand2Type = typeof(int) };
 	static BinaryOperatorInfo[] bitwiseShiftOperators = new BinaryOperatorInfo[] { opLeftShift, opRightShift };
-	
+	static HashSet<BinaryOperatorInfo> bitwiseShiftOperatorsSet = new HashSet<BinaryOperatorInfo>(bitwiseShiftOperators);
+
 	static UnaryOperatorInfo opTrue  = new UnaryOperatorInfo("Logical", "True",  "true") { FixedReturnType = typeof(bool) };
 	static UnaryOperatorInfo opFalse = new UnaryOperatorInfo("Logical", "False", "false") { FixedReturnType = typeof(bool) };
 	static UnaryOperatorInfo[] logicalCheckOperators = new UnaryOperatorInfo[] { opTrue, opFalse };
+	static HashSet<UnaryOperatorInfo> logicalCheckOperatorsSet = new HashSet<UnaryOperatorInfo>(logicalCheckOperators);
 	
 	static UnaryOperatorInfo opLogicalNot = new UnaryOperatorInfo("Logical", "LogicalNot", "!");
 	static UnaryOperatorInfo[] logicalUnaryOperators = new UnaryOperatorInfo[] { opLogicalNot };
+	static HashSet<UnaryOperatorInfo> logicalUnaryOperatorsSet = new HashSet<UnaryOperatorInfo>(logicalUnaryOperators);
 	
 	static BinaryOperatorInfo opLogicalAnd = new BinaryOperatorInfo("Logical", "LogicalAnd", "&");
 	static BinaryOperatorInfo opLogicalOr = new BinaryOperatorInfo("Logical", "LogicalOr",   "|");
-	static BinaryOperatorInfo[] logicalOperators = new BinaryOperatorInfo[] { opLogicalAnd, opLogicalOr };
+	static BinaryOperatorInfo[] logicalBinaryOperators = new BinaryOperatorInfo[] { opLogicalAnd, opLogicalOr };
+	static HashSet<BinaryOperatorInfo> logicalBinaryOperatorsSet = new HashSet<BinaryOperatorInfo>(logicalBinaryOperators);
+
+	static HashSet<OperatorInfo> arithmeticOperatorsSet = new HashSet<OperatorInfo>(arithmeticBinaryOperatorsSet.Concat<OperatorInfo>(arithmeticUnaryOperators));
+	static HashSet<OperatorInfo> numericOperatorsSet = new HashSet<OperatorInfo>(arithmeticOperatorsSet.Concat<OperatorInfo>(equalityOperatorsSet).Concat<OperatorInfo>(comparisonOperatorsSet));
+	static HashSet<OperatorInfo> bitwiseOperatorsSet = new HashSet<OperatorInfo>(bitwiseUnaryOperatorsSet.Concat<OperatorInfo>(bitwiseBinaryOperatorsSet).Concat<OperatorInfo>(bitwiseShiftOperators));
+	static HashSet<OperatorInfo> integerOperatorsSet = new HashSet<OperatorInfo>(numericOperatorsSet.Concat<OperatorInfo>(bitwiseOperatorsSet));
+	static HashSet<OperatorInfo> logicalOperatorsSet = new HashSet<OperatorInfo>(logicalUnaryOperatorsSet.Concat<OperatorInfo>(logicalBinaryOperators));
+	static HashSet<OperatorInfo> allOperatorsSet = new HashSet<OperatorInfo>(integerOperatorsSet.Concat<OperatorInfo>(logicalOperatorsSet)); //Does not include logicalCheckOperatorsSet
+	
 	
 	//other
 	static UnaryOperatorInfo opImplicit = new UnaryOperatorInfo("Conversion", "Implicit",   "implicit");

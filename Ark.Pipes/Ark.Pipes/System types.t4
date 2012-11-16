@@ -1,0 +1,78 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#@ include file="Operators.t4" #>
+<#+
+	static Type[] systemTypes =                 new Type[]        { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Boolean), typeof(Char), typeof(String), typeof(DateTime), typeof(TimeSpan) };
+	static HashSet<Type> primitiveTypes =		new HashSet<Type> { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Boolean), typeof(Char), typeof(String) };
+	static HashSet<Type> specialTypes =			new HashSet<Type> { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double),                  typeof(Boolean), typeof(Char), typeof(String) };
+	static HashSet<Type> numberTypes =			new HashSet<Type> { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)};
+	static HashSet<Type> integerTypes =			new HashSet<Type> { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64)                                                 };
+	static HashSet<Type> unsignedIntegerTypes = new HashSet<Type> { typeof(Byte),                typeof(UInt16),                typeof(UInt32),                typeof(UInt64)                                                                };
+	static HashSet<Type> signedIntegerTypes =	new HashSet<Type> {               typeof(SByte),                 typeof(Int16),                 typeof(Int32),                 typeof(Int64)                                                 };
+
+	//arithmeticOperators.w
+	static Dictionary<Type, HashSet<Type>> implicitConversions = new Dictionary<Type, HashSet<Type>>() {
+        { typeof(Byte),		new HashSet<Type>() {                              typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(SByte),	new HashSet<Type>() {                                              typeof(Int16),                 typeof(Int32),                 typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(UInt16),	new HashSet<Type>() {                                                             typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(Int16),	new HashSet<Type>() {                                                                             typeof(Int32),                 typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(UInt32),	new HashSet<Type>() {                                                                                            typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(Int32),	new HashSet<Type>() {                                                                                                            typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(UInt64),	new HashSet<Type>() {                                                                                                                           typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(Int64),	new HashSet<Type>() {                                                                                                                           typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(Single),	new HashSet<Type>() {                                                                                                                                           typeof(Double)                               }},
+		{ typeof(Double),	new HashSet<Type>() {                                                                                                                                                                                        }},
+		{ typeof(Decimal),	new HashSet<Type>() {                                                                                                                                                                                        }},
+		{ typeof(Char),		new HashSet<Type>() {                              typeof(UInt16),                typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(String),	new HashSet<Type>() {                                                                                                                                                                                        }},
+		{ typeof(Boolean),	new HashSet<Type>() {                                                                                                                                                                                        }},
+	};
+
+	static Dictionary<Type, HashSet<Type>> explicitConversions = new Dictionary<Type, HashSet<Type>>() {
+        { typeof(Byte),		new HashSet<Type>() {               typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(SByte),	new HashSet<Type>() { typeof(Byte),                typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(UInt16),	new HashSet<Type>() { typeof(Byte), typeof(SByte),                 typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(Int16),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16),                typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(UInt32),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16),                 typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(Int32),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32),                typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(UInt64),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32),                 typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(Int64),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64),                typeof(Single), typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(Single),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64),                 typeof(Double), typeof(Decimal), typeof(Char)}},
+		{ typeof(Double),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single),                 typeof(Decimal), typeof(Char)}},
+		{ typeof(Decimal),	new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double),                  typeof(Char)}},
+		{ typeof(Char),		new HashSet<Type>() { typeof(Byte), typeof(SByte), typeof(UInt16), typeof(Int16), typeof(UInt32), typeof(Int32), typeof(UInt64), typeof(Int64), typeof(Single), typeof(Double), typeof(Decimal)              }},
+		{ typeof(String),	new HashSet<Type>() {                                                                                                                                                                                        }},
+		{ typeof(Boolean),	new HashSet<Type>() {                                                                                                                                                                                        }},
+	};
+
+	static Dictionary<Type, HashSet<OperatorInfo>> GetPrimitiveTypeOperatorSets() {
+		var typeOperators = new Dictionary<Type, HashSet<OperatorInfo>>();
+		foreach(Type type in primitiveTypes) {
+			typeOperators[type] = new HashSet<OperatorInfo>();
+        }
+		foreach(Type type in numberTypes) {
+			typeOperators[type].UnionWith(numericOperatorsSet);
+		}
+		foreach(Type type in integerTypes) {
+			typeOperators[type].UnionWith(bitwiseOperatorsSet);
+		}
+		typeOperators[typeof(Boolean)].UnionWith(logicalOperatorsSet);
+		foreach(Type type in unsignedIntegerTypes) {
+			typeOperators[type].Remove(opUnaryNegation);
+		}
+		return typeOperators;
+	}
+	
+    static Regex _namespaceRegex = new Regex(@"\b(\w+\.)*");
+    public static string ToCSharpName(Type type) {
+        return _namespaceRegex.Replace(ToCSharpFullName(type), "");
+    }
+
+	static Regex _arityRegex = new Regex(@"`\d+");
+    public static string ToCSharpFullName(Type type) {
+        return _arityRegex.Replace(type.FullName, "").Replace('[', '<').Replace(']', '>');
+    }
+#>
