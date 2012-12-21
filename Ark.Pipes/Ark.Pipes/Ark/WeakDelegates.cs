@@ -124,12 +124,20 @@ namespace Ark {
 
     public static class WeakDelegate {
         public static TDelegate Remove<TDelegate>(TDelegate eventHandlers, TDelegate handlerToRemove) where TDelegate : class {
+            if (eventHandlers == null) {
+                return null;
+            }
+            if (handlerToRemove == null) {
+                return eventHandlers;
+            }
             var delegateEventHandlers = eventHandlers as Delegate;
-            if (delegateEventHandlers == null)
-                throw new ArgumentException("Agrument 1 must have a delegate type.");
+            if (delegateEventHandlers == null) {
+                throw new ArgumentException("eventHandlers must have a delegate type.");
+            }
             var delegateRemoveHandler = handlerToRemove as Delegate;
-            if (delegateRemoveHandler == null)
-                throw new ArgumentException("Agrument 2 must have a delegate type.");
+            if (delegateRemoveHandler == null) {
+                throw new ArgumentException("handlerToRemove must have a delegate type.");
+            }
 
             var handlersToRemove = new List<Delegate>();
             Delegate[] eventInvocationList = null;
