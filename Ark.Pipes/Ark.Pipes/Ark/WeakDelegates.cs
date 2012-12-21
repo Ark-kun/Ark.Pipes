@@ -9,7 +9,7 @@ namespace Ark {
         protected MethodInfo _method;
         int _hashCode;
 
-        protected WeakDelegate(TDelegate handler) {
+        protected WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
             var delegateHandler = handler as Delegate;
             if (delegateHandler == null)
                 throw new ArgumentException("Agrument must have a delegate type.");
