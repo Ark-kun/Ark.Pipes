@@ -14,7 +14,7 @@ namespace Ark.Pipes {
     public abstract partial class Provider<T> {
 
 	#region Arithmetic operators
-	<# foreach(var op in arithmeticOperators) { #>
+	<# foreach(var op in arithmeticBinaryOperators) { #>
 
 		#region <#=op.Name#> operators
 
@@ -67,7 +67,7 @@ namespace Ark.Pipes {
 	#endregion
 
 	#region Unary operators
-	<# foreach(var op in unaryOperators) { #>
+	<# foreach(var op in arithmeticUnaryOperators) { #>
 
 		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>	
@@ -100,7 +100,7 @@ namespace Ark.Pipes {
 		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>
 
-	<# foreach(var op in bitwiseOperators) { #>
+	<# foreach(var op in bitwiseBinaryOperators) { #>
 
 		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, Provider<T> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
 		public static Provider<T> operator <#=op.Symbol#>(Provider<T> values1, T value2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, value2); }
@@ -133,7 +133,7 @@ namespace Ark.Pipes {
 		public static Provider<bool> op_<#=op.Name#>(Provider<bool> values) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values); }
 	<# } #>
 
-	<# foreach(var op in logicalOperators) { #>
+	<# foreach(var op in logicalBinaryOperators) { #>
 
 		[SpecialName]
 		public static Provider<bool> op_<#=op.Name#>(Provider<bool> values1, Provider<bool> values2) { return Provider.Operators.<#=op.Group#>.<#=op.Name#>.GetProvider(values1, values2); }
