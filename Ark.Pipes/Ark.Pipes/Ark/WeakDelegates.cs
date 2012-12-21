@@ -7,25 +7,16 @@ namespace Ark {
     public abstract class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
         protected WeakReference _targetReference;
         protected MethodInfo _method;
-        Action<TDelegate> _unregister;
         int _hashCode;
 
-        protected WeakDelegate(TDelegate eventHandler, Action<TDelegate> unregister) {
-            var delegateHandler = eventHandler as Delegate;
+        protected WeakDelegate(TDelegate handler) {
+            var delegateHandler = handler as Delegate;
             if (delegateHandler == null)
                 throw new ArgumentException("Agrument must have a delegate type.");
 
             _targetReference = new WeakReference(delegateHandler.Target);
             _method = delegateHandler.Method;
-            _unregister = unregister;
             _hashCode = delegateHandler.GetHashCode();
-        }
-
-        public void Unregister() {
-            if (_unregister != null) {
-                _unregister(Handler);
-                _unregister = null;
-            }
         }
 
         public abstract TDelegate Handler { get; }
@@ -60,8 +51,23 @@ namespace Ark {
         }
     }
 
+    public abstract class WeakDelegateWithDeregistration<TDelegate> : WeakDelegate<TDelegate> where TDelegate : class {
+        Action<TDelegate> _unregister;
 
-    public sealed class WeakEventHandler<TEventArgs> : WeakDelegate<EventHandler<TEventArgs>>
+        protected WeakDelegateWithDeregistration(TDelegate handler, Action<TDelegate> unregister)
+            : base(handler) {
+            _unregister = unregister;
+        }
+
+        public void Unregister() {
+            if (_unregister != null) {
+                _unregister(Handler);
+                _unregister = null;
+            }
+        }
+    }
+
+    public sealed class WeakEventHandler<TEventArgs> : WeakDelegateWithDeregistration<EventHandler<TEventArgs>>
         where TEventArgs : EventArgs {
 
         public WeakEventHandler(EventHandler<TEventArgs> eventHandler, Action<EventHandler<TEventArgs>> unregister)
@@ -82,7 +88,7 @@ namespace Ark {
         }
     }
 
-    public sealed class WeakAction : WeakDelegate<Action> {
+    public sealed class WeakAction : WeakDelegateWithDeregistration<Action> {
 
         public WeakAction(Action eventHandler, Action<Action> unregister)
             : base(eventHandler, unregister) {
@@ -102,7 +108,7 @@ namespace Ark {
         }
     }
 
-    public sealed class WeakAction<T> : WeakDelegate<Action<T>> {
+    public sealed class WeakAction<T> : WeakDelegateWithDeregistration<Action<T>> {
 
         public WeakAction(Action<T> eventHandler, Action<Action<T>> unregister)
             : base(eventHandler, unregister) {
