@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace Ark {
-    public abstract class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
+    public class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
         protected WeakReference _targetReference;
         protected MethodInfo _method;
         int _hashCode;
 
-        protected WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
+        public WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
             var delegateHandler = handler as Delegate;
             if (delegateHandler == null)
                 throw new ArgumentException("Agrument must have a delegate type.");
@@ -19,10 +19,25 @@ namespace Ark {
             _hashCode = delegateHandler.GetHashCode();
         }
 
-        public abstract TDelegate Handler { get; }
+        public bool TryDynamicInvoke(object[] args) {
+            object target = _targetReference.Target;
+            if (target == null) {
+                return false;
+            }
+            _method.Invoke(target, args);
+            return true;
+        }
 
-        public static implicit operator TDelegate(WeakDelegate<TDelegate> wh) {
-            return wh.Handler;
+        internal bool TryInvoke() {
+            return TryDynamicInvoke(null);
+        }
+
+        internal bool TryInvoke<T>(T arg) {
+            return TryDynamicInvoke(new object[] { arg });
+        }
+
+        internal bool TryInvoke<T1, T2>(T1 arg1, T2 arg2) {
+            return TryDynamicInvoke(new object[] { arg1, arg2 });
         }
 
         public override int GetHashCode() {
@@ -51,84 +66,80 @@ namespace Ark {
         }
     }
 
-    public abstract class WeakDelegateWithDeregistration<TDelegate> : WeakDelegate<TDelegate> where TDelegate : class {
-        Action<TDelegate> _unregister;
-
-        protected WeakDelegateWithDeregistration(TDelegate handler, Action<TDelegate> unregister)
-            : base(handler) {
-            _unregister = unregister;
-        }
-
-        public void Unregister() {
-            if (_unregister != null) {
-                _unregister(Handler);
-                _unregister = null;
-            }
-        }
-    }
-
-    public sealed class WeakEventHandler<TEventArgs> : WeakDelegateWithDeregistration<EventHandler<TEventArgs>>
-        where TEventArgs : EventArgs {
-
-        public WeakEventHandler(EventHandler<TEventArgs> eventHandler, Action<EventHandler<TEventArgs>> unregister)
-            : base(eventHandler, unregister) {
-        }
-
-        public void Invoke(object sender, TEventArgs e) {
-            object target = _targetReference.Target;
-            if (target != null) {
-                _method.Invoke(target, new object[] { sender, e });
-            } else {
-                Unregister();
-            }
-        }
-
-        public override EventHandler<TEventArgs> Handler {
-            get { return Invoke; }
-        }
-    }
-
-    public sealed class WeakAction : WeakDelegateWithDeregistration<Action> {
-
-        public WeakAction(Action eventHandler, Action<Action> unregister)
-            : base(eventHandler, unregister) {
-        }
-
-        public void Invoke() {
-            object target = _targetReference.Target;
-            if (target != null) {
-                _method.Invoke(target, null);
-            } else {
-                Unregister();
-            }
-        }
-
-        public override Action Handler {
-            get { return Invoke; }
-        }
-    }
-
-    public sealed class WeakAction<T> : WeakDelegateWithDeregistration<Action<T>> {
-
-        public WeakAction(Action<T> eventHandler, Action<Action<T>> unregister)
-            : base(eventHandler, unregister) {
-        }
-
-        public void Invoke(T arg) {
-            object target = _targetReference.Target;
-            if (target != null) {
-                _method.Invoke(target, new object[] { arg });
-            } else {
-                Unregister();
-            }
-        }
-
-        public override Action<T> Handler {
-            get { return Invoke; }
-        }
-    }
-
     public static class WeakDelegate {
+        public abstract class WeakDelegateWithDeregistration<TDelegate> : WeakDelegate<TDelegate> where TDelegate : class {
+            Action<TDelegate> _unregister;
+
+            protected WeakDelegateWithDeregistration(TDelegate handler, Action<TDelegate> unregister)
+                : base(handler) {
+                _unregister = unregister;
+            }
+
+            public abstract TDelegate Handler { get; }
+
+            public static implicit operator TDelegate(WeakDelegateWithDeregistration<TDelegate> wh) {
+                return wh.Handler;
+            }
+
+            public void Unregister() {
+                if (_unregister != null) {
+                    _unregister(Handler);
+                    _unregister = null;
+                }
+            }
+        }
+
+        public sealed class WeakEventHandler<TEventArgs> : WeakDelegateWithDeregistration<EventHandler<TEventArgs>>
+            where TEventArgs : EventArgs {
+
+            public WeakEventHandler(EventHandler<TEventArgs> eventHandler, Action<EventHandler<TEventArgs>> unregister)
+                : base(eventHandler, unregister) {
+            }
+
+            public void Invoke(object sender, TEventArgs e) {
+                if(!TryInvoke(sender, e)) {
+                    Unregister();
+                }
+            }
+
+            public override EventHandler<TEventArgs> Handler {
+                get { return Invoke; }
+            }
+        }
+
+        sealed class WeakAction : WeakDelegateWithDeregistration<Action> {
+            public WeakAction(Action eventHandler, Action<Action> unregister)
+                : base(eventHandler, unregister) {
+            }
+
+            public void Invoke() {
+                if (!TryInvoke()) {
+                    Unregister();
+                }
+            }
+
+            public override Action Handler {
+                get { return Invoke; }
+            }
+        }
+
+        public sealed class WeakAction<T> : WeakDelegateWithDeregistration<Action<T>> {
+
+            public WeakAction(Action<T> eventHandler, Action<Action<T>> unregister)
+                : base(eventHandler, unregister) {
+            }
+
+            public void Invoke(T arg) {
+                if (!TryInvoke(arg)) {
+                    Unregister();
+                }
+            }
+
+            public override Action<T> Handler {
+                get { return Invoke; }
+            }
+        }
+
         public static TDelegate Remove<TDelegate>(TDelegate eventHandlers, TDelegate handlerToRemove) where TDelegate : class {
             if (eventHandlers == null) {
                 return null;
