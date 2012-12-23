@@ -5,8 +5,8 @@ using System.Runtime.CompilerServices;
 
 namespace Ark {
     public class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
-        protected WeakReference _targetReference;
-        protected MethodInfo _method;
+        WeakReference _targetReference;
+        MethodInfo _method;
         int _hashCode;
 
         public WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
@@ -28,15 +28,15 @@ namespace Ark {
             return true;
         }
 
-        internal bool TryInvoke() {
+        protected bool TryInvoke() {
             return TryDynamicInvoke(null);
         }
 
-        internal bool TryInvoke<T>(T arg) {
+        protected bool TryInvoke<T>(T arg) {
             return TryDynamicInvoke(new object[] { arg });
         }
 
-        internal bool TryInvoke<T1, T2>(T1 arg1, T2 arg2) {
+        protected bool TryInvoke<T1, T2>(T1 arg1, T2 arg2) {
             return TryDynamicInvoke(new object[] { arg1, arg2 });
         }
 
