@@ -46,23 +46,23 @@ namespace Ark {
 
         public override bool Equals(object obj) {
             var weakDelegate = obj as WeakDelegate<TDelegate>;
-            if (weakDelegate != null) {
+            if ((object)weakDelegate != null) {
                 return Equals(weakDelegate);
             }
             var strongDelegate = obj as TDelegate;
-            if (strongDelegate != null) {
+            if ((object)strongDelegate != null) {
                 return Equals(strongDelegate);
             }
             return false;
         }
 
         public bool Equals(WeakDelegate<TDelegate> other) {
-            return other != null && other._hashCode == _hashCode && other._method == _method && other._targetReference.Target == _targetReference.Target;
+            return (object)other != null && other._hashCode == _hashCode && other._method == _method && object.ReferenceEquals(other._targetReference.Target, _targetReference.Target);
         }
 
         public bool Equals(TDelegate other) {
             var otherDelegate = other as Delegate;
-            return otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && otherDelegate.Target == _targetReference.Target;
+            return (object)otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && object.ReferenceEquals(otherDelegate.Target, _targetReference.Target);
         }
 
         public static bool operator ==(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
