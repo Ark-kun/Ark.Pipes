@@ -64,6 +64,14 @@ namespace Ark {
             var otherDelegate = other as Delegate;
             return otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && otherDelegate.Target == _targetReference.Target;
         }
+
+        public static bool operator ==(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
+            return ((object)left == null && (object)right == null) || left.Equals(right);
+        }
+
+        public static bool operator !=(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
+            return !(left == right);
+        }
     }
 
     public static class WeakDelegate {
