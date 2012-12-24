@@ -16,7 +16,7 @@ namespace Ark {
 
             _targetReference = new WeakReference(delegateHandler.Target);
             _method = delegateHandler.Method;
-            _hashCode = delegateHandler.GetHashCode();
+            _hashCode = delegateHandler.GetGoodHashCode();
         }
 
         public bool TryDynamicInvoke(object[] args) {
@@ -62,7 +62,7 @@ namespace Ark {
 
         public bool Equals(TDelegate other) {
             var otherDelegate = other as Delegate;
-            return otherDelegate != null && otherDelegate.GetHashCode() == _hashCode && otherDelegate.Method == _method && otherDelegate.Target == _targetReference.Target;
+            return otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && otherDelegate.Target == _targetReference.Target;
         }
     }
 
