@@ -38,6 +38,18 @@ namespace Ark {
             }
         }
 
+        public void AddHandler(WeakDelegate<TDelegate> weakHandler) {
+            if (weakHandler != null) {
+                _handlers.Add(weakHandler);
+            }
+        }
+
+        public void AddHandler(WeakMulticastDelegate<TDelegate> weakHandlers) {
+            if (weakHandlers != null) {
+                _handlers.AddRange(weakHandlers);
+            }
+        }
+
         public void RemoveHandler(TDelegate handler) {
             if (handler != null) {
                 _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => new WeakDelegate<TDelegate>(h)));
@@ -47,6 +59,14 @@ namespace Ark {
         public void RemoveHandler(WeakDelegate<TDelegate> weakHandler) {
             if (weakHandler != null) {
                 _handlers.Remove(weakHandler);
+            }
+        }
+
+        public void RemoveAll(TDelegate handler) {
+            if (handler != null) {
+                foreach (var del in handler.GetTypedInvocationList()) {
+                    _handlers.RemoveAll(new WeakDelegate<TDelegate>(del));
+                }
             }
         }
 
