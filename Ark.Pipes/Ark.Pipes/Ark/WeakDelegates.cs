@@ -10,6 +10,9 @@ namespace Ark {
         int _hashCode;
 
         public WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
+            if ((object)handler == null) {
+                throw new ArgumentNullException("handler must not be null");
+            }
             var delegateHandler = handler as Delegate;
             if (delegateHandler == null)
                 throw new ArgumentException("Agrument must have a delegate type.");
@@ -57,12 +60,12 @@ namespace Ark {
         }
 
         public bool Equals(WeakDelegate<TDelegate> other) {
-            return (object)other != null && other._hashCode == _hashCode && other._method == _method && object.ReferenceEquals(other._targetReference.Target, _targetReference.Target);
+            return (object)other != null && other._hashCode == _hashCode && other._method == _method && ReferencesAreEqualAndNotNull(other._targetReference.Target, _targetReference.Target);
         }
 
         public bool Equals(TDelegate other) {
             var otherDelegate = other as Delegate;
-            return (object)otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && object.ReferenceEquals(otherDelegate.Target, _targetReference.Target);
+            return (object)otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && ReferencesAreEqualAndNotNull(otherDelegate.Target, _targetReference.Target);
         }
 
         public static bool operator ==(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
@@ -71,6 +74,10 @@ namespace Ark {
 
         public static bool operator !=(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
             return !(left == right);
+        }
+
+        static bool ReferencesAreEqualAndNotNull(object obj1, object obj2) {
+            return obj1 != null && obj2 != null && Object.ReferenceEquals(obj1, obj2);
         }
     }
 
