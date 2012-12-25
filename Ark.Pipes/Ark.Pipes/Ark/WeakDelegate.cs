@@ -2,12 +2,12 @@
 using System.Reflection;
 
 namespace Ark {
-    public class WeakDelegate<TDelegate> : IEquatable<WeakDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
+    public class WeakDelegate<TDelegate> : SingleDelegate<TDelegate> where TDelegate : class {
         WeakReference _targetReference;
         MethodInfo _method;
-        int _hashCode;
 
-        public WeakDelegate(TDelegate handler) { //Only the first handler is used if there are multiple handlers.
+        public WeakDelegate(TDelegate handler)
+            : base(handler) { //Only the first handler is used if there are multiple handlers.
             if ((object)handler == null) {
                 throw new ArgumentNullException("handler must not be null");
             }
@@ -17,10 +17,30 @@ namespace Ark {
 
             _targetReference = new WeakReference(delegateHandler.Target);
             _method = delegateHandler.Method;
-            _hashCode = delegateHandler.GetGoodHashCode();
         }
 
-        public bool TryDynamicInvoke(object[] args) {
+
+        public override object Target {
+            get { return _targetReference.Target; }
+        }
+
+        public override MethodInfo Method {
+            get { return _method; }
+        }
+
+        public override TDelegate Invoke {
+            get { return CreateInvokeHandler(); }
+        }
+
+        protected virtual TDelegate CreateInvokeHandler() {
+            var invokeHandler = Delegate.CreateDelegate(typeof(TDelegate), this, "InvokeInternal") as TDelegate;
+            if (invokeHandler == null) {
+                throw new NotImplementedException(string.Format("Delegates of type {0} are not supported. Only delegates with 0-4 [generic] by-value parameters and no return value are supported.", typeof(TDelegate)));
+            }
+            return invokeHandler;
+        }
+
+        public override bool TryDynamicInvoke(object[] args) {
             object target = _targetReference.Target;
             if (target == null) {
                 return false;
@@ -41,41 +61,32 @@ namespace Ark {
             return TryDynamicInvoke(new object[] { arg1, arg2 });
         }
 
-        public override int GetHashCode() {
-            return _hashCode;
+        protected bool TryInvoke<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3) {
+            return TryDynamicInvoke(new object[] { arg1, arg2, arg3 });
         }
 
-        public override bool Equals(object obj) {
-            var weakDelegate = obj as WeakDelegate<TDelegate>;
-            if ((object)weakDelegate != null) {
-                return Equals(weakDelegate);
-            }
-            var strongDelegate = obj as TDelegate;
-            if ((object)strongDelegate != null) {
-                return Equals(strongDelegate);
-            }
-            return false;
+        protected bool TryInvoke<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
+            return TryDynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
         }
 
-        public bool Equals(WeakDelegate<TDelegate> other) {
-            return (object)other != null && other._hashCode == _hashCode && other._method == _method && ReferencesAreEqualAndNotNull(other._targetReference.Target, _targetReference.Target);
+        protected void InvokeInternal() {
+            TryDynamicInvoke(null);
         }
 
-        public bool Equals(TDelegate other) {
-            var otherDelegate = other as Delegate;
-            return (object)otherDelegate != null && otherDelegate.GetGoodHashCode() == _hashCode && otherDelegate.Method == _method && ReferencesAreEqualAndNotNull(otherDelegate.Target, _targetReference.Target);
+        protected void InvokeInternal<T>(T arg) {
+            TryDynamicInvoke(new object[] { arg });
         }
 
-        public static bool operator ==(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
-            return ((object)left == null && (object)right == null) || left.Equals(right);
+        protected void InvokeInternal<T1, T2>(T1 arg1, T2 arg2) {
+            TryDynamicInvoke(new object[] { arg1, arg2 });
         }
 
-        public static bool operator !=(WeakDelegate<TDelegate> left, WeakDelegate<TDelegate> right) {
-            return !(left == right);
+        protected void InvokeInternal<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3) {
+            TryDynamicInvoke(new object[] { arg1, arg2, arg3 });
         }
 
-        static bool ReferencesAreEqualAndNotNull(object obj1, object obj2) {
-            return obj1 != null && obj2 != null && Object.ReferenceEquals(obj1, obj2);
+        protected void InvokeInternal<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
+            TryDynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
         }
     }
 }
