@@ -31,6 +31,9 @@ namespace Ark {
         }
 
         public static IEnumerable<TDelegate> GetTypedInvocationList<TDelegate>(this TDelegate handler) where TDelegate : class {
+            if (handler == null) { 
+                return new TDelegate[0];
+            }
             var del = handler as Delegate;
             if (del == null) {
                 throw new ArgumentException("The TDelegate generic parameter must be a delegate type.");
