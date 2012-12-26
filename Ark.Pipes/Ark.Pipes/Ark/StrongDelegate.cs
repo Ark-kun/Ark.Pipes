@@ -33,9 +33,13 @@ namespace Ark {
             get { return _handler as Delegate; }
         }
 
-        public override bool TryDynamicInvoke(object[] args) {
-            Delegate.DynamicInvoke(args);
+        public override bool TryDynamicInvoke(object[] args, out object result) {
+            result = DynamicInvoke(args);
             return true;
+        }
+
+        public override object DynamicInvoke(params object[] args) {
+            return Delegate.DynamicInvoke(args);
         }
     }
 }

@@ -22,7 +22,8 @@ namespace Ark {
             _hashCode = delegateHandler.GetGoodHashCode(); //TODO: take only the first handler
         }
 
-        public abstract bool TryDynamicInvoke(object[] args);
+        public abstract bool TryDynamicInvoke(object[] args, out object result);
+        public abstract object DynamicInvoke(params object[] args);
 
         public abstract MethodInfo Method { get; }
 

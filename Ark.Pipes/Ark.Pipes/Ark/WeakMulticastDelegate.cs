@@ -10,8 +10,8 @@ namespace Ark {
         }
     }
 
-    public class WeakMulticastDelegate<TDelegate> : IEnumerable<WeakDelegate<TDelegate>> where TDelegate : class {
-        SafeIndexedLinkedList<WeakDelegate<TDelegate>> _handlers = new SafeIndexedLinkedList<WeakDelegate<TDelegate>>(0);
+    public class WeakMulticastDelegate<TDelegate> : IEnumerable<SingleDelegate<TDelegate>> where TDelegate : class {
+        SafeIndexedLinkedList<SingleDelegate<TDelegate>> _handlers = new SafeIndexedLinkedList<SingleDelegate<TDelegate>>(0);
         TDelegate _invokeHandler;
 
         static WeakMulticastDelegate() {
@@ -38,9 +38,9 @@ namespace Ark {
             }
         }
 
-        public void AddHandler(WeakDelegate<TDelegate> weakHandler) {
-            if (weakHandler != null) {
-                _handlers.Add(weakHandler);
+        public void AddHandler(SingleDelegate<TDelegate> singleHandler) {
+            if (singleHandler != null) {
+                _handlers.Add(singleHandler);
             }
         }
 
@@ -52,13 +52,13 @@ namespace Ark {
 
         public void RemoveHandler(TDelegate handler) {
             if (handler != null) {
-                _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => new WeakDelegate<TDelegate>(h)));
+                _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => new StrongDelegate<TDelegate>(h)));
             }
         }
 
-        public void RemoveHandler(WeakDelegate<TDelegate> weakHandler) {
-            if (weakHandler != null) {
-                _handlers.Remove(weakHandler);
+        public void RemoveHandler(SingleDelegate<TDelegate> singleHandler) {
+            if (singleHandler != null) {
+                _handlers.Remove(singleHandler);
             }
         }
 
@@ -70,18 +70,20 @@ namespace Ark {
             }
         }
 
-        public void RemoveAll(WeakDelegate<TDelegate> weakHandler) {
-            if (weakHandler != null) {
-                _handlers.RemoveAll(weakHandler);
+        public void RemoveAll(SingleDelegate<TDelegate> singleHandler) {
+            if (singleHandler != null) {
+                _handlers.RemoveAll(singleHandler);
             }
         }
 
-        public void DynamicInvoke(object[] args) {
+        public object DynamicInvoke(object[] args) {
+            object result = null;
             foreach (var handler in this) {
-                if (!handler.TryDynamicInvoke(args)) {
-                    RemoveAll(handler); //TODO: Check that the right handlers are removed. FIX: Need to fix equality comparison/removal for dead delegates.
+                if (!handler.TryDynamicInvoke(args, out result)) {
+                    _handlers.RemoveAll(handler); //TODO: Check that the right handlers are removed. FIX: Need to fix equality comparison/removal for dead delegates.
                 }
             }
+            return result;
         }
 
         void InvokeInternal() {
@@ -108,7 +110,7 @@ namespace Ark {
             get { return _invokeHandler; }
         }
 
-        public IEnumerator<WeakDelegate<TDelegate>> GetEnumerator() {
+        public IEnumerator<SingleDelegate<TDelegate>> GetEnumerator() {
             return _handlers.GetEnumerator();
         }
 
