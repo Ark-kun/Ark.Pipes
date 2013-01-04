@@ -1,7 +1,7 @@
 ﻿using Ark.Collections;
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Ark {
     public static class WeakMulticastDelegate {
@@ -21,15 +21,7 @@ namespace Ark {
         }
 
         public WeakMulticastDelegate() {
-            _invokeHandler = CreateInvokeHandler();
-        }
-
-        protected virtual TDelegate CreateInvokeHandler() {
-            var invokeHandler = Delegate.CreateDelegate(typeof(TDelegate), this, "InvokeInternal") as TDelegate;
-            if (invokeHandler == null) {
-                throw new NotImplementedException(string.Format("Delegates of type {0} are not supported. Only delegates with 0-4 [generic] by-value parameters and no return value are supported.", typeof(TDelegate)));
-            }
-            return invokeHandler;
+            _invokeHandler = new DynamicInvokeAdapter<TDelegate>(DynamicInvoke).Invoke;
         }
 
         public void AddHandler(TDelegate handler) {
@@ -90,26 +82,6 @@ namespace Ark {
                 }
             }
             return result;
-        }
-
-        void InvokeInternal() {
-            DynamicInvoke(null);
-        }
-
-        void InvokeInternal<T>(T arg) {
-            DynamicInvoke(new object[] { arg });
-        }
-
-        void InvokeInternal<T1, T2>(T1 arg1, T2 arg2) {
-            DynamicInvoke(new object[] { arg1, arg2 });
-        }
-
-        void InvokeInternal<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3) {
-            DynamicInvoke(new object[] { arg1, arg2, arg3 });
-        }
-
-        void InvokeInternal<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
-            DynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
         }
 
         public TDelegate Invoke {
