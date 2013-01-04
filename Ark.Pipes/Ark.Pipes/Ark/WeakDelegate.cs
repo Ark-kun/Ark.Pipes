@@ -29,16 +29,7 @@ namespace Ark {
         }
 
         public override TDelegate Invoke {
-            get { return CreateInvokeHandler(); }
-        }
-
-        protected virtual TDelegate CreateInvokeHandler() {
-            string methodName = (_method.ReturnType == typeof(void)) ? "InvokeInternal" : "InvokeFunctionInternal";
-            var invokeHandler = Delegate.CreateDelegate(typeof(TDelegate), this, methodName) as TDelegate;
-            if (invokeHandler == null) {
-                throw new NotImplementedException(string.Format("Delegates of type {0} are not supported. Only delegates with 0-4 [generic] by-value parameters are supported.", typeof(TDelegate)));
-            }
-            return invokeHandler;
+            get { return new DynamicInvokeAdapter<TDelegate>(DynamicInvoke).Invoke; }
         }
 
         bool TryDynamicInvoke(params object[] args) {
@@ -82,46 +73,6 @@ namespace Ark {
 
         protected bool TryInvoke<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
             return TryDynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
-        }
-
-        protected void InvokeInternal() {
-            DynamicInvoke(null);
-        }
-
-        protected void InvokeInternal<T>(T arg) {
-            DynamicInvoke(new object[] { arg });
-        }
-
-        protected void InvokeInternal<T1, T2>(T1 arg1, T2 arg2) {
-            DynamicInvoke(new object[] { arg1, arg2 });
-        }
-
-        protected void InvokeInternal<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3) {
-            DynamicInvoke(new object[] { arg1, arg2, arg3 });
-        }
-
-        protected void InvokeInternal<T1, T2, T3, T4>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
-            DynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
-        }
-
-        protected TResult InvokeFunctionInternal<TResult>() {
-            return (TResult)DynamicInvoke(new object[] { });
-        }
-
-        protected TResult InvokeFunctionInternal<T, TResult>(T arg) {
-            return (TResult)DynamicInvoke(new object[] { arg });
-        }
-
-        protected TResult InvokeFunctionInternal<T1, T2, TResult>(T1 arg1, T2 arg2) {
-            return (TResult)DynamicInvoke(new object[] { arg1, arg2 });
-        }
-
-        protected TResult InvokeFunctionInternal<T1, T2, T3, TResult>(T1 arg1, T2 arg2, T3 arg3) {
-            return (TResult)DynamicInvoke(new object[] { arg1, arg2, arg3 });
-        }
-
-        protected TResult InvokeFunctionInternal<T1, T2, T3, T4, TResult>(T1 arg1, T2 arg2, T3 arg3, T4 arg4) {
-            return (TResult)DynamicInvoke(new object[] { arg1, arg2, arg3, arg4 });
         }
     }
 }
