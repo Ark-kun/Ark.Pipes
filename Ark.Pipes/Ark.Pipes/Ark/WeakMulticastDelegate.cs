@@ -38,6 +38,12 @@ namespace Ark {
             }
         }
 
+        public void AddHandlerStrong(TDelegate handler) {
+            if (handler != null) {
+                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => new StrongDelegate<TDelegate>(h)));
+            }
+        }
+
         public void AddHandler(SingleDelegate<TDelegate> singleHandler) {
             if (singleHandler != null) {
                 _handlers.Add(singleHandler);
