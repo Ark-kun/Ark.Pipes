@@ -16,6 +16,15 @@ namespace Ark {
             }
 
             var delegateType = typeof(TDelegate);
+            if (delegateType == typeof(Action)) {
+                _factory = (dynamicHandler) => (TDelegate)(object)(Action)(() => { dynamicHandler(null); });
+                return;
+            }
+            if (delegateType == typeof(Action<bool>)) {
+                _factory = (dynamicHandler) => (TDelegate)(object)(Action<bool>)((arg) => { dynamicHandler(new object[] { arg }); });
+                return;
+            }
+
             var delegateMethod = delegateType.GetMethod("Invoke");
             var delegateReturnType = delegateMethod.ReturnType;
             var delegateParameters = delegateMethod.GetParameters();
