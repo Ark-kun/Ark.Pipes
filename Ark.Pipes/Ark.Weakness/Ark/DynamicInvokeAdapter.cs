@@ -33,7 +33,7 @@ namespace Ark {
             var dynamicHandlerParameter = Expression.Parameter(dynamicHandlerType, "dynamicHandler");
 
             var parameterExpressions = delegateParameters.Select(p => Expression.Parameter(p.ParameterType, p.Name)).ToArray();
-            var dynamicArgumentsExpressions = parameterExpressions.Select(p => Expression.Convert(p, typeof(object)));
+            var dynamicArgumentsExpressions = parameterExpressions.Select(p => Expression.Convert(p, typeof(object))).ToArray();
 
             Expression invokeHandlerExpression = Expression.Invoke(
                 dynamicHandlerParameter,

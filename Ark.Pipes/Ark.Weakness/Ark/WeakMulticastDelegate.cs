@@ -26,13 +26,13 @@ namespace Ark {
 
         public void AddHandler(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => new WeakDelegate<TDelegate>(h)));
+                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
             }
         }
 
         public void AddHandlerStrong(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => new StrongDelegate<TDelegate>(h)));
+                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
             }
         }
 
@@ -50,7 +50,7 @@ namespace Ark {
 
         public void RemoveHandler(TDelegate handler) {
             if (handler != null) {
-                _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => new StrongDelegate<TDelegate>(h)));
+                _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
             }
         }
 
