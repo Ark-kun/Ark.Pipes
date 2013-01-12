@@ -26,25 +26,25 @@ namespace Ark {
 
         public void AddHandler(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
+                AddHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
             }
         }
 
         public void AddHandlerWeakly(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
+                AddHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
             }
         }
 
         public void AddHandlerStrongly(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
+                AddHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
             }
         }
 
         public void AddStrongHandlerWeakly(TDelegate handler) {
             if (handler != null) {
-                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeaklyReferencedStrongDelegate<TDelegate>(h)));
+                AddHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeaklyReferencedStrongDelegate<TDelegate>(h)));
             }
         }
 
@@ -56,19 +56,31 @@ namespace Ark {
 
         public void AddHandler(WeakMulticastDelegate<TDelegate> weakHandlers) {
             if (weakHandlers != null) {
-                _handlers.AddRange(weakHandlers);
+                AddHandlers(weakHandlers);
+            }
+        }
+
+        public void AddHandlers(IEnumerable<SingleDelegate<TDelegate>> handlers) {
+            if (handlers != null) {
+                _handlers.AddRange(handlers);
             }
         }
 
         public void RemoveHandler(TDelegate handler) {
             if (handler != null) {
-                _handlers.RemoveRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
+                RemoveHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
             }
         }
 
         public void RemoveHandler(SingleDelegate<TDelegate> singleHandler) {
             if (singleHandler != null) {
                 _handlers.Remove(singleHandler);
+            }
+        }
+
+        public void RemoveHandlers(IEnumerable<SingleDelegate<TDelegate>> handlers) {
+            if (handlers != null) {
+                _handlers.RemoveRange(handlers);
             }
         }
 
