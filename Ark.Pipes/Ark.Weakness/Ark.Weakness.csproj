@@ -36,6 +36,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ark\WeaklyReferencedStrongDelegate.cs" />
     <Compile Include="Ark\DelegateExtensions.cs" />
     <Compile Include="Ark\DynamicInvokeAdapter.cs" />
     <Compile Include="Ark\FastMulticastDelegate.cs" />
