@@ -87,7 +87,7 @@ namespace Ark {
         public void RemoveAll(TDelegate handler) {
             if (handler != null) {
                 foreach (var del in handler.GetTypedInvocationList()) {
-                    _handlers.RemoveAll(new WeakDelegate<TDelegate>(del));
+                    RemoveAll(new StrongDelegate<TDelegate>(del));
                 }
             }
         }
