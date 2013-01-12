@@ -30,9 +30,21 @@ namespace Ark {
             }
         }
 
-        public void AddHandlerStrong(TDelegate handler) {
+        public void AddHandlerWeakly(TDelegate handler) {
+            if (handler != null) {
+                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
+            }
+        }
+
+        public void AddHandlerStrongly(TDelegate handler) {
             if (handler != null) {
                 _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new StrongDelegate<TDelegate>(h)));
+            }
+        }
+
+        public void AddStrongHandlerWeakly(TDelegate handler) {
+            if (handler != null) {
+                _handlers.AddRange(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeaklyReferencedStrongDelegate<TDelegate>(h)));
             }
         }
 
