@@ -75,14 +75,19 @@ namespace Ark.Collections {
                 if (nodeList.IsEmpty) {
                     _lookup.Remove(value);
                 }
-                node.Remove();
+                _list.Remove(node);
             }
         }
 
         void RemoveAllWithoutLocking(T value) {
-            _lookup.Remove(value);
+            SingleLinkedList<DoubleLinkedNode<T>> nodeList;
+            if (_lookup.TryGetValue(value, out nodeList)) {
+                _lookup.Remove(value);
+                foreach (var node in nodeList) {
+                    _list.Remove(node);
+                }
+            }
         }
-
 
         public IEnumerator<T> GetEnumerator() {
             return _list.GetEnumerator();
@@ -93,7 +98,7 @@ namespace Ark.Collections {
         }
     }
 
-    class SingleLinkedList<T> {
+    class SingleLinkedList<T> : IEnumerable<T> {
         SingleLinkedNode<T> _head;
 
         public bool IsEmpty {
@@ -121,9 +126,22 @@ namespace Ark.Collections {
             _head = _head.Next;
             return value;
         }
+
+        public IEnumerator<T> GetEnumerator() {
+            var head = _head;
+            if (head == null) {
+                return EmptyEnumerator<T>.Instance;
+            } else {
+                return head.GetEnumerator();
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return this.GetEnumerator();
+        }
     }
 
-    class SingleLinkedNode<T> {
+    class SingleLinkedNode<T> : IEnumerable<T> {
         internal T _value;
         internal SingleLinkedNode<T> _next;
 
@@ -138,6 +156,16 @@ namespace Ark.Collections {
         public SingleLinkedNode<T> Next {
             get { return _next; }
             internal set { _next = value; }
+        }
+
+        public IEnumerator<T> GetEnumerator() {
+            for (var node = this; node != null; node = node.Next) {
+                yield return node.Value;
+            }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
+            return this.GetEnumerator();
         }
     }
 
@@ -201,6 +229,21 @@ namespace Ark.Collections {
             return value;
         }
 
+        public void Remove(DoubleLinkedNode<T> node) {
+            if (node.Previous != null) {
+                node.Previous.Next = node.Next;
+            } else { 
+                Debug.Assert(node == _head);
+                _head = node.Next;
+            }
+            if (node.Next != null) {
+                node.Next.Previous = node.Previous;
+            } else {
+                Debug.Assert(node == _tail);
+                _tail = node.Previous;
+            }
+        }
+
         public IEnumerator<T> GetEnumerator() {
             var head = _head;
             if (head == null) {
@@ -254,14 +297,14 @@ namespace Ark.Collections {
             this._next = node;
         }
 
-        public void Remove() {
-            if (_prev != null) {
-                _prev._next = _next;
-            }
-            if (_next != null) {
-                _next._prev = _prev;
-            }
-        }
+        //public void Remove() {
+        //    if (_prev != null) {
+        //        _prev._next = _next;
+        //    }
+        //    if (_next != null) {
+        //        _next._prev = _prev;
+        //    }
+        //}
 
         public IEnumerator<T> GetEnumerator() {
             for (var node = this; node != null; node = node.Next) {
