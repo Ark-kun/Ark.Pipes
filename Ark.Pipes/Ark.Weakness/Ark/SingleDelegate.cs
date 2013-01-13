@@ -76,7 +76,7 @@ namespace Ark {
         }
 
         public bool Equals(SingleDelegate<TDelegate> other) {
-            return (object)other != null && other._hashCode == _hashCode && other.Method == Method && ReferencesAreEqualAndNotNull(other.Target, Target);
+            return Object.ReferenceEquals(this, other) || ((object)other != null && other._hashCode == _hashCode && other.Method == Method && ReferencesAreEqualAndNotNull(other.Target, Target));
         }
 
         public bool Equals(TDelegate other) {
