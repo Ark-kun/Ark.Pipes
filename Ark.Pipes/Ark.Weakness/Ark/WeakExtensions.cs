@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace Ark {
     public static class WeakExtensions {
-        public abstract class WeakDelegateWithDeregistration<TDelegate> : WeakDelegate<TDelegate> where TDelegate : class {
+        abstract class WeakDelegateWithDeregistration<TDelegate> : WeakDelegate<TDelegate> where TDelegate : class {
             Action<TDelegate> _unregister;
 
             protected WeakDelegateWithDeregistration(TDelegate handler, Action<TDelegate> unregister)
@@ -26,7 +26,7 @@ namespace Ark {
             }
         }
 
-        public sealed class WeakEventHandler<TEventArgs> : WeakDelegateWithDeregistration<EventHandler<TEventArgs>>
+        sealed class WeakEventHandler<TEventArgs> : WeakDelegateWithDeregistration<EventHandler<TEventArgs>>
             where TEventArgs : EventArgs {
 
             public WeakEventHandler(EventHandler<TEventArgs> eventHandler, Action<EventHandler<TEventArgs>> unregister)
@@ -60,7 +60,7 @@ namespace Ark {
             }
         }
 
-        public sealed class WeakAction<T> : WeakDelegateWithDeregistration<Action<T>> {
+        sealed class WeakAction<T> : WeakDelegateWithDeregistration<Action<T>> {
 
             public WeakAction(Action<T> eventHandler, Action<Action<T>> unregister)
                 : base(eventHandler, unregister) {
