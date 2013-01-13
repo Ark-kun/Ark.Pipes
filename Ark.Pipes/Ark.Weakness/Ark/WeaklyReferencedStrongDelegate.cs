@@ -8,7 +8,7 @@ namespace Ark {
         public WeaklyReferencedStrongDelegate(TDelegate handler)
             : base(handler) {
             if ((object)handler == null) {
-                throw new ArgumentNullException("handler must not be null");
+                throw new ArgumentNullException("handler");
             }
             var delegateHandler = handler as Delegate;
             if (delegateHandler == null)
@@ -31,21 +31,20 @@ namespace Ark {
             }
         }
 
-        public override TDelegate Invoke {
-            get { return (TDelegate)_handlerReference.Target; }
+        public override TDelegate TryGetInvoker() {
+            return (TDelegate)_handlerReference.Target;
+        }
+
+        public override Func<object[], object> TryGetDynamicInvoker() {
+            var del = Delegate;
+            if (del == null) {
+                return null;
+            }
+            return del.DynamicInvoke;
         }
 
         Delegate Delegate {
             get { return (Delegate)_handlerReference.Target; }
-        }
-
-        public override bool TryDynamicInvoke(object[] args, out object result) {
-            result = DynamicInvoke(args);
-            return true;
-        }
-
-        public override object DynamicInvoke(params object[] args) {
-            return Delegate.DynamicInvoke(args);
         }
     }
 }

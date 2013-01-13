@@ -85,10 +85,13 @@ namespace Ark {
             }
         }
 
-        public object DynamicInvoke(object[] args) {
+        object DynamicInvokeInternal(object[] args) {
             object result = null;
             foreach (var handler in _handlers) {
-                if (!handler.TryDynamicInvoke(args, out result)) {
+                var dynamicInvoker = handler.TryGetDynamicInvoker();
+                if (dynamicInvoker != null) {
+                    result = dynamicInvoker(args);
+                } else {
                     var removeAllCollection = _handlers as ICanRemoveAll<SingleDelegate<TDelegate>>;
                     if (removeAllCollection != null) {
                         removeAllCollection.RemoveAll(handler);
@@ -100,8 +103,21 @@ namespace Ark {
             return result;
         }
 
+        protected virtual TDelegate TryGetInvoker() {
+            return _invokeHandler;
+        }
+
+        protected virtual Func<object[], object> TryGetDynamicInvoker() {
+            return DynamicInvokeInternal;
+        }
+
+        public object DynamicInvoke(object[] args) {
+            var dynamicInvoker = TryGetDynamicInvoker();
+            return dynamicInvoker(args);
+        }
+
         public TDelegate Invoke {
-            get { return _invokeHandler; }
+            get { return TryGetInvoker(); }
         }
 
         public IEnumerator<SingleDelegate<TDelegate>> GetEnumerator() {

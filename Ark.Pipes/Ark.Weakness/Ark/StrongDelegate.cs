@@ -25,21 +25,16 @@ namespace Ark {
             get { return Delegate.Method; }
         }
 
-        public override TDelegate Invoke {
-            get { return _handler; }
+        public override TDelegate TryGetInvoker() {
+            return _handler;
+        }
+
+        public override Func<object[], object> TryGetDynamicInvoker() {
+            return Delegate.DynamicInvoke;
         }
 
         Delegate Delegate {
             get { return _handler as Delegate; }
-        }
-
-        public override bool TryDynamicInvoke(object[] args, out object result) {
-            result = DynamicInvoke(args);
-            return true;
-        }
-
-        public override object DynamicInvoke(params object[] args) {
-            return Delegate.DynamicInvoke(args);
         }
     }
 }

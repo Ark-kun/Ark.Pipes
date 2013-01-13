@@ -28,31 +28,25 @@ namespace Ark {
             get { return _method; }
         }
 
-        public override TDelegate Invoke {
-            get { return new DynamicInvokeAdapter<TDelegate>(DynamicInvoke).Invoke; }
+        public override TDelegate TryGetInvoker() {
+            var dynamicInvoker = TryGetDynamicInvoker();
+            if (dynamicInvoker == null) {
+                return null;
+            }
+            return new DynamicInvokeAdapter<TDelegate>(dynamicInvoker).Invoke;
+        }
+
+        public override Func<object[], object> TryGetDynamicInvoker() {
+            object target = Target;
+            if (target == null) {
+                return null;
+            }
+            return (args) => _method.Invoke(target, args);
         }
 
         bool TryDynamicInvoke(params object[] args) {
             object result;
             return TryDynamicInvoke(args, out result);
-        }
-
-        public override bool TryDynamicInvoke(object[] args, out object result) {
-            object target = Target;
-            if (target == null) {
-                result = null;
-                return false;
-            }
-            result = _method.Invoke(target, args);
-            return true;
-        }
-
-        public override object DynamicInvoke(params object[] args) {
-            object target = Target;
-            if (target == null) {
-                throw new InvalidOperationException("The delegate target is not alive.");
-            }
-            return _method.Invoke(target, args);
         }
 
         protected bool TryInvoke() {

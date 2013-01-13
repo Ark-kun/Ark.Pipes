@@ -3,6 +3,7 @@ using System.Reflection;
 
 namespace Ark {
     public abstract class SingleDelegate<TDelegate> : IEquatable<SingleDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
+        static InvalidOperationException _targetDeadException = new InvalidOperationException("The delegate target is no longer available.");
         int _hashCode;
 
         static SingleDelegate() {
@@ -22,14 +23,41 @@ namespace Ark {
             _hashCode = delegateHandler.GetGoodHashCode(); //TODO: take only the first handler
         }
 
-        public abstract bool TryDynamicInvoke(object[] args, out object result);
-        public abstract object DynamicInvoke(params object[] args);
-
         public abstract MethodInfo Method { get; }
 
         public abstract object Target { get; }
 
-        public abstract TDelegate Invoke { get; }
+        public abstract TDelegate TryGetInvoker();
+
+        public abstract Func<object[], object> TryGetDynamicInvoker();
+
+        public TDelegate Invoke {
+            get {
+                var invoker = TryGetInvoker();
+                if (invoker == null) {
+                    throw _targetDeadException;
+                }
+                return invoker;
+            }
+        }
+
+        public object DynamicInvoke(params object[] args) {
+            var dynamicInvoker = TryGetDynamicInvoker();
+            if (dynamicInvoker == null) {
+                throw _targetDeadException;
+            }
+            return dynamicInvoker(args);
+        }
+
+        public bool TryDynamicInvoke(object[] args, out object result) {
+            var dynamicInvoker = TryGetDynamicInvoker();
+            if (dynamicInvoker == null) {
+                result = null;
+                return false;
+            }
+            result = dynamicInvoker(args);
+            return true;
+        }
 
         public override int GetHashCode() {
             return _hashCode;
