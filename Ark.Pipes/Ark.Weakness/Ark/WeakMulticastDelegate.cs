@@ -11,7 +11,7 @@ namespace Ark {
     }
 
     public class WeakMulticastDelegate<TDelegate> : IEnumerable<SingleDelegate<TDelegate>> where TDelegate : class {
-        SafeIndexedLinkedList<SingleDelegate<TDelegate>> _handlers = new SafeIndexedLinkedList<SingleDelegate<TDelegate>>(0);
+        ICollectionEx<SingleDelegate<TDelegate>> _handlers;
         TDelegate _invokeHandler;
 
         static WeakMulticastDelegate() {
@@ -21,6 +21,7 @@ namespace Ark {
         }
 
         public WeakMulticastDelegate() {
+            _handlers = new SafeIndexedLinkedList<SingleDelegate<TDelegate>>(0);
             _invokeHandler = new DynamicInvokeAdapter<TDelegate>(DynamicInvoke).Invoke;
         }
 
@@ -84,25 +85,16 @@ namespace Ark {
             }
         }
 
-        public void RemoveAll(TDelegate handler) {
-            if (handler != null) {
-                foreach (var del in handler.GetTypedInvocationList()) {
-                    RemoveAll(new StrongDelegate<TDelegate>(del));
-                }
-            }
-        }
-
-        public void RemoveAll(SingleDelegate<TDelegate> singleHandler) {
-            if (singleHandler != null) {
-                _handlers.RemoveAll(singleHandler);
-            }
-        }
-
         public object DynamicInvoke(object[] args) {
             object result = null;
-            foreach (var handler in this) {
+            foreach (var handler in _handlers) {
                 if (!handler.TryDynamicInvoke(args, out result)) {
-                    _handlers.RemoveAll(handler); //TODO: Check that the right handlers are removed. FIX: Need to fix equality comparison/removal for dead delegates.
+                    var removeAllCollection = _handlers as ICanRemoveAll<SingleDelegate<TDelegate>>;
+                    if (removeAllCollection != null) {
+                        removeAllCollection.RemoveAll(handler);
+                    } else {
+                        RemoveHandler(handler);
+                    }
                 }
             }
             return result;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Ark.Collections {
-    class SafeIndexedLinkedList<T> : IEnumerable<T> {
+    class SafeIndexedLinkedList<T> : IEnumerable<T>, ICollectionEx<T>, ICanRemoveAll<T> {
         DoubleLinkedList<T> _list = new DoubleLinkedList<T>();
         Dictionary<T, SingleLinkedList<DoubleLinkedNode<T>>> _lookup;
 
