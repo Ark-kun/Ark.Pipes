@@ -139,6 +139,14 @@ namespace Ark {
             return !handler.Method.IsStatic && handler.Target != null && handler.Method.DeclaringType.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length == 0;
         }
 
+        public static bool IsStatic(this Delegate handler) {
+            return handler.Method.IsStatic || handler.Target != null;
+        }
+
+        public static bool IsClosureMethod(this Delegate handler) {
+            return handler.Method.DeclaringType.GetCustomAttributes(typeof(CompilerGeneratedAttribute), false).Length == 0;
+        }
+
         public static EventHandler<TEventArgs> Weaken<TEventArgs>(this EventHandler<TEventArgs> handlers, Action<EventHandler<TEventArgs>> unregister) where TEventArgs : EventArgs {
             EventHandler<TEventArgs> weakHandlers = null;
             var invocationList = handlers.GetInvocationList();

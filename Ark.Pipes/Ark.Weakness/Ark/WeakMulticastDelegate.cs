@@ -27,7 +27,11 @@ namespace Ark {
 
         public void AddHandler(TDelegate handler) {
             if (handler != null) {
-                AddHandlers(handler.GetTypedInvocationList().Select(h => (SingleDelegate<TDelegate>)new WeakDelegate<TDelegate>(h)));
+                if (((Delegate)(object)handler).IsStatic()) {
+                    AddHandlerStrongly(handler);
+                } else {
+                    AddHandlerWeakly(handler);
+                }
             }
         }
 
