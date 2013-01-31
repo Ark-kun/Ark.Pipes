@@ -107,7 +107,7 @@ namespace Ark {
             return result;
         }
 
-        TDelegate IDynamicInvokable.TryGetInvoker() {
+        TDelegate IInvokable<TDelegate>.TryGetInvoker() {
             return TryGetInvokerInternal();
         }
 
