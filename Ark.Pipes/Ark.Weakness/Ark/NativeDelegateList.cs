@@ -9,7 +9,7 @@ namespace Ark {
 
         public void Add(SingleDelegate<TDelegate> singleDelegate) {
             //lock (_delegateList)
-            _delegateList = Delegate.Combine(_delegateList, (Delegate)(object)singleDelegate.Invoke);
+            _delegateList = Delegate.Combine(_delegateList, (Delegate)(object)singleDelegate.Invoker);
         }
 
         public void AddRange(IEnumerable<SingleDelegate<TDelegate>> delegates) {
@@ -19,7 +19,7 @@ namespace Ark {
         }
 
         public void Remove(SingleDelegate<TDelegate> singleDelegate) {
-            _delegateList = Delegate.Remove(_delegateList, (Delegate)(object)singleDelegate.Invoke);
+            _delegateList = Delegate.Remove(_delegateList, (Delegate)(object)singleDelegate.Invoker);
         }
 
         public void RemoveRange(IEnumerable<SingleDelegate<TDelegate>> delegates) {
@@ -40,7 +40,7 @@ namespace Ark {
             return (TDelegate)(object)_delegateList;
         }
 
-        public TDelegate Invoke {
+        public TDelegate Invoker {
             get { return TryGetInvoker(); }
         }
     }

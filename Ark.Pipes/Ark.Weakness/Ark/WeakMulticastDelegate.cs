@@ -128,7 +128,7 @@ namespace Ark {
             return dynamicInvoker(args);
         }
 
-        public TDelegate Invoke {
+        public TDelegate Invoker {
             get { return TryGetInvokerInternal(); }
         }
 

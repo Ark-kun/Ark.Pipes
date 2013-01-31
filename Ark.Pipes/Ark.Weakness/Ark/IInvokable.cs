@@ -3,7 +3,7 @@
 namespace Ark {
     interface IInvokable<TDelegate> where TDelegate : class {
         TDelegate TryGetInvoker();
-        TDelegate Invoke { get; }
+        TDelegate Invoker { get; }
     }
 
     interface IDynamicInvokable {

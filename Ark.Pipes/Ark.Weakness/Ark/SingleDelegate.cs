@@ -31,7 +31,7 @@ namespace Ark {
 
         public abstract Func<object[], object> TryGetDynamicInvoker();
 
-        public TDelegate Invoke {
+        public TDelegate Invoker {
             get {
                 var invoker = TryGetInvoker();
                 if (invoker == null) {
