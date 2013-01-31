@@ -2,7 +2,7 @@
 using System.Reflection;
 
 namespace Ark {
-    public abstract class SingleDelegate<TDelegate> : IEquatable<SingleDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
+    public abstract class SingleDelegate<TDelegate> : IInvokable<TDelegate>, IDynamicInvokable, IEquatable<SingleDelegate<TDelegate>>, IEquatable<TDelegate> where TDelegate : class {
         static InvalidOperationException _targetDeadException = new InvalidOperationException("The delegate target is no longer available.");
         int _hashCode;
 

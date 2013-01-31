@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Ark {
-    class NativeDelegateList<TDelegate> : ICollectionEx<SingleDelegate<TDelegate>> where TDelegate : class {
+    class NativeDelegateList<TDelegate> : ICollectionEx<SingleDelegate<TDelegate>>, IInvokable<TDelegate> where TDelegate : class {
         Delegate _delegateList;
 
         public void Add(SingleDelegate<TDelegate> singleDelegate) {
@@ -34,6 +34,14 @@ namespace Ark {
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() {
             return GetEnumerator();
+        }
+
+        public TDelegate TryGetInvoker() {
+            return (TDelegate)(object)_delegateList;
+        }
+
+        public TDelegate Invoke {
+            get { return TryGetInvoker(); }
         }
     }
 }

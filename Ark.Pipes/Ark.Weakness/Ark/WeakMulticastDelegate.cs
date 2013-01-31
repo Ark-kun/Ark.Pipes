@@ -10,7 +10,7 @@ namespace Ark {
         }
     }
 
-    public class WeakMulticastDelegate<TDelegate> : IEnumerable<SingleDelegate<TDelegate>> where TDelegate : class {
+    public class WeakMulticastDelegate<TDelegate> : IInvokable<TDelegate>, IDynamicInvokable, IEnumerable<SingleDelegate<TDelegate>> where TDelegate : class {
         ICollectionEx<SingleDelegate<TDelegate>> _handlers;
         TDelegate _invokeHandler;
 
