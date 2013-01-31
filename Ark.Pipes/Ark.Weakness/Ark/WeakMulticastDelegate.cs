@@ -107,21 +107,29 @@ namespace Ark {
             return result;
         }
 
-        protected virtual TDelegate TryGetInvoker() {
-            return _invokeHandler;
+        TDelegate IDynamicInvokable.TryGetInvoker() {
+            return TryGetInvokerInternal();
         }
 
-        protected virtual Func<object[], object> TryGetDynamicInvoker() {
+        Func<object[], object> IDynamicInvokable.TryGetDynamicInvoker() {
+            return TryGetDynamicInvokerInternal();
+        }
+
+        protected Func<object[], object> TryGetDynamicInvokerInternal() {
             return DynamicInvokeInternal;
         }
 
+        protected TDelegate TryGetInvokerInternal() {
+            return _invokeHandler;
+        }
+
         public object DynamicInvoke(object[] args) {
-            var dynamicInvoker = TryGetDynamicInvoker();
+            var dynamicInvoker = TryGetDynamicInvokerInternal();
             return dynamicInvoker(args);
         }
 
         public TDelegate Invoke {
-            get { return TryGetInvoker(); }
+            get { return TryGetInvokerInternal(); }
         }
 
         public IEnumerator<SingleDelegate<TDelegate>> GetEnumerator() {
