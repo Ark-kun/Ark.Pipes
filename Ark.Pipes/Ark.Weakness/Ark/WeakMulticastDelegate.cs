@@ -6,13 +6,63 @@ using System.Linq;
 namespace Ark {
     public static class WeakMulticastDelegate {
         public static WeakMulticastDelegate<TDelegate> Create<TDelegate>() where TDelegate : class {
+            Type delType = typeof(TDelegate);
+            if (delType == typeof(Action)) {
+                return new WeakActions() as WeakMulticastDelegate<TDelegate>;
+            }
+            if (delType.IsGenericType) { 
+                Type genericType = delType.GetGenericTypeDefinition();
+                Type[] genericArguments = delType.GetGenericArguments();
+                if (genericType == typeof(Action<>)) {
+                    return (WeakMulticastDelegate<TDelegate>)Activator.CreateInstance(typeof(WeakActions<>).MakeGenericType(genericArguments));
+                }
+                if (genericType == typeof(EventHandler<>)) {
+                    return (WeakMulticastDelegate<TDelegate>)Activator.CreateInstance(typeof(WeakEventHandlers<>).MakeGenericType(genericArguments));
+                }
+            }
             return new WeakMulticastDelegate<TDelegate>();
+        }
+
+        sealed class WeakActions : WeakMulticastDelegate<Action> {
+            public WeakActions() {
+                _invokeHandler = Invoke;
+            }
+
+            public void Invoke() {
+                foreach (var handler in GetHandlers()) {
+                    handler.Invoke();
+                }
+            }
+        }
+
+        sealed class WeakActions<T> : WeakMulticastDelegate<Action<T>> {
+            public WeakActions() {
+                _invokeHandler = Invoke;
+            }
+
+            public void Invoke(T arg) {
+                foreach (var handler in GetHandlers()) {
+                    handler.Invoke(arg);
+                }
+            }
+        }
+
+        sealed class WeakEventHandlers<TEventArgs> : WeakMulticastDelegate<EventHandler<TEventArgs>> where TEventArgs : EventArgs {
+            public WeakEventHandlers() {
+                _invokeHandler = Invoke;
+            }
+
+            public void Invoke(object sender, TEventArgs e) {
+                foreach (var handler in GetHandlers()) {
+                    handler.Invoke(sender, e);
+                }
+            }
         }
     }
 
     public class WeakMulticastDelegate<TDelegate> : IInvokable<TDelegate>, IDynamicInvokable, IEnumerable<SingleDelegate<TDelegate>> where TDelegate : class {
         ICollectionEx<SingleDelegate<TDelegate>> _handlers;
-        TDelegate _invokeHandler;
+        protected TDelegate _invokeHandler;
 
         static WeakMulticastDelegate() {
             if (!typeof(TDelegate).IsSubclassOf(typeof(Delegate))) {
@@ -96,12 +146,7 @@ namespace Ark {
                 if (dynamicInvoker != null) {
                     result = dynamicInvoker(args);
                 } else {
-                    var removeAllCollection = _handlers as ICanRemoveAll<SingleDelegate<TDelegate>>;
-                    if (removeAllCollection != null) {
-                        removeAllCollection.RemoveAll(handler);
-                    } else {
-                        RemoveHandler(handler);
-                    }
+                    RemoveHandler(handler);
                 }
             }
             return result;
@@ -132,6 +177,17 @@ namespace Ark {
             get { return TryGetInvokerInternal(); }
         }
 
+        public IEnumerable<TDelegate> GetHandlers() {
+            foreach (var handler in _handlers) {
+                var invoker = handler.TryGetInvoker();
+                if (invoker != null) {
+                    yield return invoker;
+                } else {
+                    RemoveHandler(handler);
+                }
+            }
+        }
+
         public IEnumerator<SingleDelegate<TDelegate>> GetEnumerator() {
             return _handlers.GetEnumerator();
         }
@@ -140,22 +196,4 @@ namespace Ark {
             return GetEnumerator();
         }
     }
-
-    //public sealed class WeakActions : WeakMulticastDelegate<Action> {
-    //    public void Invoke() {
-    //        DynamicInvoke(null);
-    //    }
-    //}
-
-    //public sealed class WeakActions<T> : WeakMulticastDelegate<Action<T>> {
-    //    public void Invoke(T arg) {
-    //        DynamicInvoke(new object[] { arg });
-    //    }
-    //}
-
-    //public sealed class WeakEventHandlers<TEventArgs> : WeakMulticastDelegate<EventHandler<TEventArgs>> where TEventArgs : EventArgs {
-    //    public void Invoke(object sender, TEventArgs e) {
-    //        DynamicInvoke(new object[] { sender, e });
-    //    }
-    //}
 }
