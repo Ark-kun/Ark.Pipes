@@ -69,6 +69,7 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ark\IInvokable.cs" />
     <Compile Include="Ark\NativeDelegateList.cs" />
     <Compile Include="Ark\WeaklyReferencedStrongDelegate.cs" />
     <Compile Include="Ark\DelegateExtensions.cs" />
