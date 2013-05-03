@@ -69,6 +69,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="_dev\Ark\FastMulticastDelegate.cs" />
+    <Compile Include="_dev\Ark\GCMonitor.cs" />
+    <Compile Include="_dev\Ark\HashedWeakReference.cs" />
     <Compile Include="Ark\IInvokable.cs" />
     <Compile Include="Ark\NativeDelegateList.cs" />
     <Compile Include="Ark\WeaklyReferencedStrongDelegate.cs" />
