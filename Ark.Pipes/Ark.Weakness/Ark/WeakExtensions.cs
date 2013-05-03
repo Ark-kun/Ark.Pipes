@@ -140,7 +140,7 @@ namespace Ark {
         }
 
         public static bool IsStatic(this Delegate handler) {
-            return handler.Method.IsStatic || handler.Target != null;
+            return handler.Method.IsStatic || handler.Target == null;
         }
 
         public static bool IsClosureMethod(this Delegate handler) {
