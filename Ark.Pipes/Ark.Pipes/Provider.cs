@@ -7,7 +7,7 @@ namespace Ark.Pipes {
 #if NOTIFICATIONS_DISABLE
         IOut<T>
 #else
-        INotifyingOut<T>, INotifyPropertyChanged
+        INotifyingOut<T>
 #endif
     {
         public abstract T GetValue();
@@ -19,12 +19,6 @@ namespace Ark.Pipes {
 #if !NOTIFICATIONS_DISABLE
         public virtual INotifier Notifier {
             get { return Ark.Pipes.Notifier.AlwaysUnreliable; }
-        }
-
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged {
-            //FIX: To prevent memory leaks/premature garbage collection we need to strongly subscribe a handler with a weak reference to the value delegate target.
-            add { Notifier.ValueChanged += new PropertyChangedClosure(value, this).Invoke; }
-            remove { Notifier.ValueChanged -= new PropertyChangedClosure(value, this).Invoke; }
         }
 #endif
         static public implicit operator Provider<T>(T value) {
