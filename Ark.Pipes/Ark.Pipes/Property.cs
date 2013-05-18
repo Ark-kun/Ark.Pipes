@@ -27,7 +27,7 @@ namespace Ark.Pipes {
 #if !NOTIFICATIONS_DISABLE
                 _notifier.Source = _provider.Notifier;
                 SignalProviderChanged();
-                //_notifier.OnValueChanged();
+                _notifier.SignalValueChanged();
 #endif
             }
         }
