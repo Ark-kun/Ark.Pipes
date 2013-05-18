@@ -46,23 +46,13 @@ namespace Ark.Pipes {
         }
     }
 
-    public class ReadableProperty<T> : ReadableProvider<T>, 
+    public sealed class Property<T> : ReadableProvider<T>, IIn<T>, IIn<Provider<T>>, 
 #if NOTIFICATIONS_DISABLE
         IOut<Provider<T>>
 #else
         INotifyingOut<Provider<T>>
 #endif
     {
-        public ReadableProperty(Provider<T> provider) : base(provider) { }
-
-        public ReadableProperty(Provider<T> provider, out Action<Provider<T>> changer) : base(provider, out changer) { }
-
-        Provider<T> IOut<Provider<T>>.GetValue() {
-            return _provider;
-        }
-    }
-
-    public sealed class Property<T> : ReadableProperty<T>, IIn<T>, IIn<Provider<T>> {
         public Property() : base(Constant<T>.Default) { }
 
         public Property(T value) : base(new Constant<T>(value)) { }
@@ -89,6 +79,10 @@ namespace Ark.Pipes {
 
         void IIn<Provider<T>>.SetValue(Provider<T> value) {
             Provider = value;
+        }
+
+        Provider<T> IOut<Provider<T>>.GetValue() {
+            return _provider;
         }
 
         [System.Runtime.CompilerServices.SpecialName]
