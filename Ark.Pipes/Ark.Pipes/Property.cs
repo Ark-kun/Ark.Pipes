@@ -5,11 +5,6 @@ namespace Ark.Pipes {
     public class ReadableProvider<T> : Provider<T> {
         protected Provider<T> _provider;
 #if !NOTIFICATIONS_DISABLE
-#if CACHE_ENABLE
-        bool _isDirty = true;
-        T _cachedValue;
-#endif
-        //protected PausablePrivateNotifier _notifier = new PausablePrivateNotifier();
         protected PrivateNotifier _notifier = new PrivateNotifier();
         public event Action ProviderChanged;
 #endif
@@ -18,9 +13,6 @@ namespace Ark.Pipes {
             _provider = provider;
 #if !NOTIFICATIONS_DISABLE
             _notifier.Source = _provider.Notifier;
-#if CACHE_ENABLE
-            _notifier.ValueChanged += OnValueChanged;
-#endif
 #endif
         }
 
@@ -48,25 +40,8 @@ namespace Ark.Pipes {
             }
         }
 #endif
-#if !NOTIFICATIONS_DISABLE && CACHE_ENABLE
-        protected void OnValueChanged() {
-            _isDirty = true;
-            _cachedValue = default(T);
-            //_notifier.Pause();
-        }
-#endif
 
         public override T GetValue() {
-#if !NOTIFICATIONS_DISABLE && CACHE_ENABLE
-            //_notifier.Unpause();
-            if (_notifier.IsReliable) {
-                if (_isDirty) {
-                    _cachedValue = _provider.GetValue();
-                    _isDirty = false;
-                }
-                return _cachedValue;
-            }
-#endif
             return _provider.GetValue();
         }
     }
