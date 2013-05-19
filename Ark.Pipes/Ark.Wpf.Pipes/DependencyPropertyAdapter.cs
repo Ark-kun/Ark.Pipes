@@ -4,7 +4,7 @@ using Ark.Pipes;
 
 namespace Ark.Wpf { //.Pipes.Wpf {
     //DP that reads from Provider
-    public class DependencyPropertyAdapter<T> : DependencyObject, INotifyPropertyChanged {
+    public class DependencyPropertyAdapter<T> : DependencyObject, INotifyPropertyChanged, IValueChangeListener {
         const string _propertyName = "Value";
         public event PropertyChangedEventHandler PropertyChanged;
         public static readonly DependencyProperty ValueProperty;
@@ -29,7 +29,7 @@ namespace Ark.Wpf { //.Pipes.Wpf {
 
         public DependencyPropertyAdapter(Provider<T> provider) {
             _value = new Property<T>(provider);
-            _value.Notifier.ValueChanged += OnPropertyChanged;
+            _value.Notifier.AddListener(this);
             OnPropertyChanged();
         }
 
@@ -48,6 +48,10 @@ namespace Ark.Wpf { //.Pipes.Wpf {
             if (handler != null) {
                 handler(this, new PropertyChangedEventArgs(_propertyName));
             }
+        }
+
+        void IValueChangeListener.OnValueChanged() {
+            OnPropertyChanged();
         }
     }
 }

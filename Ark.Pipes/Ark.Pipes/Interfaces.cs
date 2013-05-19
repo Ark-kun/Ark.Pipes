@@ -22,8 +22,20 @@ namespace Ark.Pipes {
 
     public interface INotifier {
         event Action ValueChanged;
-        event Action<bool> ReliabilityChanged;
-        bool IsReliable { get; }
+        bool IsNotifying { get; }
+        void AddListener(IValueChangeListener listener);
+        void AddListener(IProviderListener listener);
+        void RemoveListener(IValueChangeListener listener);
+        void RemoveListener(IProviderListener listener);
+    }
+
+    public interface IValueChangeListener {
+        void OnValueChanged();
+    }
+
+    public interface IProviderListener : IValueChangeListener {
+        void OnStartedNotifying();
+        void OnStoppedNotifying();
     }
 
     public interface ITrigger {

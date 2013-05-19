@@ -102,7 +102,7 @@ namespace Ark.Pipes {
             public override bool ShouldSerializeValue(object component) { return false; }
         }
 
-        sealed class Retranslator<T> : IHasValue, IDisposable {
+        sealed class Retranslator<T> : IHasValue, IDisposable, IValueChangeListener {
             INotifyingOut<T> _input;
             NotifyPropertyChangedObject _output;
             PropertyChangedEventArgs _eventArgs;
@@ -111,7 +111,7 @@ namespace Ark.Pipes {
                 _input = input;
                 _output = output;
                 _eventArgs = new PropertyChangedEventArgs(string.Format("Value[\"{1}\"]", propertyName)); //TODO: Check whether this actually works.
-                _input.Notifier.ValueChanged += OnValueChanged;
+                _input.Notifier.AddListener(this);
             }
 
             public object GetValue() {
@@ -122,16 +122,15 @@ namespace Ark.Pipes {
                 return _input.GetValue();
             }
 
-            void OnValueChanged() {
+            void IValueChangeListener.OnValueChanged() {
                 _output.SignalPropertyChanged(_eventArgs);
             }
 
             public void Dispose() {
-                _input.Notifier.ValueChanged -= OnValueChanged;
+                _input.Notifier.RemoveListener(this);
                 _input = null;
                 _output = null;
             }
-
         }
     }
 }

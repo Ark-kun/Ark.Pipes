@@ -9,7 +9,11 @@ using TFloat = System.Single;
 
 namespace Ark.Animation {
     //PeriodicTrigger precision is rough and not guaranteed
-    public class PeriodicTrigger : TriggerBase {
+    public class PeriodicTrigger : TriggerBase
+#if !NOTIFICATIONS_DISABLE
+        , IValueChangeListener
+#endif
+    {
         TFloat _interval;
         TFloat _lastTime;
         Provider<TFloat> _timer;
@@ -19,7 +23,7 @@ namespace Ark.Animation {
             _interval = interval;
             _timer = timer;
             _lastTime = _timer.Value;
-            _timer.Notifier.ValueChanged += OnTick;
+            _timer.Notifier.AddListener(this);
         }
 #endif
         public PeriodicTrigger(TFloat interval, Provider<TFloat> timer, ITrigger changeTrigger)
@@ -40,5 +44,11 @@ namespace Ark.Animation {
                 _lastTime += _interval;
             }
         }
+
+#if !NOTIFICATIONS_DISABLE
+        void IValueChangeListener.OnValueChanged() {
+            OnTick();
+        }
+#endif
     }
 }

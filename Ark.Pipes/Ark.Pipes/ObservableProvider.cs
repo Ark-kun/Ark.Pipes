@@ -10,25 +10,25 @@ namespace Ark.Pipes {
         }
 
         public IDisposable Subscribe(IObserver<T> observer) {
-            Action onNext = () => observer.OnNext(_provider.GetValue());
-            Action onUnsubscribe = () => { _provider.Notifier.ValueChanged -= onNext; };
-
-            _provider.Notifier.ValueChanged += onNext;
-            return new DisposableCallback(onUnsubscribe);
+            return new Retranslator(_provider, observer);
         }
 
-        class DisposableCallback : IDisposable {
-            Action _onDisposing;
+        class Retranslator : IValueChangeListener, IDisposable {
+            INotifyingOut<T> _input;
+            IObserver<T> _output;
 
-            public DisposableCallback(Action onDisposing) {
-                _onDisposing = onDisposing;
+            public Retranslator(INotifyingOut<T> input, IObserver<T> output) {
+                _input = input;
+                _output = output;
+                _input.Notifier.AddListener(this);
+            }
+
+            public void OnValueChanged() {
+                _output.OnNext(_input.GetValue());
             }
 
             public void Dispose() {
-                var handler = _onDisposing;
-                if (handler != null) {
-                    handler();
-                }
+                _input.Notifier.RemoveListener(this);
             }
         }
     }

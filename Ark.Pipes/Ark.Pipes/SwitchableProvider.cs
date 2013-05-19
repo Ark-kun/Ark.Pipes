@@ -20,7 +20,7 @@ namespace Ark.Pipes {
         }
     }
 
-    sealed class SwitchableProvider<TKey, TValue> : ProviderHolder<TValue> {
+    sealed class SwitchableProvider<TKey, TValue> : ProviderHolder<TValue>, IValueChangeListener {
         Provider<TKey> _selector;
         TKey _currentKey;
         IDictionary<TKey, Provider<TValue>> _providers;
@@ -36,7 +36,7 @@ namespace Ark.Pipes {
             _selector = selector;
             _currentKey = _selector;
             _providers = providers;
-            _selector.Notifier.ValueChanged += OnSelectorChanged;
+            _selector.Notifier.AddListener(this);
         }
 
         void OnSelectorChanged() {
@@ -51,9 +51,13 @@ namespace Ark.Pipes {
             }
             //}
         }
+
+        void IValueChangeListener.OnValueChanged() {
+            OnSelectorChanged();
+        }
     }
 
-    sealed class SwitchableProvider<TValue> : ProviderHolder<TValue> {
+    sealed class SwitchableProvider<TValue> : ProviderHolder<TValue>, IValueChangeListener {
         Provider<int> _selector;
         int _currentKey;
         IList<Provider<TValue>> _providers;
@@ -69,7 +73,7 @@ namespace Ark.Pipes {
             _selector = selector;
             _currentKey = _selector;
             _providers = providers;
-            _selector.Notifier.ValueChanged += OnSelectorChanged;
+            _selector.Notifier.AddListener(this);
         }
 
         void OnSelectorChanged() {
@@ -83,6 +87,10 @@ namespace Ark.Pipes {
                 //throw new InvalidOperationException("SwitchableProvider was switched to a non-existent provider.");
             }
             //}
+        }
+
+        void IValueChangeListener.OnValueChanged() {
+            OnSelectorChanged();
         }
     }
 }
