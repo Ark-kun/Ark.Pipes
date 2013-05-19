@@ -43,10 +43,11 @@ namespace Ark.Physics { //.Pipes {
 
         void Update(TimeSpan time) {
             TFloat t = (TFloat)time.TotalSeconds;
-            Vector3 acceleraton = new Vector3();
+            Vector3 combinedForce = new Vector3();
             foreach (var force in _forces) {
-                acceleraton += force;
+                combinedForce += force;
             }
+            Vector3 acceleraton = combinedForce / _mass;
             _acceleraton.Value = acceleraton;
             _velocity.Value += _acceleraton.Value * t;
             _position.Value += _velocity.Value * t;
