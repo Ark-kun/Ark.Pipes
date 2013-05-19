@@ -8,6 +8,7 @@ using TFloat = System.Single;
 #endif
 
 namespace Ark.Animation {
+    //PeriodicTrigger precision is rough and not guaranteed
     public class PeriodicTrigger : TriggerBase {
         TFloat _interval;
         TFloat _lastTime;
@@ -35,7 +36,7 @@ namespace Ark.Animation {
         void OnTick() {
             TFloat time = _timer.Value;
             while (time - _lastTime > _interval) {
-                OnTriggered();
+                SignalTriggered();
                 _lastTime += _interval;
             }
         }

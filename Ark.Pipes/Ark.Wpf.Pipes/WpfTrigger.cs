@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ark.Pipes;
+using System;
 using System.Windows.Media;
 
 namespace Ark.Animation { //.Pipes.Wpf {
@@ -8,7 +9,7 @@ namespace Ark.Animation { //.Pipes.Wpf {
         }
 
         void RenderingHandler(object sender, EventArgs e) {
-            OnTriggered();
+            SignalTriggered();
         }
 
         public void Dispose() {
