@@ -1,7 +1,8 @@
-﻿using System.Windows.Data;
-using System.Windows.Controls;
-using Ark.Geometry;
+﻿using Ark.Geometry;
 using Ark.Pipes;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Controls;
 
 #if FLOAT_TYPE_DOUBLE
 using TFloat = System.Double;
@@ -16,7 +17,6 @@ using Ark.Geometry.Primitives.Single;
 #elif FRAMEWORK_XNA && FLOAT_TYPE_SINGLE
 using Microsoft.Xna.Framework;
 #elif FRAMEWORK_WPF && FLOAT_TYPE_DOUBLE
-using System.Windows;
 using System.Windows.Media.Media3D;
 using Vector2 = System.Windows.Vector;
 using Vector3 = System.Windows.Media.Media3D.Vector3D;
