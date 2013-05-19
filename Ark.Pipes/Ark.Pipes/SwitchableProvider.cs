@@ -20,7 +20,7 @@ namespace Ark.Pipes {
         }
     }
 
-    sealed class SwitchableProvider<TKey, TValue> : ReadableProvider<TValue> {
+    sealed class SwitchableProvider<TKey, TValue> : ProviderHolder<TValue> {
         Provider<TKey> _selector;
         TKey _currentKey;
         IDictionary<TKey, Provider<TValue>> _providers;
@@ -53,7 +53,7 @@ namespace Ark.Pipes {
         }
     }
 
-    sealed class SwitchableProvider<TValue> : ReadableProvider<TValue> {
+    sealed class SwitchableProvider<TValue> : ProviderHolder<TValue> {
         Provider<int> _selector;
         int _currentKey;
         IList<Provider<TValue>> _providers;

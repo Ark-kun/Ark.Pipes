@@ -1,22 +1,22 @@
 ﻿using System;
 
 namespace Ark.Pipes {
-    //ReadableProperty<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
-    public class ReadableProvider<T> : Provider<T> {
+    //ProviderHolder<T> is different from ReadableVariable<Provider<T>> because it inherits from Provider<T>, not Provider<Provider<T>>
+    public class ProviderHolder<T> : Provider<T> {
         protected Provider<T> _provider;
 #if !NOTIFICATIONS_DISABLE
         protected PrivateNotifier _notifier = new PrivateNotifier();
         public event Action ProviderChanged;
 #endif
 
-        public ReadableProvider(Provider<T> provider) {
+        public ProviderHolder(Provider<T> provider) {
             _provider = provider;
 #if !NOTIFICATIONS_DISABLE
             _notifier.Source = _provider.Notifier;
 #endif
         }
 
-        public ReadableProvider(Provider<T> provider, out Action<Provider<T>> changer)
+        public ProviderHolder(Provider<T> provider, out Action<Provider<T>> changer)
             : this(provider) {
             changer = SetProvider;
         }
@@ -46,7 +46,7 @@ namespace Ark.Pipes {
         }
     }
 
-    public sealed class Property<T> : ReadableProvider<T>, IIn<T>, IIn<Provider<T>>, 
+    public sealed class Property<T> : ProviderHolder<T>, IIn<T>, IIn<Provider<T>>, 
 #if NOTIFICATIONS_DISABLE
         IOut<Provider<T>>
 #else
@@ -70,7 +70,7 @@ namespace Ark.Pipes {
         }
 
         public Provider<T> AsReadOnly() {
-            return new ReadableProvider<T>(this);
+            return new ProviderHolder<T>(this);
         }
 
         void IIn<T>.SetValue(T value) {
