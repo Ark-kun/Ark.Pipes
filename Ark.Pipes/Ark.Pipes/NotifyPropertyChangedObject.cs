@@ -110,7 +110,7 @@ namespace Ark.Pipes {
             public Retranslator(INotifyingOut<T> input, NotifyPropertyChangedObject output, string propertyName) {
                 _input = input;
                 _output = output;
-                _eventArgs = new PropertyChangedEventArgs(string.Format("Value[\"{1}\"]", propertyName)); //TODO: Check whether this actually works.
+                _eventArgs = new PropertyChangedEventArgs(string.Format("Value[\"{0}\"]", propertyName)); //TODO: Check whether this actually works.
                 _input.Notifier.AddListener(this);
             }
 
